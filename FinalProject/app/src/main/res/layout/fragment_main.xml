@@ -22,6 +22,13 @@
         android:onClick="tellJoke"
         android:text="@string/button_text" />
 
+    <TextView
+        android:id="@+id/joke_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Future Joke" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
