@@ -38,7 +38,27 @@ android {
             signingConfig signingConfigs.config
         }
     }
-
+    flavorDimensions "all"
+    productFlavors {
+        Free {
+            dimension "all"
+            minSdkVersion 28
+            applicationId 'com.udacity.gradle.builditbigger.free'
+            targetSdkVersion 28
+            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+            versionCode 1
+            versionName '1.0'
+        }
+        Paid {
+            dimension "all"
+            minSdkVersion 28
+            applicationId 'com.udacity.gradle.builditbigger.paid'
+            targetSdkVersion 28
+            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+            versionCode 1
+            versionName '1.0'
+        }
+    }
 }
 configurations {
     all {
@@ -65,5 +85,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
     implementation project(path: ':jokelib')
     implementation project(':myJokeDisplayLib')
-
 }
