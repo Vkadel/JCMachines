@@ -1,7 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
 import android.util.Log;
-import android.content.Context;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,7 +17,7 @@ public class EndpointsAsyncTaskTest {
 
         try {
             MainActivity mainActivity = new MainActivity();
-            EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(mainActivity);
+            EndPointAsyncTask endpointsAsyncTask = new EndPointAsyncTask(mainActivity);
             endpointsAsyncTask.execute();
             String result = endpointsAsyncTask.get(30, TimeUnit.SECONDS);
 

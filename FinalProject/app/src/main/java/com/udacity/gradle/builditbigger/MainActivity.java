@@ -12,16 +12,18 @@ import com.example.jokelib.MyJoker;
 import com.example.myjokerlibraryandroid.MainActivityJoker;
 import com.google.android.gms.ads.MobileAds;
 
+import java.util.concurrent.ExecutionException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.OnJokeRetrivalTaskCompletedInterface {
+public class MainActivity extends AppCompatActivity implements EndPointAsyncTask.OnJokeRetrivalTaskCompletedInterface {
 
     @BindView(R.id.joke_tv)
     TextView jokeTV;
     static Intent intent;
-    EndpointsAsyncTask task;
+    EndPointAsyncTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     public void tellJoke(View view) {
         MyJoker joker = new MyJoker();
         String newJoke=joker.getJokeFromJokerLib();
-        task=new EndpointsAsyncTask(this);
+        task=new EndPointAsyncTask(this);
         task.execute();
 
     }
@@ -64,7 +66,14 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     @Override
     public void OnJokeRetrivalTaskCompleted() {
-        String newJoke=task.myreturnedJoke;
+        String newJoke= null;
+        try {
+            newJoke = task.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         intent=new Intent(this,MainActivityJoker.class);
         intent.putExtra(MainActivityJoker.MY_JOKE_TAG,newJoke);
         startActivity(intent);

@@ -11,16 +11,17 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
 
-class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+public class EndPointAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
     private OnJokeRetrivalTaskCompletedInterface interfaceListener;
     public String myreturnedJoke;
+
     public interface OnJokeRetrivalTaskCompletedInterface {
         void OnJokeRetrivalTaskCompleted();
     }
 
-    public EndpointsAsyncTask(OnJokeRetrivalTaskCompletedInterface listener){
+    public EndPointAsyncTask(OnJokeRetrivalTaskCompletedInterface listener){
         this.interfaceListener=listener;
         this.myreturnedJoke="my Joke";
     }
