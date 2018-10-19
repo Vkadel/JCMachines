@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.jokelib.MyJoker;
@@ -22,8 +23,11 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
 
     @BindView(R.id.joke_tv)
     TextView jokeTV;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     static Intent intent;
     EndPointAsyncTask task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +60,12 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
     }
 
     public void tellJoke(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        jokeTV.setVisibility(View.VISIBLE);
         MyJoker joker = new MyJoker();
         String newJoke=joker.getJokeFromJokerLib();
         task=new EndPointAsyncTask(this);
         task.execute();
-
     }
 
 
@@ -76,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
         }
         intent=new Intent(this,MainActivityJoker.class);
         intent.putExtra(MainActivityJoker.MY_JOKE_TAG,newJoke);
+        progressBar.setVisibility(View.INVISIBLE);
+        jokeTV.setVisibility(View.INVISIBLE);
         startActivity(intent);
     }
 }

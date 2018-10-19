@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.jokelib.MyJoker;
 import com.example.myjokerlibraryandroid.MainActivityJoker;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.concurrent.ExecutionException;
 
@@ -22,13 +22,14 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
 
     @BindView(R.id.joke_tv)
     TextView jokeTV;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     static Intent intent;
     EndPointAsyncTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MobileAds.initialize(this, "ca-app-pub-3340068361441201~5824135261");
         ButterKnife.bind(this);
     }
 
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
     }
 
     public void tellJoke(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        jokeTV.setVisibility(View.VISIBLE);
         MyJoker joker = new MyJoker();
         String newJoke=joker.getJokeFromJokerLib();
         task=new EndPointAsyncTask(this);
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
         }
         intent=new Intent(this,MainActivityJoker.class);
         intent.putExtra(MainActivityJoker.MY_JOKE_TAG,newJoke);
+        progressBar.setVisibility(View.INVISIBLE);
+        jokeTV.setVisibility(View.INVISIBLE);
         startActivity(intent);
     }
 }
