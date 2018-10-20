@@ -23,11 +23,12 @@
         android:text="@string/button_text" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/joke_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Future Joke" />
+        android:text="@string/loading_lol" />
 
     <ProgressBar
         android:visibility="invisible"
