@@ -139,6 +139,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkDebugAndroidTestClasspath" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkDebugClasspath" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkFreeDebugAndroidTestClasspath" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkFreeDebugClasspath" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkFreeReleaseClasspath" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/checkPaidDebugAndroidTestClasspath" />
@@ -158,6 +159,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/legacy_multidex_aapt_derived_proguard_rules" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/legacy_multidex_main_dex_list" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint_jar" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifest-checker" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/merged_assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/merged_manifests" />
@@ -246,22 +248,5 @@
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-gass-17.0.0" level="project" />
     <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
-    <orderEntry type="module" module-name="myJokeDisplayLib" />
-    <orderEntry type="module" module-name="jokelib" />
   </component>
 </module>

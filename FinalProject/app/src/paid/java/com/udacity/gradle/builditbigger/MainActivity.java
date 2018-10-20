@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.jokelib.MyJoker;
+
 import com.example.myjokerlibraryandroid.MainActivityJoker;
 
 import java.util.concurrent.ExecutionException;
@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
     public void tellJoke(View view) {
         progressBar.setVisibility(View.VISIBLE);
         jokeTV.setVisibility(View.VISIBLE);
-        MyJoker joker = new MyJoker();
-        String newJoke=joker.getJokeFromJokerLib();
         task=new EndPointAsyncTask(this);
         task.execute();
 

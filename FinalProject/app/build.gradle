@@ -4,9 +4,13 @@ apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
 buildscript {
     repositories {
         jcenter()
+        google()
     }
+
+
     dependencies {
         classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.2'
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.3'
     }
 }
 
@@ -47,11 +51,14 @@ android {
         }
     }
 }
+
 configurations {
+
     all {
         exclude module: 'httpclient'
         exclude module: 'commons-logging'
     }
+
 }
 
 dependencies {
@@ -70,6 +77,5 @@ dependencies {
     implementation 'com.android.support:customtabs:28.0.0'
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
-    implementation project(path: ':jokelib')
     implementation project(':myJokeDisplayLib')
 }

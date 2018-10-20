@@ -8,13 +8,44 @@ buildscript {
         google()
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.google.guava:guava:24.1-jre'
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-rc1'
+        // Set Groovy dependency so
+        // groovy.ui.GroovyMain can be found.
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
     }
+}
+configurations {
+    groovyScript
+}
+
+dependencies {
+    // Set Groovy dependency so
+    // groovy.ui.GroovyMain can be found.
+    groovyScript localGroovy()
+    // Or be specific for a version:
+    //groovyScript "org.codehaus.groovy:groovy-all:2.4.5"
+}
+
+
+task zcloseServer(dependsOn: ":backend:appengineStop"){
+
+    doLast {
+        println "Closed Server!"
+    }
+}
+
+task zStartServerandTest(dependsOn: ":backend:appengineStart"){
+
+    doLast {
+        println "Started Server!"
+    }
+    finalizedBy('app:test')
 }
 
 allprojects {
