@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,9 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView userPic;
     final static int RC_SIGN_IN=1;
     TextView userEmail;
-    //TODO: May need to remove
-    String clientId = "658701728613-7732u38lkqm1jp0ofj1dlh3bn9l3eub8.apps.googleusercontent.com";
-    String clientSecret = "IFT2ydDpTvoEoETgQp7FZu5L";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Timber.plant(new Timber.DebugTree());
         userEmail=findViewById(R.id.user_email);
         userPic=findViewById(R.id.user_pic);
+        updateUI(null);
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -83,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String Name=account.getDisplayName();
             GlideApp.with(this).load(PhotoURL.toString()).into(userPic);
         }
+        if(account!=null){
+      Intent intent = new Intent(this, machineListActivity.class);
+        startActivity(intent);}
     }
 
     @Override
