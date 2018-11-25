@@ -72,18 +72,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //TODO:hide the sign-in button, launch your main activity.
         if (account==null){
         userEmail.setText("Please login");
-        userPic.setImageResource(R.drawable.place_holder_image);}else
+        userPic.setImageResource(R.drawable.place_holder_image);}
+        else
         {
-
             userEmail.setText(account.getDisplayName());
             Uri PhotoURL=account.getPhotoUrl();
             String id=account.getId();
-            String convertURI=PhotoURL.toString();
             String Name=account.getDisplayName();
-            GlideApp.with(this).load(PhotoURL.toString()).into(userPic);
+            Timber.d(id+"photo");
+            if (PhotoURL!=null){
+                String convertURI=PhotoURL.toString();
+                GlideApp.with(this).load(PhotoURL.toString()).into(userPic);
+            }
         }
-        if(account!=null){
-      Intent intent = new Intent(this, machineListActivity.class);
+       if(account!=null){
+            //TODO: pass user thumbnail URI to intent
+        Intent intent = new Intent(this, machineListActivity.class);
         startActivity(intent);}
     }
 
@@ -96,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.sign_out_button:
                 signOut();
                 break;
-            // ...
         }
     }
 
@@ -132,8 +135,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void handleSignInResult(Task<GoogleSignInAccount> task) {
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
-            // Signed in successfully, show authenticated UI.
+            // only try to get data if sign in isSuccessful, show authenticated UI.
+            if(task.isSuccessful()){
             updateUI(account);
+            }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

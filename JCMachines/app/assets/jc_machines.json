@@ -10,7 +10,7 @@
 
     "Description": "Mid-size stiff extruder",
 
-    "ThumbnailImage": "https://www.jcsteele.com/wp-content/uploads/45.jpg",
+    "ThumbnailImage": "https://www.jcsteele.com/wp-content/uploads/45-Extruder-spirals-vacuum.jpg",
 
     "LargeImageOne": "https://www.jcsteele.com/wp-content/uploads/45-Series-Extruder-Steele.jpg",
 
@@ -486,7 +486,7 @@
 
     "Description": "Large stiff extruder",
 
-    "ThumbnailImage": "need",
+    "ThumbnailImage": "https://github.com/Vkadel/JCMachines/blob/master/JCMachines/app/assets/75ad_pug_extruder.PNG",
 
     "LargeImageOne": "need",
 
@@ -724,21 +724,21 @@
 
     "Description": "Large stiff extruder",
 
-    "ThumbnailImage": "need",
+    "ThumbnailImage": "https://github.com/Vkadel/JCMachines/blob/master/JCMachines/app/assets/75ad_pug_sealer.PNG",
 
-    "LargeImageOne": "need",
+    "LargeImageOne": "na",
 
     "LargeImageTwo": "na",
 
-    "InlIneInstallImage": "need",
+    "InlIneInstallImage": "na",
 
-    "DimensionsSpecsImage": "need",
+    "DimensionsSpecsImage": "na",
 
-    "AngleInstallImage": "need",
+    "AngleInstallImage": "na",
 
-    "DatasheetLink": "need",
+    "DatasheetLink": "na",
 
-    "LubricationChartLink": "need",
+    "LubricationChartLink": "na",
 
     "KeyFeatures": [
 

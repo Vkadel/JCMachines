@@ -28,7 +28,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.virginia.jcmachines.machineListActivity"
-        tools:listitem="@layout/machine_list_content" />
+        tools:listitem="@layout/machine_list_item" />
 
     <FrameLayout
         android:id="@+id/machine_detail_container"
