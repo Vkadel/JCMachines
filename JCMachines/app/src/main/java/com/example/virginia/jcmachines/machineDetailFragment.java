@@ -41,6 +41,7 @@ public class machineDetailFragment extends Fragment {
     ImageView machineDetailAppBarBackgroundIV;
     int thisMachineId;
     Activity activity;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -54,7 +55,7 @@ public class machineDetailFragment extends Fragment {
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             //Subscribe to the activity model
             machineViewModel=ViewModelProviders.of(this).get(machineViewModel.class);
-
+            //Check if this is the first the fragment was created
             if (savedInstanceState==null){
                 thisMachineId= Integer.valueOf(getArguments().getString(ARG_ITEM_ID));
             //observe the model
@@ -62,14 +63,15 @@ public class machineDetailFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
                     machineList=machines;
-                    thisMachine=machineList.get(Integer.valueOf(getArguments().getString(ARG_ITEM_ID)));
+                    thisMachine=machineList.get(thisMachineId);
                     updateUI(rootView);
                 }
             });}
+            //get the existing Model and get all machines
             else{
                 machineList=machineViewModel.getMachines().getValue();
-                thisMachine=machineList.get(savedInstanceState.getInt(ARG_ITEM_ID));
                 thisMachineId=savedInstanceState.getInt(ARG_ITEM_ID);
+                thisMachine=machineList.get(thisMachineId);
             }
             activity = this.getActivity();
         }
@@ -78,7 +80,7 @@ public class machineDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       rootView = inflater.inflate(R.layout.machine_detail, container, false);
+       rootView = inflater.inflate(R.layout.machine_detail,container, false);
 
         // Show the selected machine content as text in a TextView.
         if (thisMachine!=null) {
@@ -90,10 +92,14 @@ public class machineDetailFragment extends Fragment {
     public void updateUI(View rootView) {
         appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         machineDetailAppBarBackgroundIV=(ImageView)activity.findViewById(R.id.app_bar_machine_image);
-        ((TextView) rootView.findViewById(R.id.machine_detail)).setText(thisMachine.getDescription());
         appBarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorAccent));
         appBarLayout.setTitle(thisMachine.getMachineFullName());
+        TextView description_tv=rootView.findViewById(R.id.description_TV);
+        description_tv.setText(thisMachine.getDescription());
+        ImageView dimensions_tv_inline=rootView.findViewById(R.id.inline_dimensions_image);
         Glide.with(this).load(thisMachine.getLargeImageOne()).into(machineDetailAppBarBackgroundIV);
+        Glide.with(this).load(thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);
+
     }
 
     @Override
@@ -104,7 +110,6 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(ARG_ITEM_ID,thisMachine.getId());
-        outState.putInt(ARG_ITEM_ROOT_VIEW,rootView.getId());
         super.onSaveInstanceState(outState);
     }
 }

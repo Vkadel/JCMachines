@@ -16,4 +16,9 @@
     <string name="Signout">Sign Out</string>
     <string name="title_machine_list">JC Steele Machines</string>
     <string name="title_machine_detail">machine Detail</string>
+    <string name="dimensions_link">Dimensions Link</string>
+    <string name="data">Data Sheet</string>
+    <string name="lubrication_chart">Lubrication Chart</string>
+    <string name="spare_parts">Spare Parts List</string>
+    <string name="description">Description</string>
 </resources>
