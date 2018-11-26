@@ -8,8 +8,6 @@
         android:centerX="0.3"
         android:centerY="0.3"
         android:angle="90" />
-    <corners
-        android:radius="100dp"
-        />
-
+    <stroke
+        android:color="@color/colorWhite"/>
 </shape>
