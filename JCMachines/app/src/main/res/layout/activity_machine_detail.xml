@@ -20,16 +20,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:outlineAmbientShadowColor="@color/colorAccent"
             app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextAppearance="@style/ToolbarTheme"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                android:id="@+id/app_bar_machine_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foregroundTint="@color/colorAccent"
+                android:foregroundTintMode="screen"
+                android:outlineAmbientShadowColor="@color/colorAccent"
+                android:outlineSpotShadowColor="@color/colorPrimary"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/place_holder_image" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_one"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ToolbarTheme" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -49,6 +68,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/machine_detail_container"
         app:layout_anchorGravity="top|end"
-        app:srcCompat="@android:drawable/stat_notify_chat" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </android.support.design.widget.CoordinatorLayout>

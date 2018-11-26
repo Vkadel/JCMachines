@@ -84,6 +84,10 @@ public class machineListActivity extends AppCompatActivity {
                 }
             });
         }
+        else{
+            mMachines=machineViewModel.getMachines().getValue();
+            setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+        }
 
     }
 
