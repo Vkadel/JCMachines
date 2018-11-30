@@ -111,6 +111,7 @@ public class machineListActivity extends AppCompatActivity {
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                    arguments.putBoolean(machineDetailFragment.IS_TWO_PANE,mTwoPane);
                     machineDetailFragment fragment = new machineDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
