@@ -1,0 +1,955 @@
+[
+
+  {
+
+    "id": 0,
+
+    "series": "45",
+
+    "machineFullName": "45AT Extruder",
+
+    "Description": "Mid-size stiff extruder",
+
+    "ThumbnailImage": "https://www.jcsteele.com/wp-content/uploads/45-Extruder-spirals-vacuum.jpg",
+
+    "LargeImageOne": "https://www.jcsteele.com/wp-content/uploads/45-Series-Extruder-Steele.jpg",
+
+    "LargeImageTwo": "na",
+
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/45_series_inline.png",
+
+    "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
+
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/45_series_angle.png",
+
+    "DatasheetLink": "http://www.jcsteele.com/wp-content/uploads/Datasheet-45-Series.pdf",
+
+    "LubricationChartLink": "http://www.jcsteele.com/wp-content/uploads/45ATX-Extruder-Lube-Chart.pdf",
+
+    "KeyFeatures": [
+
+      {
+
+        "id": 0,
+
+        "name": "Resilience",
+
+        "description": "Processes tough, plastic and sticky clays, and abrasive fines and dusts"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "Maintenance",
+
+        "description": "Trouble-free operation with minimal maintenance"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "Simplicity",
+
+        "description": "Fewer process steps for lower production costs"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "Simplicity",
+
+        "description": "Drive options for easier installation"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "Versatility",
+
+        "description": "Accepts batch-mixed materials"
+
+      }
+
+    ],
+
+    "InstructionalVids": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      }
+
+    ],
+
+    "TechnicalBulletins": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "TechnicalBulletins1",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "TechnicalBulletins2",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "tittle": "TechnicalBulletins3",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      }
+
+    ],
+
+    "SpareParts": [
+
+      {
+
+        "id": 0,
+
+        "name": "SparePart1",
+
+        "description": " SparePart1 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "SparePart2",
+
+        "description": " SparePart2 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "SparePart3",
+
+        "description": " SparePart3 description",
+
+        "Section": "SectionB"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "SparePart4",
+
+        "description": " SparePart4 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "SparePart5",
+
+        "description": " SparePart5 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 5,
+
+        "name": "SparePart6",
+
+        "description": " SparePart6 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 6,
+
+        "name": "SparePart7",
+
+        "description": " SparePart7 description",
+
+        "Section": "SectionD"
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    "id": 1,
+
+    "series": "45",
+
+    "machineFullName": "45AT PugSealer",
+
+    "Description": "Mid-size stiff Pug Sealer",
+
+    "ThumbnailImage": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
+
+    "LargeImageOne": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
+
+    "LargeImageTwo": "na",
+
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/45_series_inline.png",
+
+    "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
+
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/45_series_angle.png",
+
+    "DatasheetLink": "http://www.jcsteele.com/wp-content/uploads/Datasheet-45-Series.pdf",
+
+    "LubricationChartLink": "http://www.jcsteele.com/wp-content/uploads/45AT-Pug-Sealer-Lube-Chart.pdf",
+
+    "KeyFeatures": [
+
+      {
+
+        "id": 0,
+
+        "name": "Resilience",
+
+        "description": "Processes tough, plastic and sticky clays, and abrasive fines and dusts"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "Maintenance",
+
+        "description": "Trouble-free operation with minimal maintenance"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "Simplicity",
+
+        "description": "Fewer process steps for lower production costs"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "Simplicity",
+
+        "description": "Drive options for easier installation"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "Versatility",
+
+        "description": "Accepts batch-mixed materials"
+
+      }
+
+    ],
+
+    "InstructionalVids": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      }
+
+    ],
+
+    "TechnicalBulletins": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "TechnicalBulletins1",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "TechnicalBulletins2",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "tittle": "TechnicalBulletins3",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      }
+
+    ],
+
+    "SpareParts": [
+
+      {
+
+        "id": 0,
+
+        "name": "SparePart1",
+
+        "description": " SparePart1 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "SparePart2",
+
+        "description": " SparePart2 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "SparePart3",
+
+        "description": " SparePart3 description",
+
+        "Section": "SectionB"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "SparePart4",
+
+        "description": " SparePart4 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "SparePart5",
+
+        "description": " SparePart5 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 5,
+
+        "name": "SparePart6",
+
+        "description": " SparePart6 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 6,
+
+        "name": "SparePart7",
+
+        "description": " SparePart7 description",
+
+        "Section": "SectionD"
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    "id": 2,
+
+    "series": "75",
+
+    "machineFullName": "75AD Extruder",
+
+    "Description": "Large stiff extruder",
+
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_pug_extruder.PNG",
+
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_pug_extruder.PNG",
+
+    "LargeImageTwo": "na",
+
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_ series_inline.png",
+
+    "DimensionsSpecsImage": "need",
+
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_series_angle.png",
+
+    "DatasheetLink": "need",
+
+    "LubricationChartLink": "need",
+
+    "KeyFeatures": [
+
+      {
+
+        "id": 0,
+
+        "name": "Castings",
+
+        "description": "Structural components are cast from virtually unbreakable ductile iron; wear parts are extremely long-wearing 28PC high chrome iron alloy"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "Augers and liners",
+
+        "description": " Several designs are available. Auger sections are cast from 28PC and are 'preslicked' to minimize or eliminate the break-in period. 75AD machines have a long cumulative service history extruding a wide range of materials utilizing various auger/liner combinations. "
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "Gears",
+
+        "description": " All are helical, double reduction, hardened alloy steel. The gearbox is force lubricated with pumped oil and protected by magnetic and mechanical oil filters."
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "Bearings",
+
+        "description": " Roller bearings are used throughout. The oversized thrust and radial bearings are immersed in oil"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "Versatility",
+
+        "description": "Accepts batch-mixed materials"
+
+      }
+
+    ],
+
+    "InstructionalVids": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      }
+
+    ],
+
+    "TechnicalBulletins": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "TechnicalBulletins1",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "TechnicalBulletins2",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "tittle": "TechnicalBulletins3",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      }
+
+    ],
+
+    "SpareParts": [
+
+      {
+
+        "id": 0,
+
+        "name": "SparePart1",
+
+        "description": " SparePart1 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "SparePart2",
+
+        "description": " SparePart2 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "SparePart3",
+
+        "description": " SparePart3 description",
+
+        "Section": "SectionB"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "SparePart4",
+
+        "description": " SparePart4 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "SparePart5",
+
+        "description": " SparePart5 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 5,
+
+        "name": "SparePart6",
+
+        "description": " SparePart6 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 6,
+
+        "name": "SparePart7",
+
+        "description": " SparePart7 description",
+
+        "Section": "SectionD"
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    "id": 3,
+
+    "series": "75",
+
+    "machineFullName": "75AD Extruder",
+
+    "Description": "Large stiff extruder",
+
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_pug_sealer.PNG",
+
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_pug_sealer.PNG",
+
+    "LargeImageTwo": "na",
+
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_ series_inline.png",
+
+    "DimensionsSpecsImage": "na",
+
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/JCMachines/app/assets/75ad_series_angle.png",
+
+    "DatasheetLink": "na",
+
+    "LubricationChartLink": "na",
+
+    "KeyFeatures": [
+
+      {
+
+        "id": 0,
+
+        "name": "Castings",
+
+        "description": "Structural components are cast from virtually unbreakable ductile iron; wear parts are extremely long-wearing 28PC high chrome iron alloy"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "Augers and liners",
+
+        "description": " Several designs are available. Auger sections are cast from 28PC and are 'preslicked' to minimize or eliminate the break-in period. 75AD machines have a long cumulative service history extruding a wide range of materials utilizing various auger/liner combinations. "
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "Gears",
+
+        "description": " All are helical, double reduction, hardened alloy steel. The gearbox is force lubricated with pumped oil and protected by magnetic and mechanical oil filters."
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "Bearings",
+
+        "description": " Roller bearings are used throughout. The oversized thrust and radial bearings are immersed in oil"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "Shafts",
+
+        "description": "Main driving shaft are as large as 7 1/4in (184mm) in diameter"
+
+      }
+
+    ],
+
+    "InstructionalVids": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "na",
+
+        "description": "na",
+
+        "VideoLink": "na"
+
+      }
+
+    ],
+
+    "TechnicalBulletins": [
+
+      {
+
+        "id": 0,
+
+        "tittle": "TechnicalBulletins1",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "tittle": "TechnicalBulletins2",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "tittle": "TechnicalBulletins3",
+
+        "description": "na",
+
+        "pdflink": "na"
+
+      }
+
+    ],
+
+    "SpareParts": [
+
+      {
+
+        "id": 0,
+
+        "name": "SparePart1",
+
+        "description": " SparePart1 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 1,
+
+        "name": "SparePart2",
+
+        "description": " SparePart2 description",
+
+        "Section": "SectionA"
+
+      },
+
+      {
+
+        "id": 2,
+
+        "name": "SparePart3",
+
+        "description": " SparePart3 description",
+
+        "Section": "SectionB"
+
+      },
+
+      {
+
+        "id": 3,
+
+        "name": "SparePart4",
+
+        "description": " SparePart4 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 4,
+
+        "name": "SparePart5",
+
+        "description": " SparePart5 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 5,
+
+        "name": "SparePart6",
+
+        "description": " SparePart6 description",
+
+        "Section": "SectionC"
+
+      },
+
+      {
+
+        "id": 6,
+
+        "name": "SparePart7",
+
+        "description": " SparePart7 description",
+
+        "Section": "SectionD"
+
+      }
+
+    ]
+
+  }
+
+]
