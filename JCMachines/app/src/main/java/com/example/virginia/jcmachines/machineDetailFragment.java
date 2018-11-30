@@ -32,8 +32,8 @@ public class machineDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
-    public static final String IS_TWO_PANE = "is_two_pane";
-    private static final String ARG_ITEM_ROOT_VIEW ="root_view" ;
+    private static final String ARG_ITEM_ROOT_VIEW ="root_view";
+    public static final String ARG_IS_TWO_PANE ="is_two_pane";
     List<machine> machineList;
     machine thisMachine;
     machineViewModel machineViewModel;
@@ -42,7 +42,7 @@ public class machineDetailFragment extends Fragment {
     ImageView machineDetailAppBarBackgroundIV;
     int thisMachineId;
     Activity activity;
-    private boolean mTwoPane;
+    Boolean isTwopane;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,14 +54,13 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             //Subscribe to the activity model
             machineViewModel=ViewModelProviders.of(this).get(machineViewModel.class);
             //Check if this is the first the fragment was created
             if (savedInstanceState==null){
                 thisMachineId= Integer.valueOf(getArguments().getString(ARG_ITEM_ID));
-                mTwoPane=getArguments().getBoolean(IS_TWO_PANE);
+                isTwopane=getArguments().getBoolean(ARG_IS_TWO_PANE);
             //observe the model
             machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                 @Override
@@ -69,17 +68,16 @@ public class machineDetailFragment extends Fragment {
                     machineList=machines;
                     thisMachine=machineList.get(thisMachineId);
                     updateUI(rootView);
-                    }
+                }
             });}
             //get the existing Model and get all machines
             else{
                 machineList=machineViewModel.getMachines().getValue();
                 thisMachineId=savedInstanceState.getInt(ARG_ITEM_ID);
                 thisMachine=machineList.get(thisMachineId);
-                mTwoPane=savedInstanceState.getBoolean(IS_TWO_PANE);
+                isTwopane=savedInstanceState.getBoolean(ARG_IS_TWO_PANE);
             }
             activity = this.getActivity();
-
         }
     }
 
@@ -96,12 +94,14 @@ public class machineDetailFragment extends Fragment {
     }
 
     public void updateUI(View rootView) {
-        if(!mTwoPane){
-        appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-        machineDetailAppBarBackgroundIV=(ImageView)activity.findViewById(R.id.app_bar_machine_image);
-        appBarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorAccent));
-        appBarLayout.setTitle(thisMachine.getMachineFullName());
-        Glide.with(this).load(thisMachine.getLargeImageOne()).into(machineDetailAppBarBackgroundIV);}
+        if(!isTwopane){
+            appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            machineDetailAppBarBackgroundIV=(ImageView)activity.findViewById(R.id.app_bar_machine_image);
+            appBarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorAccent));
+            appBarLayout.setTitle(thisMachine.getMachineFullName());
+            Glide.with(this).load(thisMachine.getLargeImageOne()).into(machineDetailAppBarBackgroundIV);
+        }
+
         TextView description_tv=rootView.findViewById(R.id.description_TV);
         description_tv.setText(thisMachine.getDescription());
         ImageView dimensions_tv_inline=rootView.findViewById(R.id.inline_dimensions_image);
@@ -117,7 +117,6 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(ARG_ITEM_ID,thisMachine.getId());
-        outState.putBoolean(IS_TWO_PANE,this.mTwoPane);
         super.onSaveInstanceState(outState);
     }
 }
