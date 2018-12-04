@@ -17,28 +17,28 @@ public class machineViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        mRepository = null;
-        machines = null;
+        this.mRepository = null;
+        this.machines = null;
     }
 
     public machineViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new machineRepository(application);
-        machines = mRepository.getallArticles();
+        this.mRepository = new machineRepository(application);
+        this.machines = this.mRepository.getallArticles();
     }
 
 
     public LiveData<List<machine>> getMachines() {
-        return machines;
+        return this.machines;
     }
 
     public void insert(machine article) {
-        mRepository.insert(article);
+        this.mRepository.insert(article);
     }
 
     public void loadArticlesOnline() {
         // Do an asynchronous operation to fetch machines.
         //Getting instance of Room DataBase
-        mRepository.refreshItemsOnline(machines);
+        this.mRepository.refreshItemsOnline(this.machines);
     }
 }

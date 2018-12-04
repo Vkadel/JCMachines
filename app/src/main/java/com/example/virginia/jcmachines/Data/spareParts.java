@@ -7,14 +7,14 @@ public class spareParts {
     String Section;
 
     public spareParts(int mid,String mdescription, String mname, String mSection){
-        id=mid;
-        description=mdescription;
-        name=mname;
-        Section=mSection;
+        this.id =mid;
+        this.description =mdescription;
+        this.name =mname;
+        this.Section =mSection;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setDescription(String description) {
@@ -22,7 +22,7 @@ public class spareParts {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setId(int id) {
@@ -34,14 +34,14 @@ public class spareParts {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getSection() {
-        return Section;
+        return this.Section;
     }
 
     public void setSection(String section) {
-        Section = section;
+        this.Section = section;
     }
 }

@@ -25,3 +25,5 @@
   **[] $VALUES;
   public *;
 }
+# Used for android-pdfviewer
+-keep class com.shockwave.**

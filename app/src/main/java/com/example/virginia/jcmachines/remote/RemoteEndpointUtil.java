@@ -11,6 +11,7 @@ import java.net.URL;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Request.Builder;
 import okhttp3.Response;
 
 public class RemoteEndpointUtil {
@@ -22,9 +23,9 @@ public class RemoteEndpointUtil {
     public static JSONArray fetchJsonArray() {
         String itemsJson = null;
         try {
-            itemsJson = fetchPlainText(Config.BASE_URL);
+            itemsJson = RemoteEndpointUtil.fetchPlainText(Config.BASE_URL);
         } catch (IOException e) {
-            Log.e(TAG, "Error fetching items JSON", e);
+            Log.e(RemoteEndpointUtil.TAG, "Error fetching items JSON", e);
             return null;
         }
 
@@ -37,7 +38,7 @@ public class RemoteEndpointUtil {
             }
             return (JSONArray) val;
         } catch (JSONException e) {
-            Log.e(TAG, "Error parsing items JSON", e);
+            Log.e(RemoteEndpointUtil.TAG, "Error parsing items JSON", e);
         }
 
         return null;
@@ -46,7 +47,7 @@ public class RemoteEndpointUtil {
     static String fetchPlainText(URL url) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder()
+        Request request = new Builder()
                 .url(url)
                 .build();
 

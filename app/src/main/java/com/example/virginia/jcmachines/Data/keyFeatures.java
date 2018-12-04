@@ -9,9 +9,9 @@ public class keyFeatures {
     String description;
 
     public keyFeatures(int mid, String mName, String mdescription){
-        id=mid;
-        name=mName;
-        description=mdescription;
+        this.id =mid;
+        this.name =mName;
+        this.description =mdescription;
     }
 
 
@@ -20,15 +20,15 @@ public class keyFeatures {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setDescription(String description) {

@@ -3,6 +3,8 @@ package com.example.virginia.jcmachines;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,12 +12,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
+import com.example.virginia.jcmachines.R.color;
+import com.example.virginia.jcmachines.R.id;
+import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.dummy.DummyContent;
 
 import java.util.List;
@@ -54,59 +60,69 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             //Subscribe to the activity model
-            machineViewModel=ViewModelProviders.of(this).get(machineViewModel.class);
+            this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
             //Check if this is the first the fragment was created
             if (savedInstanceState==null){
-                thisMachineId= Integer.valueOf(getArguments().getString(ARG_ITEM_ID));
-                isTwopane=getArguments().getBoolean(ARG_IS_TWO_PANE);
+                this.thisMachineId = Integer.valueOf(this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID));
+                this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
             //observe the model
-            machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
-                    machineList=machines;
-                    thisMachine=machineList.get(thisMachineId);
-                    updateUI(rootView);
+                    machineDetailFragment.this.machineList =machines;
+                    machineDetailFragment.this.thisMachine = machineDetailFragment.this.machineList.get(machineDetailFragment.this.thisMachineId);
+                    machineDetailFragment.this.updateUI(machineDetailFragment.this.rootView);
                 }
             });}
             //get the existing Model and get all machines
             else{
-                machineList=machineViewModel.getMachines().getValue();
-                thisMachineId=savedInstanceState.getInt(ARG_ITEM_ID);
-                thisMachine=machineList.get(thisMachineId);
-                isTwopane=savedInstanceState.getBoolean(ARG_IS_TWO_PANE);
+                this.machineList = this.machineViewModel.getMachines().getValue();
+                this.thisMachineId =savedInstanceState.getInt(machineDetailFragment.ARG_ITEM_ID);
+                this.thisMachine = this.machineList.get(this.thisMachineId);
+                this.isTwopane =savedInstanceState.getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
             }
-            activity = this.getActivity();
+            this.activity = getActivity();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       rootView = inflater.inflate(R.layout.machine_detail,container, false);
+        this.rootView = inflater.inflate(layout.machine_detail,container, false);
 
         // Show the selected machine content as text in a TextView.
-        if (thisMachine!=null) {
-           updateUI(rootView);
+        if (this.thisMachine !=null) {
+            this.updateUI(this.rootView);
         }
-        return rootView;
+        return this.rootView;
     }
 
     public void updateUI(View rootView) {
-        if(!isTwopane){
-            appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            machineDetailAppBarBackgroundIV=(ImageView)activity.findViewById(R.id.app_bar_machine_image);
-            appBarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorAccent));
-            appBarLayout.setTitle(thisMachine.getMachineFullName());
-            Glide.with(this).load(thisMachine.getLargeImageOne()).into(machineDetailAppBarBackgroundIV);
+        if(!this.isTwopane){
+            this.appBarLayout = this.activity.findViewById(id.toolbar_layout);
+            this.machineDetailAppBarBackgroundIV = this.activity.findViewById(id.app_bar_machine_image);
+            this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
+            this.appBarLayout.setTitle(this.thisMachine.getMachineFullName());
+            Glide.with(this).load(this.thisMachine.getLargeImageOne()).into(this.machineDetailAppBarBackgroundIV);
         }
 
-        TextView description_tv=rootView.findViewById(R.id.description_TV);
-        description_tv.setText(thisMachine.getDescription());
-        ImageView dimensions_tv_inline=rootView.findViewById(R.id.inline_dimensions_image);
-        Glide.with(this).load(thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);
-
+        TextView description_tv=rootView.findViewById(id.description_TV);
+        TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
+        description_tv.setText(this.thisMachine.getDescription());
+        ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);
+        Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);
+        //onClick listeners for pdf files
+        data_sheet_tv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                //Intent intent = new Intent(context, Read_PDF_Activity.class);
+                //intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -116,7 +132,7 @@ public class machineDetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(ARG_ITEM_ID,thisMachine.getId());
+        outState.putInt(machineDetailFragment.ARG_ITEM_ID, this.thisMachine.getId());
         super.onSaveInstanceState(outState);
     }
 }

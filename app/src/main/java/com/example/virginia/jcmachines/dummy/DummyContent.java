@@ -16,29 +16,29 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<DummyContent.DummyItem> ITEMS = new ArrayList<DummyContent.DummyItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, DummyContent.DummyItem> ITEM_MAP = new HashMap<String, DummyContent.DummyItem>();
 
     private static final int COUNT = 25;
 
     static {
         // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
+        for (int i = 1; i <= DummyContent.COUNT; i++) {
+            DummyContent.addItem(DummyContent.createDummyItem(i));
         }
     }
 
-    private static void addItem(DummyItem item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+    private static void addItem(DummyContent.DummyItem item) {
+        DummyContent.ITEMS.add(item);
+        DummyContent.ITEM_MAP.put(item.id, item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static DummyContent.DummyItem createDummyItem(int position) {
+        return new DummyContent.DummyItem(String.valueOf(position), "Item " + position, DummyContent.makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -66,7 +66,7 @@ public class DummyContent {
 
         @Override
         public String toString() {
-            return content;
+            return this.content;
         }
     }
 }

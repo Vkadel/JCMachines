@@ -19,11 +19,11 @@ public class converterSpareParts {
             return Collections.emptyList();
         }
         Type listType = new TypeToken<List<spareParts>>() {}.getType();
-        return gson.fromJson(data, listType);
+        return converterSpareParts.gson.fromJson(data, listType);
     }
 
     @TypeConverter
     public static String someObjectListToString(List<spareParts> someObjects) {
-        return gson.toJson(someObjects);
+        return converterSpareParts.gson.toJson(someObjects);
     }
 }

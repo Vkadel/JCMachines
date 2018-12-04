@@ -28,6 +28,7 @@
             android:src="@drawable/place_holder_image" />
 
         <TextView
+
             android:id="@+id/dimensions_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

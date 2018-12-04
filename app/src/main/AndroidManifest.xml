@@ -26,7 +26,7 @@
         <activity
             android:name=".machineListActivity"
             android:label="@string/title_machine_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".machineDetailActivity"
             android:label="@string/title_machine_detail"

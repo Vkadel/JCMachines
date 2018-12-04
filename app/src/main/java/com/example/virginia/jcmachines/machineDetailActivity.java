@@ -1,5 +1,6 @@
 package com.example.virginia.jcmachines;
 
+import android.R.id;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View.OnClickListener;
+
+import com.example.virginia.jcmachines.R.layout;
 
 /**
  * An activity representing a single machine detail screen. This
@@ -21,12 +25,12 @@ public class machineDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_machine_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        this.setContentView(layout.activity_machine_detail);
+        Toolbar toolbar = this.findViewById(R.id.detail_toolbar);
+        this.setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = this.findViewById(R.id.fab);
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
@@ -35,7 +39,7 @@ public class machineDetailActivity extends AppCompatActivity {
         });
 
         // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -54,10 +58,10 @@ public class machineDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putString(machineDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID));
+                    this.getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID));
             machineDetailFragment fragment = new machineDetailFragment();
             fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            this.getSupportFragmentManager().beginTransaction()
                     .add(R.id.machine_detail_container, fragment)
                     .commit();
         }
@@ -73,7 +77,7 @@ public class machineDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, machineListActivity.class));
+            this.navigateUpTo(new Intent(this, machineListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

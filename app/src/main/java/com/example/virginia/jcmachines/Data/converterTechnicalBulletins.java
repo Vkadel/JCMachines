@@ -19,11 +19,11 @@ public class converterTechnicalBulletins {
             return Collections.emptyList();
         }
         Type listType = new TypeToken<List<technicalBulletins>>() {}.getType();
-        return gson.fromJson(data, listType);
+        return converterTechnicalBulletins.gson.fromJson(data, listType);
     }
 
     @TypeConverter
     public static String someObjectListToString(List<technicalBulletins> someObjects) {
-        return gson.toJson(someObjects);
+        return converterTechnicalBulletins.gson.toJson(someObjects);
     }
 }

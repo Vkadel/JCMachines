@@ -14,11 +14,13 @@
         android:layout_height="@dimen/item_height"
         android:layout_weight="1"
         app:srcCompat="@drawable/place_holder_image" />
+
     <TextView
         android:id="@+id/id_text"
-        android:layout_width="wrap_content"
+        android:layout_width="4dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:text="@string/user_email"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
@@ -33,9 +35,7 @@
     <TextView
         android:id="@+id/text_view_divider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/colorAccent" />
-
-
 </LinearLayout>

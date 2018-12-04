@@ -7,10 +7,10 @@ public class technicalBulletins {
     String pdflink;
 
     public technicalBulletins(int mId,String mTittle,String mdescription,String mpdflink ){
-        id=mId;
-        tittle=mTittle;
-        description=mdescription;
-        pdflink=mpdflink;
+        this.id =mId;
+        this.tittle =mTittle;
+        this.description =mdescription;
+        this.pdflink =mpdflink;
     }
 
     public void setId(int id) {
@@ -18,7 +18,7 @@ public class technicalBulletins {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setTittle(String tittle) {
@@ -26,11 +26,11 @@ public class technicalBulletins {
     }
 
     public String getTittle() {
-        return tittle;
+        return this.tittle;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -42,6 +42,6 @@ public class technicalBulletins {
     }
 
     public String getPdflink() {
-        return pdflink;
+        return this.pdflink;
     }
 }

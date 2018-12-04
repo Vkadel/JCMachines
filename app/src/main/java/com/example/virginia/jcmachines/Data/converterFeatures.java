@@ -20,11 +20,11 @@ public class converterFeatures {
             return Collections.emptyList();
         }
         Type listType = new TypeToken<List<keyFeatures>>() {}.getType();
-        return gson.fromJson(data, listType);
+        return converterFeatures.gson.fromJson(data, listType);
     }
 
     @TypeConverter
     public static String someObjectListToString(List<keyFeatures> someObjects) {
-        return gson.toJson(someObjects);
+        return converterFeatures.gson.toJson(someObjects);
     }
 }

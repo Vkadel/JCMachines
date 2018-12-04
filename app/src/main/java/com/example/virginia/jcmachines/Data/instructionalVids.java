@@ -6,10 +6,10 @@ public class instructionalVids {
     String description;
     String VideoLink;
     public instructionalVids(int mid,String mTittle,String mDescription,String mVideoLink){
-        id=mid;
-        tittle=mTittle;
-        description=mDescription;
-        VideoLink=mVideoLink;
+        this.id =mid;
+        this.tittle =mTittle;
+        this.description =mDescription;
+        this.VideoLink =mVideoLink;
     }
 
     public void setDescription(String description) {
@@ -17,11 +17,11 @@ public class instructionalVids {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -29,11 +29,11 @@ public class instructionalVids {
     }
 
     public String getTittle() {
-        return tittle;
+        return this.tittle;
     }
 
     public String getVideoLink() {
-        return VideoLink;
+        return this.VideoLink;
     }
 
     public void setTittle(String tittle) {
@@ -41,6 +41,6 @@ public class instructionalVids {
     }
 
     public void setVideoLink(String videoLink) {
-        VideoLink = videoLink;
+        this.VideoLink = videoLink;
     }
 }

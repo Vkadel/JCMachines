@@ -9,21 +9,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
+import com.example.virginia.jcmachines.R.id;
+import com.example.virginia.jcmachines.R.layout;
+import com.example.virginia.jcmachines.machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder;
 
 import java.util.List;
 
 import timber.log.Timber;
+import timber.log.Timber.DebugTree;
 
 /**
  * An activity representing a list of machines. This activity
@@ -45,14 +51,14 @@ public class machineListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_machine_list);
-        machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
-        Timber.plant(new Timber.DebugTree());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        this.setContentView(layout.activity_machine_list);
+        this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
+        Timber.plant(new DebugTree());
+        Toolbar toolbar = this.findViewById(id.toolbar);
+        this.setSupportActionBar(toolbar);
+        toolbar.setTitle(this.getTitle());
+        FloatingActionButton fab = this.findViewById(id.fab);
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -60,62 +66,62 @@ public class machineListActivity extends AppCompatActivity {
             }
         });
 
-        if (findViewById(R.id.machine_detail_container) != null) {
+        if (this.findViewById(id.machine_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            this.mTwoPane = true;
         }
 
-        final View recyclerView = findViewById(R.id.machine_list);
+        final View recyclerView = this.findViewById(id.machine_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        this.setupRecyclerView((RecyclerView) recyclerView);
         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){
-            machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+            this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
                     if(machines!=null){
-                        mMachines=machines;
-                        setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+                        machineListActivity.this.mMachines =machines;
+                        machineListActivity.this.setupRecyclerViewWithMachines((RecyclerView) recyclerView);
                     }
                 }
             });
         }
         else{
-            mMachines=machineViewModel.getMachines().getValue();
-            setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+            this.mMachines = this.machineViewModel.getMachines().getValue();
+            this.setupRecyclerViewWithMachines((RecyclerView) recyclerView);
         }
 
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mMachines, mTwoPane));
+        recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
     }
     private void setupRecyclerViewWithMachines(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mMachines, mTwoPane));
+        recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends Adapter<com.example.virginia.jcmachines.machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final machineListActivity mParentActivity;
         private final List<machine> mValues;
         private final boolean mTwoPane;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        private final OnClickListener mOnClickListener = new OnClickListener() {
             @Override
             public void onClick(View view) {
                 machine item = (machine) view.getTag();
-                if (mTwoPane) {
+                if (machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
-                    arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, mTwoPane);
+                    arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane);
                     machineDetailFragment fragment = new machineDetailFragment();
                     fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.machine_detail_container, fragment)
+                    machineListActivity.SimpleItemRecyclerViewAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
+                            .replace(id.machine_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
@@ -130,38 +136,38 @@ public class machineListActivity extends AppCompatActivity {
         SimpleItemRecyclerViewAdapter(machineListActivity parent,
                                       List<machine> items,
                                       boolean twoPane) {
-            mValues = items;
-            mParentActivity = parent;
-            mTwoPane = twoPane;
+            this.mValues = items;
+            this.mParentActivity = parent;
+            this.mTwoPane = twoPane;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.machine_list_item, parent, false);
-            return new ViewHolder(view);
+                    .inflate(layout.machine_list_item, parent, false);
+            return new machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            if (mValues.get(position).getThumbnailImage()!="na"&& mValues.get(position).getThumbnailImage()!=null){
-                Glide.with(mParentActivity)
-                        .load(mValues.get(position).getThumbnailImage())
+        public void onBindViewHolder(machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+            if (this.mValues.get(position).getThumbnailImage()!="na"&& this.mValues.get(position).getThumbnailImage()!=null){
+                Glide.with(this.mParentActivity)
+                        .load(this.mValues.get(position).getThumbnailImage())
                         .into(holder.imageView);
             }
-            holder.mIdView.setText(mValues.get(position).getId()+"");
-            holder.mContentView.setText(mValues.get(position).getMachineFullName());
+            holder.mIdView.setText(this.mValues.get(position).getId()+"");
+            holder.mContentView.setText(this.mValues.get(position).getMachineFullName());
 
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+            holder.itemView.setTag(this.mValues.get(position));
+            holder.itemView.setOnClickListener(this.mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            if (mValues==null){
+            if (this.mValues ==null){
                 return 0;
             }else{
-            return mValues.size();}
+            return this.mValues.size();}
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -171,9 +177,9 @@ public class machineListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
-                imageView = (ImageView)view.findViewById(R.id.imageView);
+                this.mIdView = view.findViewById(id.id_text);
+                this.mContentView = view.findViewById(id.content);
+                this.imageView = view.findViewById(id.imageView);
             }
         }
     }
