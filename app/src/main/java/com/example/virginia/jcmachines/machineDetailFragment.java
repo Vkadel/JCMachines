@@ -118,7 +118,7 @@ public class machineDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                //Intent intent = new Intent(context, Read_PDF_Activity.class);
+                Intent intent = new Intent(context, Pdf_viewer.class);
                 //intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
                 context.startActivity(intent);
             }
