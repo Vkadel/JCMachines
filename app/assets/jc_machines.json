@@ -480,27 +480,27 @@
 
     "id": 2,
 
-    "series": "75",
+    "series": "90",
 
-    "machineFullName": "75AD Extruder",
+    "machineFullName": "90AD Extruder",
 
     "Description": "Large stiff extruder",
 
-    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_pug_extruder.PNG",
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_series_extruder_steele.PNG",
 
-    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_pug_extruder.PNG",
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_series_extruder_steele.PNG",
 
     "LargeImageTwo": "na",
 
-    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_ series_inline.png",
+    "InlIneInstallImage": "na",
 
-    "DimensionsSpecsImage": "need",
+    "DimensionsSpecsImage": "na",
 
-    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_series_angle.png",
+    "AngleInstallImage": "na",
 
-    "DatasheetLink": "need",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_90_series.pdf",
 
-    "LubricationChartLink": "need",
+    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90as_pug_sealer_lube_chart",
 
     "KeyFeatures": [
 
@@ -592,9 +592,9 @@
 
         "tittle": "TechnicalBulletins1",
 
-        "description": "na",
+        "description": "Removing thrust for 90 assembly",
 
-        "pdflink": "na"
+        "pdflink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/tsb_90_extruder_dsd_0001_remove_thrust_assembly_.pdf"
 
       },
 
@@ -718,27 +718,27 @@
 
     "id": 3,
 
-    "series": "75",
+    "series": "90",
 
-    "machineFullName": "75AD Extruder",
+    "machineFullName": "90AD Extruder",
 
     "Description": "Large stiff extruder",
 
-    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_pug_sealer.PNG",
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_pug_sealer_steele.PNG",
 
-    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_pug_sealer.PNG",
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_pug_sealer_steele.PNG",
 
     "LargeImageTwo": "na",
 
-    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_ series_inline.png",
+    "InlIneInstallImage": "na",
 
     "DimensionsSpecsImage": "na",
 
-    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/75ad_series_angle.png",
+    "AngleInstallImage": "na",
 
-    "DatasheetLink": "na",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_90_series.pdf",
 
-    "LubricationChartLink": "na",
+    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90as_pug_sealer_lube_chart.pdf",
 
     "KeyFeatures": [
 
