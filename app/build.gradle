@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 }
 ext {
     roomVersion = '1.1.1'

@@ -112,14 +112,22 @@ public class machineDetailFragment extends Fragment {
         TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
         description_tv.setText(this.thisMachine.getDescription());
         ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);
-        Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);
+
+        //Hide Image View for dimensios if there is no picture for it
+        if (this.thisMachine.getInlIneInstallImage()!="na"){
+            dimensions_tv_inline.setVisibility(View.VISIBLE);
+        Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);}
+        else{
+            dimensions_tv_inline.setVisibility(View.GONE);
+        }
+
         //onClick listeners for pdf files
         data_sheet_tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, Pdf_viewer.class);
-                //intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
                 context.startActivity(intent);
             }
         });

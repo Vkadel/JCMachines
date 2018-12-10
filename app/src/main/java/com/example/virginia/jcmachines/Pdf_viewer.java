@@ -17,14 +17,15 @@ import java.net.URL;
 
 public class Pdf_viewer extends AppCompatActivity {
     PDFView pdfView;
+    public static String ARG_LINK="arg_link";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
-        //pdfView.fromAsset("file.pdf").load();
-       // pdfView.fromUri(Uri.parse("http://www.jcsteele.com/wp-content/uploads/Datasheet-45-Series.pdf"));
-        new RetrivePDFStream().execute("https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_45_series.pdf");
+        //getting the link from the intent
+        String link=getIntent().getStringExtra(ARG_LINK);
+        new RetrivePDFStream().execute(link);
     }
 
 
