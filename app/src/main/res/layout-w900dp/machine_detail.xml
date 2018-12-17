@@ -21,12 +21,13 @@
             android:layout_height="wrap_content"
             android:text="@string/description" />
 
-        <ImageView
-            android:id="@+id/inline_dimensions_image"
+
+        <TextView
+            style="@style/LinkeTextInDetailStyle"
+            android:id="@+id/dimensions_tv"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimensions_pic_height"
-            android:scaleType="fitCenter"
-            android:src="@drawable/place_holder_image" />
+            android:layout_height="wrap_content"
+            android:text="@string/dimensions_link" />
 
         <TextView
             style="@style/LinkeTextInDetailStyle"

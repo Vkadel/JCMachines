@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-import com.example.virginia.jcmachines.machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder;
 
 import java.util.List;
 
@@ -155,7 +154,7 @@ public class machineListActivity extends AppCompatActivity {
                         .load(this.mValues.get(position).getThumbnailImage())
                         .into(holder.imageView);
             }
-            holder.mIdView.setText(this.mValues.get(position).getId()+"");
+
             holder.mContentView.setText(this.mValues.get(position).getMachineFullName());
 
             holder.itemView.setTag(this.mValues.get(position));
@@ -171,14 +170,14 @@ public class machineListActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
+
             final TextView mContentView;
             final ImageView imageView;
 
             ViewHolder(View view) {
                 super(view);
-                this.mIdView = view.findViewById(id.id_text);
-                this.mContentView = view.findViewById(id.content);
+
+                this.mContentView = view.findViewById(id.machine_name);
                 this.imageView = view.findViewById(id.imageView);
             }
         }

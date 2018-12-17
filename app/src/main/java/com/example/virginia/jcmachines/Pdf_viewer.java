@@ -4,8 +4,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -17,12 +20,14 @@ import java.net.URL;
 
 public class Pdf_viewer extends AppCompatActivity {
     PDFView pdfView;
+    ProgressBar progressBar;
     public static String ARG_LINK="arg_link";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
+        progressBar=findViewById(R.id.progressBar);
         //getting the link from the intent
         String link=getIntent().getStringExtra(ARG_LINK);
         new RetrivePDFStream().execute(link);
@@ -47,8 +52,17 @@ public class Pdf_viewer extends AppCompatActivity {
         @Override
         protected void onPostExecute(InputStream inputStream) {
 
-            pdfView.fromStream(inputStream).load();
-        //progressBar.setVisibility(View.GONE);
+            //Hide progress bar as soon as file is loaded
+            OnLoadCompleteListener onLoadCompleteListener=new OnLoadCompleteListener() {
+                @Override
+                public void loadComplete(int nbPages) {
+                   progressBar.setVisibility(View.GONE);
+                }
+            };
+            pdfView.fromStream(inputStream)
+                    .onLoad(onLoadCompleteListener)
+                    .load();
+
         }
     }
 }

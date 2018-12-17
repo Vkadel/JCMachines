@@ -110,18 +110,22 @@ public class machineDetailFragment extends Fragment {
 
         TextView description_tv=rootView.findViewById(id.description_TV);
         TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
+        TextView lubrication_chart_tv=rootView.findViewById(id.lubrication_chart_tv);
+
         description_tv.setText(this.thisMachine.getDescription());
         ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);
 
         //Hide Image View for dimensios if there is no picture for it
-        if (this.thisMachine.getInlIneInstallImage()!="na"){
+        if (!(this.thisMachine.getInlIneInstallImage()).equals("na")){
             dimensions_tv_inline.setVisibility(View.VISIBLE);
         Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);}
         else{
             dimensions_tv_inline.setVisibility(View.GONE);
         }
 
-        //onClick listeners for pdf files
+        //onClick listeners for pdf files. Hide the View if file is not available
+
+        if (!(this.thisMachine.getDatasheetLink()).equals("na")){
         data_sheet_tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +134,23 @@ public class machineDetailFragment extends Fragment {
                 intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
                 context.startActivity(intent);
             }
-        });
+        });}else{
+            data_sheet_tv.setVisibility(View.GONE);
+        }
+
+        if (!(this.thisMachine.getLubricationChartLink()).equals("na")){
+            lubrication_chart_tv.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, Pdf_viewer.class);
+                    intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
+                    context.startActivity(intent);
+                }
+            });}else{
+            lubrication_chart_tv.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

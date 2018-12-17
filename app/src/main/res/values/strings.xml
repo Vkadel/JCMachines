@@ -17,10 +17,13 @@
     <string name="title_machine_list">JC Steele Machines</string>
     <string name="title_machine_detail">machine Detail</string>
     <string name="dimensions_link">Dimensions Link</string>
-    <string name="data">Data Sheet</string>
-    <string name="lubrication_chart">Lubrication Chart</string>
-    <string name="spare_parts">Spare Parts List</string>
+    <string name="data"> See Data Sheet</string>
+    <string name="lubrication_chart">See Lubrication Chart</string>
+    <string name="spare_parts">See Spare Parts List</string>
     <string name="description">Description</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="long_machine_name">This Machine Name</string>
+    <string name="title_sparepart_list">SpareParts</string>
+    <string name="title_sparepart_detail">SparePart Detail</string>
 </resources>
