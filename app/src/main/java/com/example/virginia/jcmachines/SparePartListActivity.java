@@ -1,9 +1,12 @@
 package com.example.virginia.jcmachines;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +20,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.example.virginia.jcmachines.dummy.DummyContent;
+import com.example.virginia.jcmachines.Data.machine;
+import com.example.virginia.jcmachines.Data.spareParts;
 
 import java.util.List;
 
@@ -35,13 +39,21 @@ public class SparePartListActivity extends AppCompatActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
+    public static final String ARG_ITEM_ID = "item_id";
     private boolean mTwoPane;
+    private machineViewModel machineViewModel;
+    private List<machine> mMachines;
+    private List<spareParts> sparePartsList;
+    private machine mMachine;
+    private spareParts spareParts;
+    private int thisMachineId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sparepart_list);
-
+        this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
@@ -68,9 +80,27 @@ public class SparePartListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.sparepart_list);
+        final View recyclerView = findViewById(R.id.sparepart_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        if(savedInstanceState==null){
+            thisMachineId = getIntent().getIntExtra(ARG_ITEM_ID,0);
+            //this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
+            machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                @Override
+                public void onChanged(@Nullable List<machine> machines) {
+                    if(machines!=null){
+                        mMachines =machines;
+                        sparePartsList=mMachines.get(thisMachineId).getSpareParts();
+                        setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
+                    }
+                }
+            });
+        }
+        else{
+            mMachines = machineViewModel.getMachines().getValue();
+            sparePartsList=mMachines.get(thisMachineId).getSpareParts();
+            setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
+        }
     }
 
     @Override
@@ -91,22 +121,25 @@ public class SparePartListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane));
+    }
+    private void setupRecyclerViewWithSpateParts(@NonNull RecyclerView recyclerView) {
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final SparePartListActivity mParentActivity;
+        private final List<spareParts> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                spareParts item = (spareParts) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(SparePartDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID, item.getId());
                     SparePartDetailFragment fragment = new SparePartDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -115,7 +148,7 @@ public class SparePartListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, SparePartDetailActivity.class);
-                    intent.putExtra(SparePartDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(SparePartDetailFragment.ARG_ITEM_ID, item.getId());
 
                     context.startActivity(intent);
                 }
@@ -123,7 +156,7 @@ public class SparePartListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(SparePartListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<spareParts> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -133,14 +166,14 @@ public class SparePartListActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.sparepart_list_content, parent, false);
+                    .inflate(R.layout.sparepart_list_item, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText((mValues.get(position).getId())+"");
+            holder.mContentView.setText(mValues.get(position).getName());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -148,7 +181,10 @@ public class SparePartListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            if (this.mValues ==null){
+                return 0;
+            }else{
+                return this.mValues.size();}
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

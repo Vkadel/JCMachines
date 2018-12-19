@@ -111,6 +111,7 @@ public class machineDetailFragment extends Fragment {
         TextView description_tv=rootView.findViewById(id.description_TV);
         TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
         TextView lubrication_chart_tv=rootView.findViewById(id.lubrication_chart_tv);
+        TextView spare_parts_list_tv=rootView.findViewById(id.spare_parts_tv);
 
         description_tv.setText(this.thisMachine.getDescription());
         ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);
@@ -126,31 +127,44 @@ public class machineDetailFragment extends Fragment {
         //onClick listeners for pdf files. Hide the View if file is not available
 
         if (!(this.thisMachine.getDatasheetLink()).equals("na")){
-        data_sheet_tv.setOnClickListener(new OnClickListener() {
+            lubrication_chart_tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, Pdf_viewer.class);
-                intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
+                intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
                 context.startActivity(intent);
             }
         });}else{
-            data_sheet_tv.setVisibility(View.GONE);
+            lubrication_chart_tv.setVisibility(View.GONE);
         }
 
-        if (!(this.thisMachine.getLubricationChartLink()).equals("na")){
-            lubrication_chart_tv.setOnClickListener(new OnClickListener() {
+        //Creating intent to go to activity displaying list of SpareParts for this machine
+        if ((this.thisMachine.getSpareParts()!=null)){
+            spare_parts_list_tv.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, SparePartListActivity.class);
+                    intent.putExtra(SparePartListActivity.ARG_ITEM_ID,thisMachineId);
+                    context.startActivity(intent);
+                }
+            });}else{
+            spare_parts_list_tv.setVisibility(View.GONE);
+        }
+
+        if (!(this.thisMachine.getDatasheetLink()).equals("na")){
+            data_sheet_tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, Pdf_viewer.class);
-                    intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
+                    intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
                     context.startActivity(intent);
                 }
             });}else{
-            lubrication_chart_tv.setVisibility(View.GONE);
+            data_sheet_tv.setVisibility(View.GONE);
         }
-
     }
 
     @Override

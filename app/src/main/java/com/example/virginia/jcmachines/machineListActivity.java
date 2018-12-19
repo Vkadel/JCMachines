@@ -1,5 +1,6 @@
 package com.example.virginia.jcmachines;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +49,8 @@ public class machineListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private machineViewModel machineViewModel;
     private List<machine> mMachines;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +79,6 @@ public class machineListActivity extends AppCompatActivity {
 
         final View recyclerView = this.findViewById(id.machine_list);
         assert recyclerView != null;
-        this.setupRecyclerView((RecyclerView) recyclerView);
         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){

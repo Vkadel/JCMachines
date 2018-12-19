@@ -28,7 +28,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.virginia.jcmachines.SparePartListActivity"
-        tools:listitem="@layout/sparepart_list_content" />
+        tools:listitem="@layout/sparepart_list_item" />
 
     <FrameLayout
         android:id="@+id/sparepart_detail_container"
