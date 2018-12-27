@@ -168,7 +168,7 @@
 
         "id": 1,
 
-        "name": "SparePart10",
+        "name": "Gear Box 45854D",
 
         "description": " This gearbox is attached to sectionA position 5 in your machine diagram, to be replaced every 3 years",
 
@@ -182,7 +182,7 @@
 
         "id": 2,
 
-        "name": "SparePart3",
+        "name": "Oil filter 45AD897",
 
         "description": " Oil filter, Section B of your machine diagram. To be replaced weekly",
 
@@ -196,7 +196,7 @@
 
         "id": 3,
 
-        "name": "SparePart4",
+        "name": "Main lubricant Oil",
 
         "description": " This is the lubricant placed in Section C. To be replaced by weekly",
 
@@ -210,7 +210,7 @@
 
         "id": 4,
 
-        "name": "SparePart5",
+        "name": "Spin Wheel 45ADHS",
 
         "description": " This spin wheel can be found in Section C of your machine diagram. To be replaced every 4 years",
 
@@ -224,7 +224,7 @@
 
         "id": 5,
 
-        "name": "SparePart6",
+        "name": "Secondary Screw",
 
         "description": " Secondary Screw section C of your machine diagram. To be replaced every 2 years",
 
@@ -238,7 +238,7 @@
 
         "id": 6,
 
-        "name": "SparePart7",
+        "name": "Extrusion Die basic",
 
         "description": " Basic head for section D of your machine Diagram. To be replaced every year",
 
