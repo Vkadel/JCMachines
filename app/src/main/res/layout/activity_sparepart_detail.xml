@@ -24,6 +24,21 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
+            <ImageView
+                android:id="@+id/spare_part_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/place_holder_image"
+                android:foregroundTint="@color/colorAccent"
+                android:foregroundTintMode="screen"
+                android:outlineAmbientShadowColor="@color/colorAccent"
+                android:outlineSpotShadowColor="@color/colorPrimary"
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_one"/>
+
             <android.support.v7.widget.Toolbar
                 app:titleTextColor="@color/colorWhite"
                 android:id="@+id/detail_toolbar"

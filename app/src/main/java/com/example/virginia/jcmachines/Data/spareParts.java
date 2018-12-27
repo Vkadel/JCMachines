@@ -5,12 +5,23 @@ public class spareParts {
     String description;
     String name;
     String Section;
+    String ImageLink;
 
-    public spareParts(int mid,String mdescription, String mname, String mSection){
+    public spareParts(int mid,String mdescription, String mname, String mSection,String mimageLink){
         this.id =mid;
         this.description =mdescription;
         this.name =mname;
         this.Section =mSection;
+        this.ImageLink=mimageLink;
+
+    }
+
+    public String getImageLink() {
+        return ImageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        ImageLink = imageLink;
     }
 
     public int getId() {

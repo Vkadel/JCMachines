@@ -41,7 +41,6 @@ public class SparePartDetailFragment extends Fragment {
     spareParts thisSpareParts;
     machineViewModel machineViewModel;
     Activity activity;
-    private spareParts mItem;
     int thisMachineId;
     int thisSparePartID;
     Boolean isTwopane;
@@ -104,8 +103,8 @@ public class SparePartDetailFragment extends Fragment {
         rootView = inflater.inflate(R.layout.sparepart_detail, container, false);
 
         // Show spare part info
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.sparepart_detail)).setText(thisMachine.getMachineFullName());
+        if (thisSpareParts != null) {
+            ((TextView) rootView.findViewById(R.id.sparepart_detail)).setText(thisSpareParts.getDescription());
         }
 
         return rootView;
