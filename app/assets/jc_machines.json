@@ -154,11 +154,13 @@
 
         "id": 0,
 
-        "name": "SparePart1P",
+        "name": "Special Gear 45AD584",
 
-        "description": " SparePart1 description",
+        "description": "This gear is attached to sectionA position 3 in your machine diagram, to be replaced every year",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
 
       },
 
@@ -166,11 +168,13 @@
 
         "id": 1,
 
-        "name": "SparePart2",
+        "name": "Gear Box 45854D",
 
-        "description": " SparePart2 description",
+        "description": "This gearbox is attached to sectionA position 5 in your machine diagram, to be replaced every 3 years",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
 
       },
 
@@ -178,11 +182,13 @@
 
         "id": 2,
 
-        "name": "SparePart3",
+        "name": "Oil filter 45AD897",
 
-        "description": " SparePart3 description",
+        "description": "Oil filter, Section B of your machine diagram. To be replaced weekly",
 
-        "Section": "SectionB"
+        "Section": "SectionB",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
 
       },
 
@@ -190,11 +196,13 @@
 
         "id": 3,
 
-        "name": "SparePart4",
+        "name": "Main lubricant Oil",
 
-        "description": " SparePart4 description",
+        "description": "This is the lubricant placed in Section C. To be replaced by weekly",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/pnzl_oil_456.jpg"
 
       },
 
@@ -202,11 +210,13 @@
 
         "id": 4,
 
-        "name": "SparePart5",
+        "name": "Spin Wheel 45ADHS",
 
-        "description": " SparePart5 description",
+        "description": "This spin wheel can be found in Section C of your machine diagram. To be replaced every 4 years",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/spin_wheel_4587.jpg"
 
       },
 
@@ -214,11 +224,13 @@
 
         "id": 5,
 
-        "name": "SparePart6",
+        "name": "Secondary Screw",
 
-        "description": " SparePart6 description",
+        "description": "Secondary Screw section C of your machine diagram. To be replaced every 2 years",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/screw_45ad.jpg"
 
       },
 
@@ -226,11 +238,13 @@
 
         "id": 6,
 
-        "name": "SparePart7",
+        "name": "Extrusion Die basic",
 
-        "description": " SparePart7 description",
+        "description": "Basic head for section D of your machine Diagram. To be replaced every year",
 
-        "Section": "SectionD"
+        "Section": "SectionD",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extru_die_45ad.jpg"
 
       }
 
@@ -396,7 +410,9 @@
 
         "description": " SparePart1 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -408,7 +424,9 @@
 
         "description": " SparePart2 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -420,7 +438,9 @@
 
         "description": " SparePart3 description",
 
-        "Section": "SectionB"
+        "Section": "SectionB",
+
+        "ImageLink":"na"
 
       },
 
@@ -432,7 +452,9 @@
 
         "description": " SparePart4 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -444,7 +466,9 @@
 
         "description": " SparePart5 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -456,7 +480,9 @@
 
         "description": " SparePart6 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -468,7 +494,9 @@
 
         "description": " SparePart7 description",
 
-        "Section": "SectionD"
+        "Section": "SectionD",
+
+        "ImageLink":"na"
 
       }
 
@@ -634,7 +662,9 @@
 
         "description": " SparePart1 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -646,7 +676,9 @@
 
         "description": " SparePart2 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -658,7 +690,9 @@
 
         "description": " SparePart3 description",
 
-        "Section": "SectionB"
+        "Section": "SectionB",
+
+        "ImageLink":"na"
 
       },
 
@@ -670,7 +704,9 @@
 
         "description": " SparePart4 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -682,7 +718,9 @@
 
         "description": " SparePart5 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -694,7 +732,9 @@
 
         "description": " SparePart6 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -706,7 +746,9 @@
 
         "description": " SparePart7 description",
 
-        "Section": "SectionD"
+        "Section": "SectionD",
+
+        "ImageLink":"na"
 
       }
 
@@ -872,7 +914,9 @@
 
         "description": " SparePart1 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -884,7 +928,9 @@
 
         "description": " SparePart2 description",
 
-        "Section": "SectionA"
+        "Section": "SectionA",
+
+        "ImageLink":"na"
 
       },
 
@@ -896,7 +942,9 @@
 
         "description": " SparePart3 description",
 
-        "Section": "SectionB"
+        "Section": "SectionB",
+
+        "ImageLink":"na"
 
       },
 
@@ -908,7 +956,9 @@
 
         "description": " SparePart4 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -920,7 +970,9 @@
 
         "description": " SparePart5 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -932,7 +984,9 @@
 
         "description": " SparePart6 description",
 
-        "Section": "SectionC"
+        "Section": "SectionC",
+
+        "ImageLink":"na"
 
       },
 
@@ -944,7 +998,9 @@
 
         "description": " SparePart7 description",
 
-        "Section": "SectionD"
+        "Section": "SectionD",
+
+        "ImageLink":"na"
 
       }
 
