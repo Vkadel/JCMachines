@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * An activity representing a list of SpareParts. This activity
@@ -56,7 +59,7 @@ public class SparePartListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
+        Timber.plant(new Timber.DebugTree());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,14 +179,14 @@ public class SparePartListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).getName());
             holder.mContentView.setText(mValues.get(position).getDescription());
-
+            Timber.d("adding: "+mValues.get(position).getName());
             holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+            //holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            if (this.mValues ==null){
+            if (this.mValues==null){
                 return 0;
             }else{
                 return this.mValues.size();}
