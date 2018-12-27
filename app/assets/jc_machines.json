@@ -160,7 +160,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
 
       },
 
@@ -168,13 +168,13 @@
 
         "id": 1,
 
-        "name": "Gear Box 45854D",
+        "name": "Special Gear 45AD584",
 
-        "description": "This gearbox is attached to sectionA position 5 in your machine diagram, to be replaced every 3 years",
+        "description": "This gear is attached to sectionA position 3 in your machine diagram, to be replaced every year",
 
         "Section": "SectionA",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
 
       },
 
