@@ -170,7 +170,7 @@
 
         "name": "SparePart10",
 
-        "description": " SparePart2 description",
+        "description": " This gearbox is attached to sectionA position 5 in your machine diagram, to be replaced every 3 years",
 
         "Section": "SectionA",
 
