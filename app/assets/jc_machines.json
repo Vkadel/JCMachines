@@ -184,7 +184,7 @@
 
         "name": "SparePart3",
 
-        "description": " SparePart3 description",
+        "description": " Oil filter, Section B of your machine diagram. To be replaced weekly",
 
         "Section": "SectionB",
 
@@ -198,7 +198,7 @@
 
         "name": "SparePart4",
 
-        "description": " SparePart4 description",
+        "description": " This is the lubricant placed in Section C. To be replaced by weekly",
 
         "Section": "SectionC",
 
@@ -212,7 +212,7 @@
 
         "name": "SparePart5",
 
-        "description": " SparePart5 description",
+        "description": " This spin wheel can be found in Section C of your machine diagram. To be replaced every 4 years",
 
         "Section": "SectionC",
 
@@ -226,7 +226,7 @@
 
         "name": "SparePart6",
 
-        "description": " SparePart6 description",
+        "description": " Secondary Screw section C of your machine diagram. To be replaced every 2 years",
 
         "Section": "SectionC",
 
@@ -240,7 +240,7 @@
 
         "name": "SparePart7",
 
-        "description": " SparePart7 description",
+        "description": " Basic head for section D of your machine Diagram. To be replaced every year",
 
         "Section": "SectionD",
 
