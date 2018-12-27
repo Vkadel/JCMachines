@@ -154,13 +154,13 @@
 
         "id": 0,
 
-        "name": "SparePart1",
+        "name": "Special Gear 45AD584",
 
-        "description": " SparePart1 description",
+        "description": " This gear is attached to sectionA position 3 in your machine diagram, to be replaced every year",
 
         "Section": "SectionA",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
 
       },
 
