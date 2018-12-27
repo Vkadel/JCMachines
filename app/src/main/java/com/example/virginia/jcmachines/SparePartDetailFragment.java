@@ -34,15 +34,20 @@ public class SparePartDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_SPARE_ITEM_ID = "spare_item_id";
     List<machine> machineList;
     machine thisMachine;
+    List<spareParts> sparePartsList;
+    spareParts thisSpareParts;
     machineViewModel machineViewModel;
     Activity activity;
     private spareParts mItem;
     int thisMachineId;
+    int thisSparePartID;
     Boolean isTwopane;
     CollapsingToolbarLayout appBarLayout;
     View rootView;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -58,35 +63,36 @@ public class SparePartDetailFragment extends Fragment {
 
             if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
                 //Subscribe to the activity model
-                this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
+                this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
                 //Check if this is the first the fragment was created
-                if (savedInstanceState==null){
-                    thisMachineId = Integer.valueOf(this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID));
+                if (savedInstanceState == null) {
+                    thisMachineId = this.getArguments().getInt(ARG_ITEM_ID);
+                    thisSparePartID=Integer.valueOf(this.getArguments().getString(ARG_SPARE_ITEM_ID));
                     isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                     //observe the model
                     this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                         @Override
                         public void onChanged(@Nullable List<machine> machines) {
-                            machineList =machines;
-                            thisMachine = SparePartDetailFragment.this.machineList.get(SparePartDetailFragment.this.thisMachineId);
+                            machineList = machines;
+                            thisMachine = machineList.get(thisMachineId);
+                            sparePartsList=thisMachine.getSpareParts();
+                            thisSpareParts=sparePartsList.get(thisSparePartID);
                             updateUI(rootView);
                         }
-                    });}
+                    });
+                }
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(thisMachine.getMachineFullName());
-            }
+                activity = this.getActivity();
+                appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             }
         }
     }
 
     public void updateUI(View rootView) {
-        if(!this.isTwopane){
+        if (!this.isTwopane) {
             this.appBarLayout = this.activity.findViewById(R.id.toolbar_layout);
             this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(R.color.colorAccent));
-            this.appBarLayout.setTitle(this.thisMachine.getMachineFullName());
+            this.appBarLayout.setTitle(thisSpareParts.getName());
 
         }
 
@@ -97,7 +103,7 @@ public class SparePartDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sparepart_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
+        // Show spare part info
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.sparepart_detail)).setText(thisMachine.getMachineFullName());
         }

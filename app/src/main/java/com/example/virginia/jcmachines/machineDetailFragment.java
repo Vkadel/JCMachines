@@ -22,7 +22,6 @@ import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.color;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-import com.example.virginia.jcmachines.dummy.DummyContent;
 
 import java.util.List;
 
@@ -131,8 +130,8 @@ public class machineDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent intent = new Intent(context, Pdf_viewer.class);
-                intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
+                Intent intent = new Intent(context, Pdf_viewer_Activity.class);
+                intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
                 context.startActivity(intent);
             }
         });}else{
@@ -158,8 +157,8 @@ public class machineDetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context, Pdf_viewer.class);
-                    intent.putExtra(Pdf_viewer.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
+                    Intent intent = new Intent(context, Pdf_viewer_Activity.class);
+                    intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
                     context.startActivity(intent);
                 }
             });}else{

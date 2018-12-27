@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+<LinearLayout
+    android:layout_weight="1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_weight="8"
+    <ImageView
+        android:scaleType="centerInside"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-    <TextView
-        style="@style/DescriptionTextStyle"
-        android:text="@string/spare_part_name"
-        android:id="@+id/id_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_height="@dimen/item_width"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/place_holder_image" />
 
     <TextView
-        style="@style/LinkeTextInDetailStyle"
-        android:text="@string/spare_part_description"
-        android:id="@+id/content"
+        style="@style/DescriptionTextStyle"
+        android:text="this is a Machine"
+        android:layout_weight="1"
+        android:id="@+id/machine_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />
-    </LinearLayout>
     <TextView
+        android:layout_weight="1"
         android:id="@+id/text_view_divider"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:background="@color/colorAccent" />
+</LinearLayout>
+
+
+
 </LinearLayout>

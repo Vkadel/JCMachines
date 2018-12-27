@@ -1,6 +1,7 @@
 package com.example.virginia.jcmachines;
 
 import android.R.id;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -77,7 +78,11 @@ public class machineDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            this.navigateUpTo(new Intent(this, machineListActivity.class));
+
+            //this.navigateUpTo(new Intent(this, machineListActivity.class));
+
+            Intent intent = new Intent(this, machineListActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

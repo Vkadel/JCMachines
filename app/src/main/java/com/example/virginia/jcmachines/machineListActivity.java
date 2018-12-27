@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,8 +51,8 @@ public class machineListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private machineViewModel machineViewModel;
     private List<machine> mMachines;
-
-
+    private StaggeredGridLayoutManager gridLayoutManager;
+    private Boolean updatedOnce=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,8 @@ public class machineListActivity extends AppCompatActivity {
             }
         });
 
+        final View recyclerView = this.findViewById(id.machine_list);
+        assert recyclerView != null;
         if (this.findViewById(id.machine_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -76,9 +80,6 @@ public class machineListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             this.mTwoPane = true;
         }
-
-        final View recyclerView = this.findViewById(id.machine_list);
-        assert recyclerView != null;
         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){
@@ -86,15 +87,19 @@ public class machineListActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
                     if(machines!=null){
-                        machineListActivity.this.mMachines =machines;
-                        machineListActivity.this.setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+                        mMachines =machines;
+                        //Ensure the Recycler only updates once per load when the model sends an update
+                        if (!updatedOnce){
+                        setupRecyclerViewWithMachines((RecyclerView) recyclerView);}
+                        updatedOnce=true;
                     }
                 }
             });
         }
         else{
-            this.mMachines = this.machineViewModel.getMachines().getValue();
-            this.setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+            mMachines = this.machineViewModel.getMachines().getValue();
+            setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+            ((RecyclerView) recyclerView).setLayoutManager(gridLayoutManager);
         }
 
     }
@@ -129,7 +134,6 @@ public class machineListActivity extends AppCompatActivity {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, machineDetailActivity.class);
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
-
                     context.startActivity(intent);
                 }
             }
@@ -159,7 +163,6 @@ public class machineListActivity extends AppCompatActivity {
             }
 
             holder.mContentView.setText(this.mValues.get(position).getMachineFullName());
-
             holder.itemView.setTag(this.mValues.get(position));
             holder.itemView.setOnClickListener(this.mOnClickListener);
         }

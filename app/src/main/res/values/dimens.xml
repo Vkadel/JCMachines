@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="item_width">400dp</dimen>
-    <dimen name="item_height">400dp</dimen>
+    <dimen name="item_height">300</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="dimensions_pic_height">300dp</dimen>
     <dimen name="text_size_detail_links">24sp</dimen>

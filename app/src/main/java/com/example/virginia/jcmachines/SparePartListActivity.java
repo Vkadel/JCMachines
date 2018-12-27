@@ -48,7 +48,6 @@ public class SparePartListActivity extends AppCompatActivity {
     private spareParts spareParts;
     private int thisMachineId;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,10 +120,10 @@ public class SparePartListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane,thisMachineId));
     }
     private void setupRecyclerViewWithSpateParts(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane,thisMachineId));
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -133,13 +132,15 @@ public class SparePartListActivity extends AppCompatActivity {
         private final SparePartListActivity mParentActivity;
         private final List<spareParts> mValues;
         private final boolean mTwoPane;
+        private final int mMachineID;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spareParts item = (spareParts) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID, item.getId());
+                    arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
+                    arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID, String.valueOf(item.getId()));
                     SparePartDetailFragment fragment = new SparePartDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -148,8 +149,8 @@ public class SparePartListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, SparePartDetailActivity.class);
-                    intent.putExtra(SparePartDetailFragment.ARG_ITEM_ID, item.getId());
-
+                    intent.putExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID, String.valueOf(item.getId()));
+                    intent.putExtra(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
                     context.startActivity(intent);
                 }
             }
@@ -157,10 +158,11 @@ public class SparePartListActivity extends AppCompatActivity {
 
         SimpleItemRecyclerViewAdapter(SparePartListActivity parent,
                                       List<spareParts> items,
-                                      boolean twoPane) {
+                                      boolean twoPane, int thisMachineId) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
+            mMachineID=thisMachineId;
         }
 
         @Override
@@ -172,8 +174,8 @@ public class SparePartListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText((mValues.get(position).getId())+"");
-            holder.mContentView.setText(mValues.get(position).getName());
+            holder.mIdView.setText(mValues.get(position).getName());
+            holder.mContentView.setText(mValues.get(position).getDescription());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);

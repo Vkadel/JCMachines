@@ -26,4 +26,6 @@
     <string name="long_machine_name">This Machine Name</string>
     <string name="title_sparepart_list">SpareParts</string>
     <string name="title_sparepart_detail">SparePart Detail</string>
+    <string name="spare_part_name">Spare Part Name</string>
+    <string name="spare_part_description">Spare Part Description</string>
 </resources>

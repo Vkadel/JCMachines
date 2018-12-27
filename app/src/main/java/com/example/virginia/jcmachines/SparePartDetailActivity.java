@@ -53,8 +53,10 @@ public class SparePartDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(SparePartDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID));
+            String mySparepartID=getIntent().getStringExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID);
+            int myMachineID=getIntent().getIntExtra(SparePartDetailFragment.ARG_ITEM_ID,0);
+            arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,myMachineID);
+            arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,mySparepartID);
             SparePartDetailFragment fragment = new SparePartDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

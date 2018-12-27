@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-public class Pdf_viewer extends AppCompatActivity {
+public class Pdf_viewer_Activity extends AppCompatActivity {
     PDFView pdfView;
     ProgressBar progressBar;
     public static String ARG_LINK="arg_link";
