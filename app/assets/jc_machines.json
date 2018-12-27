@@ -174,7 +174,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
 
       },
 
@@ -188,7 +188,7 @@
 
         "Section": "SectionB",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/oil_filter_45.jpg"
 
       },
 
@@ -202,7 +202,7 @@
 
         "Section": "SectionC",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/pnzl_oil_456.jpg"
 
       },
 
@@ -216,7 +216,7 @@
 
         "Section": "SectionC",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/spin_wheel_4587.jpg"
 
       },
 
@@ -230,7 +230,7 @@
 
         "Section": "SectionC",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/screw_45ad.jpg"
 
       },
 
@@ -244,7 +244,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extru_die_45ad.jpg"
 
       }
 
