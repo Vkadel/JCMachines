@@ -70,9 +70,9 @@ public class machineDetailFragment extends Fragment {
                 this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
-                    machineDetailFragment.this.machineList =machines;
-                    machineDetailFragment.this.thisMachine = machineDetailFragment.this.machineList.get(machineDetailFragment.this.thisMachineId);
-                    machineDetailFragment.this.updateUI(machineDetailFragment.this.rootView);
+                    machineList =machines;
+                    thisMachine = machineList.get(thisMachineId);
+                    updateUI(rootView);
                 }
             });}
             //get the existing Model and get all machines

@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
 
@@ -144,6 +146,7 @@ public class SparePartListActivity extends AppCompatActivity {
                     Bundle arguments = new Bundle();
                     arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
                     arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID, String.valueOf(item.getId()));
+                    arguments.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
                     SparePartDetailFragment fragment = new SparePartDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -154,6 +157,7 @@ public class SparePartListActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, SparePartDetailActivity.class);
                     intent.putExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID, String.valueOf(item.getId()));
                     intent.putExtra(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
+                    intent.putExtra(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
                     context.startActivity(intent);
                 }
             }
@@ -180,8 +184,12 @@ public class SparePartListActivity extends AppCompatActivity {
             holder.mIdView.setText(mValues.get(position).getName());
             holder.mContentView.setText(mValues.get(position).getDescription());
             Timber.d("adding: "+mValues.get(position).getName());
+            if(!mValues.get(position).getImageLink().equals("na")){
+                Glide.with(mParentActivity).load(mValues.get(position)
+                        .getImageLink()).into(holder.SparePartImage);
+            }
             holder.itemView.setTag(mValues.get(position));
-            //holder.itemView.setOnClickListener(mOnClickListener);
+            holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
@@ -195,11 +203,13 @@ public class SparePartListActivity extends AppCompatActivity {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
+            final ImageView SparePartImage;
 
             ViewHolder(View view) {
                 super(view);
                 mIdView = (TextView) view.findViewById(R.id.id_text);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                SparePartImage=(ImageView)view.findViewById(R.id.spare_part_item_iv);
             }
         }
     }

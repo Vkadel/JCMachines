@@ -17,7 +17,7 @@ import android.view.MenuItem;
  * in a {@link SparePartListActivity}.
  */
 public class SparePartDetailActivity extends AppCompatActivity {
-
+    private boolean mTwoPane;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +55,10 @@ public class SparePartDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             String mySparepartID=getIntent().getStringExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID);
             int myMachineID=getIntent().getIntExtra(SparePartDetailFragment.ARG_ITEM_ID,0);
+            mTwoPane=getIntent().getBooleanExtra(SparePartDetailFragment.ARG_IS_TWO_PANE,false);
             arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,myMachineID);
             arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,mySparepartID);
+            arguments.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
             SparePartDetailFragment fragment = new SparePartDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

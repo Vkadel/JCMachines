@@ -156,7 +156,7 @@
 
         "name": "Main Gear 45ADHS",
 
-        "description": " This gear is attached to sectionA position 3 in your machine diagram, to be replaced every year",
+        "description": " This gear is attached to sectionA position 3 in your machine diagram",
 
         "Section": "SectionA",
 
@@ -170,7 +170,7 @@
 
         "name": "Gear Box 45854D",
 
-        "description": " This gearbox is attached to sectionA position 5 in your machine diagram, to be replaced every 3 years",
+        "description": " This gearbox is attached to sectionA position 5 in your machine diagram",
 
         "Section": "SectionA",
 
@@ -182,13 +182,13 @@
 
         "id": 2,
 
-        "name": "Oil filter 45AD897",
+        "name": "Line Adapter",
 
-        "description": " Oil filter, Section B of your machine diagram. To be replaced weekly",
+        "description": " This Line adapter acn be located in Section B of your machine diagram",
 
         "Section": "SectionB",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/oil_filter_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/line_adapter_45.jpg"
 
       },
 
@@ -196,13 +196,13 @@
 
         "id": 3,
 
-        "name": "Main lubricant Oil",
+        "name": "Front Pug Knife",
 
-        "description": " This is the lubricant placed in Section C. To be replaced by weekly",
+        "description": " This Pug Knife is placed in Section C",
 
         "Section": "SectionC",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/pnzl_oil_456.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/front_pug_knife_45.jpg"
 
       },
 
@@ -210,13 +210,13 @@
 
         "id": 4,
 
-        "name": "Spin Wheel 45ADHS",
+        "name": "Auger",
 
-        "description": " This spin wheel can be found in Section C of your machine diagram. To be replaced every 4 years",
+        "description": " This auger wheel can be found in Section C of your machine diagram.",
 
         "Section": "SectionC",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/spin_wheel_4587.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/auger_45ad.jpg"
 
       },
 
@@ -226,7 +226,7 @@
 
         "name": "Secondary Screw",
 
-        "description": " Secondary Screw section C of your machine diagram. To be replaced every 2 years",
+        "description": " Secondary Screw section C of your machine diagram.",
 
         "Section": "SectionC",
 
@@ -240,11 +240,11 @@
 
         "name": "Extrusion Die basic",
 
-        "description": " Basic head for section D of your machine Diagram. To be replaced every year",
+        "description": " Basic head for section D of your machine Diagram.",
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extru_die_45ad.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extrusion_die_45.jpg"
 
       }
 

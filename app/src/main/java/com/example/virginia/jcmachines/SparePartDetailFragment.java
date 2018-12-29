@@ -3,8 +3,7 @@ package com.example.virginia.jcmachines;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
-import com.example.virginia.jcmachines.dummy.DummyContent;
 
 import java.util.List;
 
@@ -35,10 +33,11 @@ public class SparePartDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_SPARE_ITEM_ID = "spare_item_id";
+    public static final String ARG_IS_TWO_PANE ="is_two_pane";
     List<machine> machineList;
     machine thisMachine;
     List<spareParts> sparePartsList;
-    spareParts thisSpareParts;
+    spareParts thisSparePart;
     machineViewModel machineViewModel;
     Activity activity;
     int thisMachineId;
@@ -46,12 +45,25 @@ public class SparePartDetailFragment extends Fragment {
     Boolean isTwopane;
     CollapsingToolbarLayout appBarLayout;
     View rootView;
+    TextView sparePartDescTV;
+    TextView SparePartSectionTV;
+    TextView SparePartNameTV;
+    ImageView SparePartIV;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public SparePartDetailFragment() {
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(SparePartDetailFragment.ARG_ITEM_ID, this.thisMachine.getId());
+        outState.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,getArguments().getString(SparePartDetailFragment.ARG_SPARE_ITEM_ID));
+        outState.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,isTwopane);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -75,12 +87,19 @@ public class SparePartDetailFragment extends Fragment {
                             machineList = machines;
                             thisMachine = machineList.get(thisMachineId);
                             sparePartsList=thisMachine.getSpareParts();
-                            thisSpareParts=sparePartsList.get(thisSparePartID);
+                            thisSparePart =sparePartsList.get(thisSparePartID);
                             updateUI(rootView);
                         }
                     });
                 }
-
+                else{
+                    machineList = this.machineViewModel.getMachines().getValue();
+                    thisMachineId =savedInstanceState.getInt(SparePartDetailFragment.ARG_ITEM_ID);
+                    thisMachine = machineList.get(thisMachineId);
+                    sparePartsList=thisMachine.getSpareParts();
+                    thisSparePart=sparePartsList.get(Integer.valueOf(savedInstanceState.getString(ARG_SPARE_ITEM_ID,"0")));
+                    isTwopane =savedInstanceState.getBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE);
+                }
                 activity = this.getActivity();
                 appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             }
@@ -88,25 +107,50 @@ public class SparePartDetailFragment extends Fragment {
     }
 
     public void updateUI(View rootView) {
-        if (!this.isTwopane) {
+
+        sparePartDescTV=rootView.findViewById(R.id.spare_part_description_tv);
+        SparePartSectionTV=rootView.findViewById(R.id.spare_part_section_tv);
+        SparePartNameTV=rootView.findViewById(R.id.spare_part_name_tv);
+        if (thisSparePart != null) {
+        //if We are looking at small screens. Show spare part info
+            if (!isTwopane) {
+                //this means we are in small devices
+                SparePartIV=appBarLayout.findViewById(R.id.spare_part_bar_iv);
             this.appBarLayout = this.activity.findViewById(R.id.toolbar_layout);
             this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(R.color.colorAccent));
-            this.appBarLayout.setTitle(thisSpareParts.getName());
-
+            this.appBarLayout.setTitle(thisSparePart.getName());
+            CheckifNaImage(SparePartIV,thisSparePart.getImageLink());
+        }else{
+                //if this is a LARGE screen place the name in the Textview inside the fragment
+            CheckifNaText(SparePartNameTV,thisSparePart.getName());
         }
-
+            //For all Add description and Section
+            CheckifNaText(sparePartDescTV,thisSparePart.getDescription());
+            CheckifNaText(SparePartSectionTV,thisSparePart.getSection());
+        }
     }
-
+    public void CheckifNaText(TextView view,String stringToCheck){
+        if(stringToCheck.equals("na")){
+            view.setVisibility(View.INVISIBLE);
+        }else{
+            view.setText(stringToCheck);
+        }
+    }
+    public void CheckifNaImage(ImageView view,String stringToCheck){
+        if(stringToCheck.equals("na")){
+            view.setVisibility(View.INVISIBLE);
+        }else{
+            Glide.with(this).load(stringToCheck).into(view);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sparepart_detail, container, false);
 
-        // Show spare part info
-        if (thisSpareParts != null) {
-            ((TextView) rootView.findViewById(R.id.sparepart_detail)).setText(thisSpareParts.getDescription());
-        }
-
         return rootView;
     }
+
+
+
 }

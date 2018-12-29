@@ -99,7 +99,6 @@ public class machineListActivity extends AppCompatActivity {
         else{
             mMachines = this.machineViewModel.getMachines().getValue();
             setupRecyclerViewWithMachines((RecyclerView) recyclerView);
-            ((RecyclerView) recyclerView).setLayoutManager(gridLayoutManager);
         }
 
     }
