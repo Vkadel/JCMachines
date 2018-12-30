@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -29,14 +29,13 @@
         <TextView
             android:id="@+id/machine_name"
             style="@style/DescriptionTextStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="@color/colorPrimaryDark"
             android:shadowColor="@color/colorAccent"
-            android:background="@drawable/gradient_two"
             android:elevation="6dp"
             android:text="@string/long_machine_name"
             android:textAppearance="?attr/textAppearanceListItem"
@@ -51,5 +50,5 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorPrimary" />
 </LinearLayout>
