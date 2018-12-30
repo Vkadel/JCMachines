@@ -196,20 +196,6 @@
 
         "id": 3,
 
-        "name": "Front Pug Knife",
-
-        "description": " This Pug Knife is placed in Section C",
-
-        "Section": "SectionC",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/front_pug_knife_45.jpg"
-
-      },
-
-      {
-
-        "id": 4,
-
         "name": "Auger",
 
         "description": " This auger wheel can be found in Section C of your machine diagram.",
@@ -222,21 +208,7 @@
 
       {
 
-        "id": 5,
-
-        "name": "Secondary Screw",
-
-        "description": " Secondary Screw section C of your machine diagram.",
-
-        "Section": "SectionC",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/screw_45ad.jpg"
-
-      },
-
-      {
-
-        "id": 6,
+        "id": 4,
 
         "name": "Extrusion Die basic",
 
@@ -402,17 +374,18 @@
 
     "SpareParts": [
 
+
       {
 
         "id": 0,
 
-        "name": "SparePart1",
+        "name": "Front Pug Knife",
 
-        "description": " SparePart1 description",
+        "description": " This Pug Knife is placed in Section C",
 
-        "Section": "SectionA",
+        "Section": "SectionC",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/front_pug_knife_45.jpg"
 
       },
 
