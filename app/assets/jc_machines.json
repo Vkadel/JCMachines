@@ -236,7 +236,7 @@
 
         "id": 6,
 
-        "name": "Simple Bearing 4587872",
+        "name": "Cylindrical  Bearing 4587872",
 
         "description": " Basic Bearing for section D of your machine Diagram.",
 
@@ -244,8 +244,20 @@
 
         "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/bearing_45_1.jpg"
 
-      }
+      },
+      {
 
+        "id": 7,
+
+        "name": "GearBox Shaft 554720",
+
+        "description": " Gearbox section D of your machine Diagram.",
+
+        "Section": "SectionD",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/shaft_45ad.jpg"
+
+      }
     ]
 
   },
