@@ -10,4 +10,10 @@
     <dimen name="dimensions_pic_height">300dp</dimen>
     <dimen name="text_size_detail_links">24sp</dimen>
     <dimen name="text_size_description_detail">32sp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

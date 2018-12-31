@@ -29,4 +29,9 @@
     <string name="spare_part_name">Spare Part Name</string>
     <string name="spare_part_description">Spare Part Description</string>
     <string name="spare_part_section">Spare Part Section</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="add_this_as_widget">Add this machine as your widget</string>
+    <string name="loaded_once_preference_key" translatable="false">loaded_once</string>
+    <string name="loaded_once_preference_value" translatable="true">false</string>
 </resources>

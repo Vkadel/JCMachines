@@ -1,52 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/machine_detail"
     style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:textIsSelectable="true"
-    tools:context=".machineDetailFragment" >
+    tools:context=".machineDetailFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="15dp">
 
-        <TextView
-            style="@style/DescriptionTextStyle"
-            android:id="@+id/description_TV"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/description" />
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/linear_layout_for_widget_text">
 
-        <ImageView
-            android:id="@+id/inline_dimensions_image"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimensions_pic_height"
-            android:scaleType="fitCenter"
-            android:src="@drawable/place_holder_image" />
+            <TextView
+                android:id="@+id/description_TV"
+                style="@style/DescriptionTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
 
-        <TextView
-            style="@style/LinkeTextInDetailStyle"
-            android:id="@+id/data_sheet_tv"
+
+            <ImageView
+                android:id="@+id/inline_dimensions_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimensions_pic_height"
+                android:scaleType="fitCenter"
+                android:src="@drawable/place_holder_image" />
+
+            <TextView
+                android:id="@+id/data_sheet_tv"
+                style="@style/LinkeTextInDetailStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/data" />
+
+            <TextView
+                android:id="@+id/lubrication_chart_tv"
+                style="@style/LinkeTextInDetailStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lubrication_chart" />
+
+            <TextView
+                android:id="@+id/spare_parts_tv"
+                style="@style/LinkeTextInDetailStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/spare_parts" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_for_widget_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/data" />
+            android:orientation="horizontal">
 
-        <TextView
-            style="@style/LinkeTextInDetailStyle"
-            android:id="@+id/lubrication_chart_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lubrication_chart" />
+            <TextView
+                android:id="@+id/add_this_as_widget_tv"
+                style="@style/DescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_weight="1"
+                android:text="@string/add_this_as_widget" />
 
-        <TextView
-            style="@style/LinkeTextInDetailStyle"
-            android:id="@+id/spare_parts_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/spare_parts" />
+            <RadioButton
+                android:id="@+id/make_widget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

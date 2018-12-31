@@ -5,7 +5,11 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +57,7 @@ public class machineListActivity extends AppCompatActivity {
     private List<machine> mMachines;
     private StaggeredGridLayoutManager gridLayoutManager;
     private Boolean updatedOnce=false;
+    private int thisItemID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,17 @@ public class machineListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             this.mTwoPane = true;
         }
+
+        //Checked if application loaded data at least once before. This
+        //will be used to prevent the blips when data loads more than once in
+        //the recycler. Otherwise when preventing the blip the application
+        //will not load data upon install unless is restarted
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        String  defaultValue = getResources().getString(R.string.loaded_once_preference_value);
+        final String pref = sharedPref.getString(getString(R.string.loaded_once_preference_key), defaultValue);
+
         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){
@@ -89,9 +105,12 @@ public class machineListActivity extends AppCompatActivity {
                     if(machines!=null){
                         mMachines =machines;
                         //Ensure the Recycler only updates once per load when the model sends an update
-                        if (!updatedOnce){
-                        setupRecyclerViewWithMachines((RecyclerView) recyclerView);}
+                        if ((pref.equals("false")||mMachines.size()==0)||!updatedOnce){
+                        setupRecyclerViewWithMachines((RecyclerView) recyclerView);
                         updatedOnce=true;
+                        editor.putString(getString(R.string.loaded_once_preference_key), "true");
+                        editor.commit();
+                        }
                     }
                 }
             });
@@ -103,6 +122,12 @@ public class machineListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(machineDetailFragment.ARG_ITEM_ID,thisItemID);
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
     }
@@ -110,8 +135,8 @@ public class machineListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends Adapter<com.example.virginia.jcmachines.machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public class SimpleItemRecyclerViewAdapter
+            extends Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final machineListActivity mParentActivity;
         private final List<machine> mValues;
@@ -122,7 +147,8 @@ public class machineListActivity extends AppCompatActivity {
                 machine item = (machine) view.getTag();
                 if (machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                    thisItemID=item.getId();
+                    arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
                     arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane);
                     machineDetailFragment fragment = new machineDetailFragment();
                     fragment.setArguments(arguments);
@@ -144,6 +170,14 @@ public class machineListActivity extends AppCompatActivity {
             this.mValues = items;
             this.mParentActivity = parent;
             this.mTwoPane = twoPane;
+        }
+
+        //Check for Internet Connection
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
 
         @Override
