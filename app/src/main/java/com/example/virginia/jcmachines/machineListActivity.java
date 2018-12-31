@@ -52,12 +52,15 @@ public class machineListActivity extends AppCompatActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
+
     private boolean mTwoPane;
     private machineViewModel machineViewModel;
     private List<machine> mMachines;
     private StaggeredGridLayoutManager gridLayoutManager;
     private Boolean updatedOnce=false;
     private int thisItemID;
+    private Boolean cameFromWidget=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,11 @@ public class machineListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null){
+            cameFromWidget=true;
+            thisItemID=Integer.parseInt(getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
+        }
 
         final View recyclerView = this.findViewById(id.machine_list);
         assert recyclerView != null;
@@ -110,7 +118,27 @@ public class machineListActivity extends AppCompatActivity {
                         updatedOnce=true;
                         editor.putString(getString(R.string.loaded_once_preference_key), "true");
                         editor.commit();
+                        //Check if the item Came from the widget.
+                            if (cameFromWidget) {
+                                if (mTwoPane) {
+                                    Bundle arguments = new Bundle();
+                                    arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
+                                    arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, mTwoPane);
+                                    machineDetailFragment fragment = new machineDetailFragment();
+                                    fragment.setArguments(arguments);
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(id.machine_detail_container, fragment)
+                                            .commit();
+                                    cameFromWidget=false;
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), machineDetailActivity.class);
+                                    intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
+                                    startActivity(intent);
+                                    cameFromWidget=false;
+                                }
+                            }
                         }
+
                     }
                 }
             });
@@ -161,7 +189,9 @@ public class machineListActivity extends AppCompatActivity {
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
                     context.startActivity(intent);
                 }
+
             }
+
         };
 
         SimpleItemRecyclerViewAdapter(machineListActivity parent,
@@ -181,10 +211,10 @@ public class machineListActivity extends AppCompatActivity {
         }
 
         @Override
-        public machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(layout.machine_list_item, parent, false);
-            return new machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
 
         @Override
@@ -198,6 +228,10 @@ public class machineListActivity extends AppCompatActivity {
             holder.mContentView.setText(this.mValues.get(position).getMachineFullName());
             holder.itemView.setTag(this.mValues.get(position));
             holder.itemView.setOnClickListener(this.mOnClickListener);
+            //check if the widget triggered the intent
+            if(cameFromWidget&&thisItemID==position){
+                mOnClickListener.onClick(holder.itemView);
+            }
         }
 
         @Override

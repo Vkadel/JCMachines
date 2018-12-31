@@ -22,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
@@ -44,6 +45,7 @@ public class machineDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
+    public static final String ARG_CAME_FROM_WIDGET="came_from_widget";
     public static final String ARG_ITEM_ID = "item_id";
     private static final String ARG_ITEM_ROOT_VIEW ="root_view";
     public static final String ARG_IS_TWO_PANE ="is_two_pane";
@@ -56,6 +58,7 @@ public class machineDetailFragment extends Fragment {
     int thisMachineId;
     Activity activity;
     Boolean isTwopane;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -99,7 +102,7 @@ public class machineDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.rootView = inflater.inflate(layout.machine_detail,container, false);
-
+        context=getContext();
         // Show the selected machine content as text in a TextView.
         if (this.thisMachine !=null) {
             this.updateUI(this.rootView);
@@ -116,7 +119,7 @@ public class machineDetailFragment extends Fragment {
             Glide.with(this).load(this.thisMachine.getLargeImageOne()).into(this.machineDetailAppBarBackgroundIV);
         }
 
-        TextView description_tv=rootView.findViewById(id.description_TV);
+        TextView description_tv=rootView.findViewById(R.id.description_TV);
         TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
         TextView lubrication_chart_tv=rootView.findViewById(id.lubrication_chart_tv);
         TextView spare_parts_list_tv=rootView.findViewById(id.spare_parts_tv);
@@ -131,12 +134,14 @@ public class machineDetailFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.my_machine_to_widget_key),String.valueOf(thisMachine.getId()));
                 editor.putString(getString(R.string.my_machine_name_for_widget_key),thisMachine.getMachineFullName());
+                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key),thisMachine.getThumbnailImage());
                 editor.commit();
-
+                Toast.makeText(context,getActivity().getResources().getString(R.string.updating_your_widget_with)
+                        +thisMachine.getMachineFullName(),Toast.LENGTH_SHORT).show();
                 //Calling a widget Update manually
-                int[] ids = AppWidgetManager.getInstance(getContext()).getAppWidgetIds(new ComponentName(getContext(), jcSteeleMachineWidget.class));
+                int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
                 jcSteeleMachineWidget myWidget = new jcSteeleMachineWidget();
-                myWidget.onUpdate(getContext(), AppWidgetManager.getInstance(getContext()),ids);
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
             }
         });
 

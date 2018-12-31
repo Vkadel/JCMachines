@@ -773,9 +773,9 @@
 
     "series": "90",
 
-    "machineFullName": "90AD Extruder",
+    "machineFullName": "90AD PugSealer",
 
-    "Description": "Large stiff extruder",
+    "Description": "Large Pug Sealer",
 
     "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_pug_sealer_steele.jpg",
 
