@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
+import com.example.virginia.jcmachines.Data.machineRepository;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
 

@@ -65,7 +65,8 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/jc_steele_machine_widget_info" />
+                android:resource="@xml/jc_steele_machine_widget_info"
+                />
         </receiver>
     </application>
 

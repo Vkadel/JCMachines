@@ -88,6 +88,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+            views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
 
             views.setTextViewText(R.id.appwidget_text, thisMachineName);
             //only Update picture if Link is different than NA
