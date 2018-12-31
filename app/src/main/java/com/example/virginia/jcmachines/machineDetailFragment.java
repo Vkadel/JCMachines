@@ -1,10 +1,13 @@
 package com.example.virginia.jcmachines;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +30,8 @@ import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * A fragment representing a single machine detail screen.
@@ -59,6 +67,7 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.plant(new Timber.DebugTree());
         if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             //Subscribe to the activity model
             this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
@@ -111,6 +120,25 @@ public class machineDetailFragment extends Fragment {
         TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
         TextView lubrication_chart_tv=rootView.findViewById(id.lubrication_chart_tv);
         TextView spare_parts_list_tv=rootView.findViewById(id.spare_parts_tv);
+        final Button isThisAWidget=rootView.findViewById(id.make_widget);
+
+        isThisAWidget.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.d("checked the box");
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getResources().
+                        getString(R.string.my_machine_to_widget_key),Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.my_machine_to_widget_key),String.valueOf(thisMachine.getId()));
+                editor.putString(getString(R.string.my_machine_name_for_widget_key),thisMachine.getMachineFullName());
+                editor.commit();
+
+                //Calling a widget Update manually
+                int[] ids = AppWidgetManager.getInstance(getContext()).getAppWidgetIds(new ComponentName(getContext(), jcSteeleMachineWidget.class));
+                jcSteeleMachineWidget myWidget = new jcSteeleMachineWidget();
+                myWidget.onUpdate(getContext(), AppWidgetManager.getInstance(getContext()),ids);
+            }
+        });
 
         description_tv.setText(this.thisMachine.getDescription());
         ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);

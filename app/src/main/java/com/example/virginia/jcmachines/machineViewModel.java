@@ -17,14 +17,14 @@ public class machineViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        this.mRepository = null;
-        this.machines = null;
+       mRepository = null;
+        machines = null;
     }
 
     public machineViewModel(@NonNull Application application) {
         super(application);
-        this.mRepository = new machineRepository(application);
-        this.machines = this.mRepository.getallArticles();
+        mRepository = new machineRepository(application);
+        machines = this.mRepository.getallArticles();
     }
 
 

@@ -34,4 +34,9 @@
     <string name="add_this_as_widget">Add this machine as your widget</string>
     <string name="loaded_once_preference_key" translatable="false">loaded_once</string>
     <string name="loaded_once_preference_value" translatable="true">false</string>
+    <string name="select_for_widget">Select this Machine for a Widget</string>
+    <string name="my_machine_to_widget_key" translatable="false">machine_id</string>
+    <string name="my_machine_name_for_widget_key" translatable="false">machine_name</string>
+    <string name="my_machine_to_widget_default" translatable="false">id</string>
+    <string name="my_machine_name_for_widget_default" translatable="false">name</string>
 </resources>

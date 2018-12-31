@@ -44,6 +44,8 @@ public class machine {
     List<technicalBulletins> TechnicalBulletins;
     @ColumnInfo(name = "SpareParts")
     List<spareParts> SpareParts;
+    @ColumnInfo(name = "isWidget")
+    Boolean isWidget;
 
     public machine(int mid,String mseries,String mmachineFullName,String mThumbnailImage,
                    String mLargeImageOne,String mLargeImageTwo,String mInlIneInstallImage,String mDescription,
@@ -202,6 +204,14 @@ public class machine {
 
     public void setDescription(String description) {
         this.Description = description;
+    }
+
+    public Boolean getWidget() {
+        return isWidget;
+    }
+
+    public void setWidget(Boolean widget) {
+        isWidget = widget;
     }
 }
 
