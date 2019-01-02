@@ -184,8 +184,8 @@ public class machineListActivity extends AppCompatActivity {
         int orgHeight = imageView.getHeight();
 
 
-        imageView.getLayoutParams().height=width-200;
-        imageView.getLayoutParams().width=width-200;
+        imageView.getLayoutParams().height=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
+        imageView.getLayoutParams().width=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
         return imageView;
     }
     //Check for Internet Connection
