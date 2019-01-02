@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="@dimen/item_width"
+            android:layout_width="@dimen/machine_item_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingTop="16dp"

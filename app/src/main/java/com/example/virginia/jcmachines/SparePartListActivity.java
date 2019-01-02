@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,15 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
 
 import java.util.List;
 
 import timber.log.Timber;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
  * An activity representing a list of SpareParts. This activity
@@ -130,7 +134,7 @@ public class SparePartListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, sparePartsList, mTwoPane,thisMachineId));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
+    public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final SparePartListActivity mParentActivity;
@@ -182,10 +186,18 @@ public class SparePartListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).getName());
             holder.mContentView.setText(mValues.get(position).getDescription());
+            if(!mTwoPane){
+             resizeImage(holder.SparePartImage);
+            }
             Timber.d("adding: "+mValues.get(position).getName());
             if(!mValues.get(position).getImageLink().equals("na")){
+                holder.SparePartImage.setVisibility(View.VISIBLE);
                 Glide.with(mParentActivity).load(mValues.get(position)
-                        .getImageLink()).into(holder.SparePartImage);
+                        .getImageLink()).transition(withCrossFade())
+                        .apply(new RequestOptions().override(holder.SparePartImage.getLayoutParams().width,holder.SparePartImage.getLayoutParams().height))
+                        .into(holder.SparePartImage);
+            }else{
+                holder.SparePartImage.setVisibility(View.GONE);
             }
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -211,5 +223,19 @@ public class SparePartListActivity extends AppCompatActivity {
                 SparePartImage=(ImageView)view.findViewById(R.id.spare_part_item_iv);
             }
         }
+    }
+    public ImageView resizeImage(ImageView imageView){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        int orgWidth = imageView.getWidth();
+        int orgHeight = imageView.getHeight();
+
+
+        imageView.getLayoutParams().height=width-200;
+        imageView.getLayoutParams().width=width-200;
+        return imageView;
     }
 }

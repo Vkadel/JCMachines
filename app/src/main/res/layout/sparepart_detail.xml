@@ -12,34 +12,36 @@
 
     <TextView
         android:id="@+id/spare_part_name_tv"
+        style="@style/DescriptionTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/spare_part_description_margin"
+        android:layout_marginEnd="@dimen/spare_part_description_margin"
         android:text="@string/spare_part_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/spare_part_section_tv"
+        style="@style/DescriptionTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/spare_part_description_margin"
+        android:layout_marginTop="@dimen/spare_part_description_margin"
         android:text="@string/spare_part_section"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/spare_part_name_tv" />
 
     <TextView
         android:id="@+id/spare_part_description_tv"
+        style="@style/DescriptionTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/spare_part_description_margin"
+        android:layout_marginTop="@dimen/spare_part_description_margin"
         android:text="@string/spare_part_description"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spare_part_section_tv" />
 

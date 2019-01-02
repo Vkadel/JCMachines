@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,18 +23,29 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.machineRepository;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
+import com.google.common.math.IntMath;
+import com.google.common.math.LongMath;
 
 import java.util.List;
 
@@ -61,6 +74,7 @@ public class machineListActivity extends AppCompatActivity {
     private Boolean updatedOnce=false;
     private int thisItemID;
     private Boolean cameFromWidget=false;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +82,7 @@ public class machineListActivity extends AppCompatActivity {
         this.setContentView(layout.activity_machine_list);
         this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
         Timber.plant(new DebugTree());
+        activity=this;
         Toolbar toolbar = this.findViewById(id.toolbar);
         this.setSupportActionBar(toolbar);
         toolbar.setTitle(this.getTitle());
@@ -79,7 +94,10 @@ public class machineListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
+        //Check if the machine list is zero
+        if(isNetworkAvailable()){
+            Toast.makeText(activity,getResources().getString(R.string.noNetwork),Toast.LENGTH_LONG).show();
+        }
         if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
             cameFromWidget=true;
             thisItemID=Integer.parseInt(getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
@@ -115,6 +133,10 @@ public class machineListActivity extends AppCompatActivity {
                         mMachines =machines;
                         //Ensure the Recycler only updates once per load when the model sends an update
                         if ((pref.equals("false")||mMachines.size()==0)||!updatedOnce){
+                            //Check if the machine list is zero
+                            if(machines.size()==0){
+                                Toast.makeText(activity,getResources().getString(R.string.list_is_zero),Toast.LENGTH_LONG).show();
+                            }
                         setupRecyclerViewWithMachines((RecyclerView) recyclerView);
                         updatedOnce=true;
                         editor.putString(getString(R.string.loaded_once_preference_key), "true");
@@ -151,6 +173,28 @@ public class machineListActivity extends AppCompatActivity {
 
     }
 
+    //Change size of ImageViews Based on Screen size
+    public ImageView resizeImage(ImageView imageView){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        int orgWidth = imageView.getWidth();
+        int orgHeight = imageView.getHeight();
+
+
+        imageView.getLayoutParams().height=width-200;
+        imageView.getLayoutParams().width=width-200;
+        return imageView;
+    }
+    //Check for Internet Connection
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(machineDetailFragment.ARG_ITEM_ID,thisItemID);
@@ -203,14 +247,6 @@ public class machineListActivity extends AppCompatActivity {
             this.mTwoPane = twoPane;
         }
 
-        //Check for Internet Connection
-        private boolean isNetworkAvailable() {
-            ConnectivityManager connectivityManager
-                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        }
-
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
@@ -220,9 +256,12 @@ public class machineListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+            if(!mTwoPane){
+            resizeImage(holder.imageView);}
             if (this.mValues.get(position).getThumbnailImage()!="na"&& this.mValues.get(position).getThumbnailImage()!=null){
                 Glide.with(this.mParentActivity)
                         .load(this.mValues.get(position).getThumbnailImage())
+                        .transition(withCrossFade()).apply(new RequestOptions().override(holder.imageView.getWidth(),holder.imageView.getHeight()))
                         .into(holder.imageView);
             }
 

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.R.drawable;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        //TODO:hide the sign-in button, launch your main activity.
         if (account==null){
             this.userEmail.setText("Please login");
             this.userPic.setImageResource(drawable.place_holder_image);}
@@ -88,11 +88,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             Timber.d(id+"photo");
             if (PhotoURL!=null){
                 String convertURI=PhotoURL.toString();
-                GlideApp.with(this).load(PhotoURL.toString()).into(this.userPic);
+                GlideApp.with(this).load(PhotoURL.toString())
+                        .apply(RequestOptions.centerInsideTransform())
+                        .into(this.userPic);
             }
         }
        if(account!=null){
-            //TODO: pass user thumbnail URI to intent
+
         Intent intent = new Intent(this, machineListActivity.class);
            this.startActivity(intent);}
     }

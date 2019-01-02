@@ -22,7 +22,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/machine_list"
         android:name="com.example.virginia.jcmachines.machineListFragment"
-        android:layout_width="@dimen/item_width"
+        android:layout_width="@dimen/machine_item_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
