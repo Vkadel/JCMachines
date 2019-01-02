@@ -431,13 +431,13 @@
 
         "id": 1,
 
-        "name": "SparePart2",
+        "name": "Main Gear 45ADHS",
 
-        "description": " SparePart2 description",
+        "description": " This gear is attached to sectionA position 3 in your machine diagram",
 
         "Section": "SectionA",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
 
       },
 
@@ -445,13 +445,13 @@
 
         "id": 2,
 
-        "name": "SparePart3",
+        "name": "Gear Box 45854D",
 
-        "description": " SparePart3 description",
+        "description": " This gearbox is attached to sectionA position 5 in your machine diagram",
 
-        "Section": "SectionB",
+        "Section": "SectionA",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
 
       },
 
@@ -459,27 +459,13 @@
 
         "id": 3,
 
-        "name": "SparePart4",
+        "name": "Line Adapter",
 
-        "description": " SparePart4 description",
+        "description": " This Line adapter acn be located in Section B of your machine diagram",
 
-        "Section": "SectionC",
+        "Section": "SectionB",
 
-        "ImageLink":"na"
-
-      },
-
-      {
-
-        "id": 4,
-
-        "name": "SparePart5",
-
-        "description": " SparePart5 description",
-
-        "Section": "SectionC",
-
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/line_adapter_45.jpg"
 
       },
 
@@ -487,27 +473,39 @@
 
         "id": 5,
 
-        "name": "SparePart6",
+        "name": "Roller Bearing 45AS458",
 
-        "description": " SparePart6 description",
+        "description": " Basic Roller Bearing for section D of your machine Diagram.",
 
-        "Section": "SectionC",
+        "Section": "SectionD",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/roller_bearing_45.jpg"
 
       },
-
       {
 
         "id": 6,
 
-        "name": "SparePart7",
+        "name": "Cylindrical  Bearing 4587872",
 
-        "description": " SparePart7 description",
+        "description": " Basic Bearing for section D of your machine Diagram.",
 
         "Section": "SectionD",
 
-        "ImageLink":"na"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/bearing_45_1.jpg"
+
+      },
+      {
+
+        "id": 7,
+
+        "name": "GearBox Shaft 554720",
+
+        "description": " Gearbox section D of your machine Diagram.",
+
+        "Section": "SectionD",
+
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/shaft_45ad.jpg"
 
       }
 
