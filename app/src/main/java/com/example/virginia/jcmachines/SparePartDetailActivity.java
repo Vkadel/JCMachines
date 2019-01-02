@@ -18,6 +18,8 @@ import android.view.MenuItem;
  */
 public class SparePartDetailActivity extends AppCompatActivity {
     private boolean mTwoPane;
+    String mySparepartID;
+    String myMachineID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +54,11 @@ public class SparePartDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            String mySparepartID=getIntent().getStringExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID);
-            int myMachineID=getIntent().getIntExtra(SparePartDetailFragment.ARG_ITEM_ID,0);
+            mySparepartID=getIntent().getStringExtra(SparePartDetailFragment.ARG_SPARE_ITEM_ID);
+            myMachineID=getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);
             mTwoPane=getIntent().getBooleanExtra(SparePartDetailFragment.ARG_IS_TWO_PANE,false);
-            arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,myMachineID);
+            Bundle arguments = new Bundle();
+            arguments.putString(SparePartDetailFragment.ARG_ITEM_ID,myMachineID);
             arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,mySparepartID);
             arguments.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
             SparePartDetailFragment fragment = new SparePartDetailFragment();
@@ -64,6 +66,10 @@ public class SparePartDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sparepart_detail_container, fragment)
                     .commit();
+        }else{
+            mySparepartID=savedInstanceState.getString(SparePartDetailFragment.ARG_SPARE_ITEM_ID);
+            myMachineID=savedInstanceState.getString(SparePartDetailFragment.ARG_ITEM_ID);
+            mTwoPane=savedInstanceState.getBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,false);
         }
     }
 
@@ -77,9 +83,17 @@ public class SparePartDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, SparePartListActivity.class));
+            navigateUpTo(new Intent(this, SparePartListActivity.class).putExtra(SparePartDetailFragment.ARG_ITEM_ID,myMachineID));
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SparePartDetailFragment.ARG_ITEM_ID,myMachineID);
+        outState.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,mySparepartID);
+        outState.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
+        super.onSaveInstanceState(outState);
     }
 }

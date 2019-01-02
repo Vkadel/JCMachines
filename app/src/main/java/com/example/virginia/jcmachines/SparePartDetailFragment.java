@@ -40,7 +40,7 @@ public class SparePartDetailFragment extends Fragment {
     spareParts thisSparePart;
     machineViewModel machineViewModel;
     Activity activity;
-    int thisMachineId;
+    String thisMachineId;
     int thisSparePartID;
     Boolean isTwopane;
     CollapsingToolbarLayout appBarLayout;
@@ -60,7 +60,7 @@ public class SparePartDetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(SparePartDetailFragment.ARG_ITEM_ID, this.thisMachine.getId());
+        outState.putString(SparePartDetailFragment.ARG_ITEM_ID, thisMachineId);
         outState.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID,getArguments().getString(SparePartDetailFragment.ARG_SPARE_ITEM_ID));
         outState.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,isTwopane);
         super.onSaveInstanceState(outState);
@@ -69,40 +69,40 @@ public class SparePartDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-
-            if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
-                //Subscribe to the activity model
-                this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
+        if (getArguments().containsKey(ARG_ITEM_ID)||getArguments().containsKey(ARG_SPARE_ITEM_ID)) {
+            //Subscribe to the activity model
+            this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
+                //Get the variables to identify the Machine and the part
+                thisMachineId = this.getArguments().getString(SparePartDetailFragment.ARG_ITEM_ID);
+                thisSparePartID=Integer.valueOf(this.getArguments().getString(ARG_SPARE_ITEM_ID));
+                isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                 //Check if this is the first the fragment was created
                 if (savedInstanceState == null) {
-                    thisMachineId = this.getArguments().getInt(ARG_ITEM_ID);
-                    thisSparePartID=Integer.valueOf(this.getArguments().getString(ARG_SPARE_ITEM_ID));
-                    isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                     //observe the model
                     this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                         @Override
                         public void onChanged(@Nullable List<machine> machines) {
                             machineList = machines;
-                            thisMachine = machineList.get(thisMachineId);
-                            sparePartsList=thisMachine.getSpareParts();
+                            sparePartsList=machines.get(Integer.valueOf(thisMachineId)).getSpareParts();
                             thisSparePart =sparePartsList.get(thisSparePartID);
-                            updateUI(rootView);
+                            if (rootView!=null){
+                            updateUI(rootView);}
                         }
                     });
                 }
                 else{
+                    if (savedInstanceState.containsKey(SparePartDetailFragment.ARG_ITEM_ID)){
                     machineList = this.machineViewModel.getMachines().getValue();
-                    thisMachineId =savedInstanceState.getInt(SparePartDetailFragment.ARG_ITEM_ID);
-                    thisMachine = machineList.get(thisMachineId);
+                    thisMachineId =savedInstanceState.getString(SparePartDetailFragment.ARG_ITEM_ID);
+                    thisMachine = machineList.get(Integer.valueOf(thisMachineId));
                     sparePartsList=thisMachine.getSpareParts();
                     thisSparePart=sparePartsList.get(Integer.valueOf(savedInstanceState.getString(ARG_SPARE_ITEM_ID,"0")));
                     isTwopane =savedInstanceState.getBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE);
                 }
+                }
                 activity = this.getActivity();
-                appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            }
+
+
         }
     }
 
@@ -114,12 +114,14 @@ public class SparePartDetailFragment extends Fragment {
         if (thisSparePart != null) {
         //if We are looking at small screens. Show spare part info
             if (!isTwopane) {
-                //this means we are in small devices
+            appBarLayout = this.activity.findViewById(R.id.toolbar_layout);
+            appBarLayout.setExpandedTitleColor(this.getResources().getColor(R.color.colorAccent,null));
+            appBarLayout.setTitle(thisSparePart.getName());
                 SparePartIV=appBarLayout.findViewById(R.id.spare_part_bar_iv);
-            this.appBarLayout = this.activity.findViewById(R.id.toolbar_layout);
-            this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(R.color.colorAccent));
-            this.appBarLayout.setTitle(thisSparePart.getName());
             CheckifNaImage(SparePartIV,thisSparePart.getImageLink());
+                //if this is a SMALL screen hide name, because it's shown on bar
+                SparePartNameTV.setVisibility(View.GONE);
+
         }else{
                 //if this is a LARGE screen place the name in the Textview inside the fragment
             CheckifNaText(SparePartNameTV,thisSparePart.getName());
@@ -129,7 +131,9 @@ public class SparePartDetailFragment extends Fragment {
             CheckifNaText(SparePartSectionTV,thisSparePart.getSection());
         }
     }
-    public void CheckifNaText(TextView view,String stringToCheck){
+
+    //Helper Methods
+    public void CheckifNaText(TextView view, String stringToCheck){
         if(stringToCheck.equals("na")){
             view.setVisibility(View.INVISIBLE);
         }else{
@@ -147,10 +151,11 @@ public class SparePartDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sparepart_detail, container, false);
-
+        if (thisSparePart !=null) {
+            this.updateUI(this.rootView);
+        }
         return rootView;
     }
-
 
 
 }

@@ -55,7 +55,7 @@ public class machineDetailFragment extends Fragment {
     View rootView;
     CollapsingToolbarLayout appBarLayout;
     ImageView machineDetailAppBarBackgroundIV;
-    int thisMachineId;
+    String thisMachineId;
     Activity activity;
     Boolean isTwopane;
     private Context context;
@@ -76,22 +76,22 @@ public class machineDetailFragment extends Fragment {
             this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
             //Check if this is the first the fragment was created
             if (savedInstanceState==null){
-                this.thisMachineId = Integer.valueOf(this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID));
+                this.thisMachineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
                 this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
-            //observe the model
+                //observe the model
                 this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
                     machineList =machines;
-                    thisMachine = machineList.get(thisMachineId);
+                    thisMachine = machineList.get(Integer.valueOf(thisMachineId));
                     updateUI(rootView);
                 }
             });}
             //get the existing Model and get all machines
             else{
                 this.machineList = this.machineViewModel.getMachines().getValue();
-                this.thisMachineId =savedInstanceState.getInt(machineDetailFragment.ARG_ITEM_ID);
-                this.thisMachine = this.machineList.get(this.thisMachineId);
+                this.thisMachineId =savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
+                this.thisMachine = this.machineList.get(Integer.valueOf(thisMachineId));
                 this.isTwopane =savedInstanceState.getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
             }
             this.activity = getActivity();

@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,60 +50,60 @@ public class SparePartListActivity extends AppCompatActivity {
     private List<spareParts> sparePartsList;
     private machine mMachine;
     private spareParts spareParts;
-    private int thisMachineId;
+    private String thisMachineId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sparepart_list);
-        this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-        Timber.plant(new Timber.DebugTree());
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        if (findViewById(R.id.sparepart_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
-
-        final View recyclerView = findViewById(R.id.sparepart_list);
-        assert recyclerView != null;
-        if(savedInstanceState==null){
-            thisMachineId = getIntent().getIntExtra(ARG_ITEM_ID,0);
-            //this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
-            machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_sparepart_list);
+            this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(getTitle());
+            Timber.plant(new Timber.DebugTree());
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onChanged(@Nullable List<machine> machines) {
-                    if(machines!=null){
-                        mMachines =machines;
-                        sparePartsList=mMachines.get(thisMachineId).getSpareParts();
-                        setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
-                    }
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             });
-        }
-        else{
-            mMachines = machineViewModel.getMachines().getValue();
-            sparePartsList=mMachines.get(thisMachineId).getSpareParts();
-            setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
-        }
+            // Show the Up button in the action bar.
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+
+            if (findViewById(R.id.sparepart_detail_container) != null) {
+                // The detail container view will be present only in the
+                // large-screen layouts (res/values-w900dp).
+                // If this view is present, then the
+                // activity should be in two-pane mode.
+                mTwoPane = true;
+            }
+            thisMachineId=getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);
+            final View recyclerView = findViewById(R.id.sparepart_list);
+            assert recyclerView != null;
+            if(savedInstanceState==null){
+                thisMachineId = getIntent().getStringExtra(ARG_ITEM_ID);
+                //this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
+                machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                    @Override
+                    public void onChanged(@Nullable List<machine> machines) {
+                        if(machines!=null){
+                            mMachines =machines;
+                            sparePartsList=mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();
+                            setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
+                        }
+                    }
+                });
+            }
+            else{
+                mMachines = machineViewModel.getMachines().getValue();
+                sparePartsList=mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();
+                setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
+            }
     }
 
     @Override
@@ -137,14 +136,14 @@ public class SparePartListActivity extends AppCompatActivity {
         private final SparePartListActivity mParentActivity;
         private final List<spareParts> mValues;
         private final boolean mTwoPane;
-        private final int mMachineID;
+        private final String mMachineID;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spareParts item = (spareParts) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putInt(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
+                    arguments.putString(SparePartDetailFragment.ARG_ITEM_ID,mMachineID);
                     arguments.putString(SparePartDetailFragment.ARG_SPARE_ITEM_ID, String.valueOf(item.getId()));
                     arguments.putBoolean(SparePartDetailFragment.ARG_IS_TWO_PANE,mTwoPane);
                     SparePartDetailFragment fragment = new SparePartDetailFragment();
@@ -165,7 +164,7 @@ public class SparePartListActivity extends AppCompatActivity {
 
         SimpleItemRecyclerViewAdapter(SparePartListActivity parent,
                                       List<spareParts> items,
-                                      boolean twoPane, int thisMachineId) {
+                                      boolean twoPane, String thisMachineId) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
