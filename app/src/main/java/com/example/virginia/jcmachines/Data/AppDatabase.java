@@ -20,19 +20,12 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (AppDatabase.INSTANCE == null) {
                     AppDatabase.INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "machine_database").addMigrations(MIGRATION_1_2)
+                            AppDatabase.class, "machine_database")
                             .build();
                 }
             }
         }
         return AppDatabase.INSTANCE;
     }
-    //adding Migration for add an additional field
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE machine_table "
-                    + " ADD COLUMN isWidget INTEGER");
-        }
-    };
+
 }

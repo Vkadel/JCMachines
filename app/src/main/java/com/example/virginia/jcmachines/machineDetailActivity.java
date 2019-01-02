@@ -29,13 +29,15 @@ import timber.log.Timber;
  */
 public class machineDetailActivity extends AppCompatActivity {
 String thisItemID;
+private boolean mTwoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.plant(new Timber.DebugTree());
         this.setContentView(layout.activity_machine_detail);
         Toolbar toolbar = this.findViewById(R.id.detail_toolbar);
         this.setSupportActionBar(toolbar);
-        Timber.plant(new Timber.DebugTree());
         FloatingActionButton fab = this.findViewById(R.id.fab);
         fab.setOnClickListener(new OnClickListener() {
             @Override
@@ -56,7 +58,7 @@ String thisItemID;
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            //this.mTwoPane = true;
+            mTwoPane = true;
             Timber.d("Going TwoPane");
         }
 
@@ -80,10 +82,10 @@ String thisItemID;
             this.getSupportFragmentManager().beginTransaction()
                     .add(R.id.machine_detail_container, fragment)
                     .commit();
+        }else{
+            thisItemID=savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
         }
-        else{
 
-        }
     }
 
     @Override
@@ -100,6 +102,7 @@ String thisItemID;
             this.navigateUpTo(new Intent(this, machineListActivity.class));
 
             Intent intent = new Intent(this, machineListActivity.class);
+            intent.putExtra(machineDetailFragment.ARG_ITEM_ID,thisItemID);
             startActivity(intent);
             return true;
         }

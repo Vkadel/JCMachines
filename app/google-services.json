@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "658701728613",
+    "firebase_url": "https://jcmachines-1542559889392.firebaseio.com",
+    "project_id": "jcmachines-1542559889392",
+    "storage_bucket": "jcmachines-1542559889392.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658701728613:android:83a2c8759406afc9",
+        "android_client_info": {
+          "package_name": "com.example.virginia.jcmachines"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658701728613-g53n3f1a2gclmv4f9j70qva8oocgtfpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOH9iG9YVjOd58dr2nyxk2Mk4e1FGmJJs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

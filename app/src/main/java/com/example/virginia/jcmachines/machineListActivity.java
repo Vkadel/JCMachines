@@ -80,7 +80,7 @@ public class machineListActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null){
+        if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
             cameFromWidget=true;
             thisItemID=Integer.parseInt(getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
         }

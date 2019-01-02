@@ -67,8 +67,12 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    // Add the In-App Messaging dependency:
+    implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.4'
 }
 ext {
     roomVersion = '1.1.1'
     archLifecycleVersion = '1.1.1'
 }
+apply plugin: 'com.google.gms.google-services'
