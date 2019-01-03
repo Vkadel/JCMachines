@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,8 +22,12 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
@@ -55,6 +60,7 @@ public class SparePartListActivity extends AppCompatActivity {
     private machine mMachine;
     private spareParts spareParts;
     private String thisMachineId;
+    private Context activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,17 @@ public class SparePartListActivity extends AppCompatActivity {
                 sparePartsList=mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();
                 setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
             }
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.sparepart_list_pull_refresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                machineViewModel.loadArticlesOnline(); // your code
+                pullToRefresh.setRefreshing(false);
+                Toast.makeText(activity,getResources().getString(R.string.updating_data_online),Toast.LENGTH_LONG).show();
+                recyclerView.invalidate();
+            }
+        });
+      activity=this;
     }
 
     @Override
@@ -195,6 +212,7 @@ public class SparePartListActivity extends AppCompatActivity {
                 Glide.with(mParentActivity).load(mValues.get(position)
                         .getImageLink()).transition(withCrossFade())
                         .apply(new RequestOptions().override(holder.SparePartImage.getLayoutParams().width,holder.SparePartImage.getLayoutParams().height))
+                        .apply(new RequestOptions().transforms(new RoundedCorners(16)))
                         .into(holder.SparePartImage);
             }else{
                 holder.SparePartImage.setVisibility(View.GONE);

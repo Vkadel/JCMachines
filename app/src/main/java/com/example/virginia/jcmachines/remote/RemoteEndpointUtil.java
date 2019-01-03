@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
+import timber.log.Timber;
 
 public class RemoteEndpointUtil {
     private static final String TAG = "RemoteEndpointUtil";
@@ -24,6 +25,7 @@ public class RemoteEndpointUtil {
         String itemsJson = null;
         try {
             itemsJson = RemoteEndpointUtil.fetchPlainText(Config.BASE_URL);
+            Timber.d("Going to send this data from Fetch: "+itemsJson);
         } catch (IOException e) {
             Log.e(RemoteEndpointUtil.TAG, "Error fetching items JSON", e);
             return null;

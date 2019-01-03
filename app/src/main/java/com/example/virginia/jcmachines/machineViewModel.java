@@ -10,6 +10,8 @@ import com.example.virginia.jcmachines.Data.machineRepository;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class machineViewModel extends AndroidViewModel {
     private LiveData<List<machine>> machines;
     private machineRepository mRepository;
@@ -17,7 +19,7 @@ public class machineViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-       mRepository = null;
+        mRepository = null;
         machines = null;
     }
 
@@ -26,6 +28,7 @@ public class machineViewModel extends AndroidViewModel {
         mRepository = new machineRepository(application);
         machines = this.mRepository.getallArticles();
     }
+
 
 
     public LiveData<List<machine>> getMachines() {
@@ -39,6 +42,7 @@ public class machineViewModel extends AndroidViewModel {
     public void loadArticlesOnline() {
         // Do an asynchronous operation to fetch machines.
         //Getting instance of Room DataBase
+        Timber.d("Going to start loadArticles");
         this.mRepository.refreshItemsOnline(this.machines);
     }
 }

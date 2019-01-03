@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -94,8 +97,10 @@ public class machineListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        //Check if the machine list is zero
-        if(isNetworkAvailable()){
+
+
+        //Check if the application is connected to the web, and give the user a toast to signal that the information may not be up to date
+        if(!isNetworkAvailable()){
             Toast.makeText(activity,getResources().getString(R.string.noNetwork),Toast.LENGTH_LONG).show();
         }
         if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
@@ -130,6 +135,7 @@ public class machineListActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<machine> machines) {
                     if(machines!=null){
+                        Timber.d("Going to update recycler after data update/change");
                         mMachines =machines;
                         //Ensure the Recycler only updates once per load when the model sends an update
                         if ((pref.equals("false")||mMachines.size()==0)||!updatedOnce){
@@ -170,6 +176,17 @@ public class machineListActivity extends AppCompatActivity {
             mMachines = this.machineViewModel.getMachines().getValue();
             setupRecyclerViewWithMachines((RecyclerView) recyclerView);
         }
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pull_refresh_machine_list);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                machineViewModel.loadArticlesOnline(); // your code
+                pullToRefresh.setRefreshing(false);
+                Toast.makeText(activity,getResources().getString(R.string.updating_data_online),Toast.LENGTH_LONG).show();
+                recyclerView.invalidate();
+            }
+        });
 
     }
 
@@ -262,6 +279,7 @@ public class machineListActivity extends AppCompatActivity {
                 Glide.with(this.mParentActivity)
                         .load(this.mValues.get(position).getThumbnailImage())
                         .transition(withCrossFade()).apply(new RequestOptions().override(holder.imageView.getWidth(),holder.imageView.getHeight()))
+                        .apply(new RequestOptions().transforms(new RoundedCorners(16)))
                         .into(holder.imageView);
             }
 

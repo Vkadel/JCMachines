@@ -17,7 +17,10 @@
     master/detail flow.
     
     -->
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sparepart_list_pull_refresh"
+        android:layout_width="@dimen/machine_item_width"
+        android:layout_height="wrap_content">
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/sparepart_list"
@@ -29,7 +32,7 @@
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.virginia.jcmachines.SparePartListActivity"
         tools:listitem="@layout/sparepart_list_item" />
-
+    </android.support.v4.widget.SwipeRefreshLayout>
     <FrameLayout
         android:id="@+id/sparepart_detail_container"
         android:layout_width="0dp"
