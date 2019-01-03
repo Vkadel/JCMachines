@@ -90,7 +90,11 @@ public class machineDetailFragment extends Fragment {
             //get the existing Model and get all machines
             else{
                 this.machineList = this.machineViewModel.getMachines().getValue();
-                this.thisMachineId =savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
+                if(savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID)!=null){
+                    this.thisMachineId =savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
+                }else{
+                    thisMachineId="0";
+                }
                 this.thisMachine = this.machineList.get(Integer.valueOf(thisMachineId));
                 this.isTwopane =savedInstanceState.getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
             }
@@ -206,7 +210,8 @@ public class machineDetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(machineDetailFragment.ARG_ITEM_ID, this.thisMachine.getId());
+        outState.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(this.thisMachine.getId()));
         super.onSaveInstanceState(outState);
     }
+
 }

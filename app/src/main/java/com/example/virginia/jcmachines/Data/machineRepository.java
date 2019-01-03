@@ -83,10 +83,10 @@ public class machineRepository {
             List<machine> machineArrayList = new ArrayList<>();
             try {
                 this.array = RemoteEndpointUtil.fetchJsonArray();
-                //TODO: Add catch for when ARRAY is zero
                 int arraysize = this.array.length();
                 if (this.array == null) {
                     throw new JSONException("Invalid parsed item array");
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

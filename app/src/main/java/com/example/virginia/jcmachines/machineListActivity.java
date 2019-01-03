@@ -181,10 +181,10 @@ public class machineListActivity extends AppCompatActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                machineViewModel.loadArticlesOnline(); // your code
+                machineViewModel.loadArticlesOnline();
                 pullToRefresh.setRefreshing(false);
                 Toast.makeText(activity,getResources().getString(R.string.updating_data_online),Toast.LENGTH_LONG).show();
-                recyclerView.invalidate();
+
             }
         });
 
