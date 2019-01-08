@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -79,9 +80,9 @@ public class machineDetailFragment extends Fragment {
                 this.thisMachineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
                 this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                 //observe the model
-                this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                 @Override
-                public void onChanged(@Nullable List<machine> machines) {
+                public void onChanged(@Nullable PagedList<machine> machines) {
                     machineList =machines;
                     thisMachine = machineList.get(Integer.valueOf(thisMachineId));
                     updateUI(rootView);

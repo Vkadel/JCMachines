@@ -3,6 +3,7 @@ package com.example.virginia.jcmachines;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -79,9 +80,9 @@ public class SparePartDetailFragment extends Fragment {
                 //Check if this is the first the fragment was created
                 if (savedInstanceState == null) {
                     //observe the model
-                    this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                    this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                         @Override
-                        public void onChanged(@Nullable List<machine> machines) {
+                        public void onChanged(@Nullable PagedList<machine> machines) {
                             machineList = machines;
                             sparePartsList=machines.get(Integer.valueOf(thisMachineId)).getSpareParts();
                             thisSparePart =sparePartsList.get(thisSparePartID);

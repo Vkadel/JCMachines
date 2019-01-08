@@ -2,6 +2,8 @@ package com.example.virginia.jcmachines.Data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.LivePagedListBuilder;
+import android.arch.paging.PagedList;
 import android.os.AsyncTask;
 
 import com.example.virginia.jcmachines.remote.RemoteEndpointUtil;
@@ -20,10 +22,8 @@ import java.util.List;
 import timber.log.Timber;
 
 public class machineRepository {
-    private final String TAG= this.getClass().getSimpleName();
     private final machineDAO mMachineDAO;
-    private final LiveData<List<machine>> mArticles;
-    private List<machine> mArticleList;
+    private final LiveData<PagedList<machine>> mMachines;
     private final Boolean notInitialized = false;
 
     public machineRepository(Application application) {
@@ -31,22 +31,23 @@ public class machineRepository {
         Timber.d("VK:Getting Items updated");
         this.mMachineDAO = db.machineDAO();
 
-        this.mArticles = this.mMachineDAO.getAll();
+       //mMachines = this.mMachineDAO.getAll();
 
+        mMachines=new LivePagedListBuilder<>(mMachineDAO.getAll(),2).build();
         //If mMachines is empty call an Async Task to update online. Or if
         //is the first Time the Repository is initialized
         if (!this.notInitialized) {
-            this.refreshItemsOnline(this.mArticles);
+            this.refreshItemsOnline(mMachines);
             Timber.d("VK: Started Online Update");
         }
 
     }
 
-    public LiveData<List<machine>> getallArticles() {
-        return this.mArticles;
+    public LiveData<PagedList<machine>> getAllMachines() {
+        return mMachines;
     }
 
-    public void refreshItemsOnline(LiveData<List<machine>> mArticles) {
+    public void refreshItemsOnline(LiveData<PagedList<machine>> mArticles) {
         new machineRepository.getJsonArrayOnline(this.mMachineDAO).execute(mArticles);
     }
 
@@ -69,17 +70,17 @@ public class machineRepository {
         }
     }
 
-    private static class getJsonArrayOnline extends AsyncTask<LiveData<List<machine>>, Void, Void> {
+    private static class getJsonArrayOnline extends AsyncTask<LiveData<PagedList<machine>>, Void, Void> {
 
         private final machineDAO mAsyncTaskDao;
         private JSONArray array;
-        private List<machine> mArticles;
+        private LiveData<PagedList<machine>> mMachines;
         getJsonArrayOnline(machineDAO dao) {
             this.mAsyncTaskDao = dao;
         }
 
         @Override
-        protected Void doInBackground(LiveData<List<machine>>... liveData) {
+        protected Void doInBackground(LiveData<PagedList<machine>>... liveData) {
             List<machine> machineArrayList = new ArrayList<>();
             try {
                 this.array = RemoteEndpointUtil.fetchJsonArray();
@@ -141,8 +142,8 @@ public class machineRepository {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            this.mArticles = this.mAsyncTaskDao.getAll().getValue();
+            mMachines=new LivePagedListBuilder<>(mAsyncTaskDao.getAll(),10).build();
+            //this.mArticles = this.mAsyncTaskDao.getAll().getValue();
             return null;
         }
 

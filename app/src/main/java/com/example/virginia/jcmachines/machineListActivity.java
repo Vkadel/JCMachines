@@ -3,23 +3,20 @@ package com.example.virginia.jcmachines;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -34,21 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.ImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.virginia.jcmachines.Data.machine;
-import com.example.virginia.jcmachines.Data.machineRepository;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-import com.google.common.math.IntMath;
-import com.google.common.math.LongMath;
 
 import java.util.List;
 
@@ -131,9 +121,10 @@ public class machineListActivity extends AppCompatActivity {
         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){
-            this.machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+
+            this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                 @Override
-                public void onChanged(@Nullable List<machine> machines) {
+                public void onChanged(@Nullable PagedList<machine> machines) {
                     if(machines!=null){
                         Timber.d("Going to update recycler after data update/change");
                         mMachines =machines;
@@ -218,15 +209,12 @@ public class machineListActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
-    }
     private void setupRecyclerViewWithMachines(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new machineListActivity.SimpleItemRecyclerViewAdapter(this, this.mMachines, this.mTwoPane));
+        recyclerView.setAdapter(new machineAdapter(this, this.mMachines, this.mTwoPane));
     }
 
-    public class SimpleItemRecyclerViewAdapter
-            extends Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public class machineAdapter
+            extends PagedListAdapter<machine, machineAdapter.ViewHolder> {
 
         private final machineListActivity mParentActivity;
         private final List<machine> mValues;
@@ -235,14 +223,14 @@ public class machineListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 machine item = (machine) view.getTag();
-                if (machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane) {
+                if (machineAdapter.this.mTwoPane) {
                     Bundle arguments = new Bundle();
                     thisItemID=item.getId();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
-                    arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, machineListActivity.SimpleItemRecyclerViewAdapter.this.mTwoPane);
+                    arguments.putBoolean(machineDetailFragment.ARG_IS_TWO_PANE, machineAdapter.this.mTwoPane);
                     machineDetailFragment fragment = new machineDetailFragment();
                     fragment.setArguments(arguments);
-                    machineListActivity.SimpleItemRecyclerViewAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
+                    machineAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(id.machine_detail_container, fragment)
                             .commit();
                 } else {
@@ -256,9 +244,10 @@ public class machineListActivity extends AppCompatActivity {
 
         };
 
-        SimpleItemRecyclerViewAdapter(machineListActivity parent,
-                                      List<machine> items,
-                                      boolean twoPane) {
+        machineAdapter(machineListActivity parent,
+                       List<machine> items,
+                       boolean twoPane) {
+            super(DIFF_CALLBACK);
             this.mValues = items;
             this.mParentActivity = parent;
             this.mTwoPane = twoPane;
@@ -272,7 +261,7 @@ public class machineListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(machineListActivity.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(machineAdapter.ViewHolder holder, int position) {
             if(!mTwoPane){
             resizeImage(holder.imageView);}
             if (this.mValues.get(position).getThumbnailImage()!="na"&& this.mValues.get(position).getThumbnailImage()!=null){
@@ -290,8 +279,19 @@ public class machineListActivity extends AppCompatActivity {
             if(cameFromWidget&&thisItemID==position){
                 mOnClickListener.onClick(holder.itemView);
             }
-        }
 
+            //New Paged List Code
+/*
+            machine user = getItem(position);
+            if (user != null) {
+                holder.bindTo(machine);
+            } else {
+                // Null defines a placeholder item - PagedListAdapter will automatically invalidate
+                // this row when the actual object is loaded from the database
+                holder.clear();
+            }*/
+        }
+        //TODO May not need
         @Override
         public int getItemCount() {
             if (this.mValues ==null){
@@ -313,4 +313,20 @@ public class machineListActivity extends AppCompatActivity {
             }
         }
     }
+    public static final DiffUtil.ItemCallback<machine> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<machine>() {
+                @Override
+                public boolean areItemsTheSame(
+                        @NonNull machine oldUser, @NonNull machine newUser) {
+                    // User properties may have changed if reloaded from the DB, but ID is fixed
+                    return oldUser.getId() == newUser.getId();
+                }
+                @Override
+                public boolean areContentsTheSame(
+                        @NonNull machine oldUser, @NonNull machine newUser) {
+                    // NOTE: if you use equals, your object must properly override Object#equals()
+                    // Incorrectly returning false here will result in too many animations.
+                    return oldUser.equals(newUser);
+                }
+            };
 }

@@ -3,17 +3,16 @@ package com.example.virginia.jcmachines;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.machineRepository;
 
-import java.util.List;
-
 import timber.log.Timber;
 
 public class machineViewModel extends AndroidViewModel {
-    private LiveData<List<machine>> machines;
+    private LiveData<PagedList<machine>> machines;
     private machineRepository mRepository;
 
     @Override
@@ -26,12 +25,12 @@ public class machineViewModel extends AndroidViewModel {
     public machineViewModel(@NonNull Application application) {
         super(application);
         mRepository = new machineRepository(application);
-        machines = this.mRepository.getallArticles();
+        machines = this.mRepository.getAllMachines();
     }
 
 
 
-    public LiveData<List<machine>> getMachines() {
+    public LiveData<PagedList<machine>> getMachines() {
         return this.machines;
     }
 

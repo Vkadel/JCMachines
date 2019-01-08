@@ -2,6 +2,7 @@ package com.example.virginia.jcmachines;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,9 +99,9 @@ public class SparePartListActivity extends AppCompatActivity {
             if(savedInstanceState==null){
                 thisMachineId = getIntent().getStringExtra(ARG_ITEM_ID);
                 //this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
-                machineViewModel.getMachines().observe(this, new Observer<List<machine>>() {
+                machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                     @Override
-                    public void onChanged(@Nullable List<machine> machines) {
+                    public void onChanged(@Nullable PagedList<machine> machines) {
                         if(machines!=null){
                             mMachines =machines;
                             sparePartsList=mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();

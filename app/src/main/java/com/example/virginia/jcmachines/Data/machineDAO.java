@@ -1,6 +1,7 @@
 package com.example.virginia.jcmachines.Data;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.PagedList;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -14,10 +15,14 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
+
 @Dao
 public interface machineDAO {
     @Query("SELECT * FROM machine_table")
-    LiveData<List<machine>> getAll();
+    public abstract android.arch.paging.DataSource.Factory<Integer, machine> getAll();
+    //LiveData<List<machine>> getAll();
 
     @Query("SELECT * FROM machine_table WHERE id IN (:id)")
     List<machine> loadAllbyID(int[] id);

@@ -4,6 +4,9 @@ repositories {
     google()
 }
 android {
+    dataBinding {
+        enabled = true
+    }
     signingConfigs {
         free {
             keyAlias 'key0'
@@ -70,6 +73,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     // Add the In-App Messaging dependency:
     implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.4'
+    //Paging library
+    implementation 'android.arch.paging:runtime:1.0.0'
 }
 ext {
     roomVersion = '1.1.1'
