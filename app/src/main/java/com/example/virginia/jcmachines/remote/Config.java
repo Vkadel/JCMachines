@@ -12,7 +12,7 @@ public class Config {
     static {
         URL url = null;
         try {
-            url = new URL("https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/jc_machines_long.json");
+            url = new URL("https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/jc_machines.json");
         } catch (MalformedURLException ignored) {
             Log.e(Config.TAG, "Please check your internet connection.");
         }
