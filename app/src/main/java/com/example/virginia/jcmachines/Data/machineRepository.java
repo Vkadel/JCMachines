@@ -6,6 +6,7 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.os.AsyncTask;
 
+import com.example.virginia.jcmachines.R;
 import com.example.virginia.jcmachines.remote.RemoteEndpointUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,17 +26,20 @@ public class machineRepository {
     private final machineDAO mMachineDAO;
     private final LiveData<PagedList<machine>> mMachines;
     private final Boolean notInitialized = false;
+    private final Application mApplication;
 
     public machineRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         Timber.d("VK:Getting Items updated");
         this.mMachineDAO = db.machineDAO();
-
+        mApplication=application;
+        //Old Implementation without PagedList
        //mMachines = this.mMachineDAO.getAll();
 
-        mMachines=new LivePagedListBuilder<>(mMachineDAO.getAll(),2).build();
+        mMachines=new LivePagedListBuilder<>(mMachineDAO.getAll(),application.getResources().getInteger(R.integer.page_size)).build();
         //If mMachines is empty call an Async Task to update online. Or if
         //is the first Time the Repository is initialized
+        //TODO: may want to delete this because user can just drag down and update
         if (!this.notInitialized) {
             this.refreshItemsOnline(mMachines);
             Timber.d("VK: Started Online Update");
@@ -75,6 +79,8 @@ public class machineRepository {
         private final machineDAO mAsyncTaskDao;
         private JSONArray array;
         private LiveData<PagedList<machine>> mMachines;
+
+
         getJsonArrayOnline(machineDAO dao) {
             this.mAsyncTaskDao = dao;
         }
@@ -142,7 +148,8 @@ public class machineRepository {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            mMachines=new LivePagedListBuilder<>(mAsyncTaskDao.getAll(),10).build();
+            Timber.d("VK:Updating the pagesize data Online");
+            mMachines=new LivePagedListBuilder<>(mAsyncTaskDao.getAll(),3).build();
             //this.mArticles = this.mAsyncTaskDao.getAll().getValue();
             return null;
         }
@@ -150,8 +157,6 @@ public class machineRepository {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-
         }
     }
 

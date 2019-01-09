@@ -62,8 +62,7 @@ public class machineListActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
     private machineViewModel machineViewModel;
-    private List<machine> mMachines;
-    private StaggeredGridLayoutManager gridLayoutManager;
+    private PagedList<machine> mMachines;
     private Boolean updatedOnce=false;
     private int thisItemID;
     private Boolean cameFromWidget=false;
@@ -74,6 +73,9 @@ public class machineListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(layout.activity_machine_list);
         this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
+
+        PagedList.Config.Builder config= new PagedList.Config.Builder().setPageSize(2).setPrefetchDistance(4);
+
         Timber.plant(new DebugTree());
         activity=this;
         Toolbar toolbar = this.findViewById(id.toolbar);
@@ -98,7 +100,7 @@ public class machineListActivity extends AppCompatActivity {
             thisItemID=Integer.parseInt(getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
         }
 
-        final View recyclerView = this.findViewById(id.machine_list);
+        View recyclerView = this.findViewById(id.machine_list);
         assert recyclerView != null;
         if (this.findViewById(id.machine_detail_container) != null) {
             // The detail container view will be present only in the
@@ -107,7 +109,7 @@ public class machineListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             this.mTwoPane = true;
         }
-
+        final machineAdapter machineAdapter=new machineAdapter(this,mTwoPane);;
         //Checked if application loaded data at least once before. This
         //will be used to prevent the blips when data loads more than once in
         //the recycler. Otherwise when preventing the blip the application
@@ -117,15 +119,13 @@ public class machineListActivity extends AppCompatActivity {
         final SharedPreferences.Editor editor = sharedPref.edit();
         String  defaultValue = getResources().getString(R.string.loaded_once_preference_value);
         final String pref = sharedPref.getString(getString(R.string.loaded_once_preference_key), defaultValue);
-
-        //check if this is the first time the activity loads. Will subscribe to
+         //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
         if(savedInstanceState==null){
-
-            this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
+            machineViewModel.machines.observe(this, new Observer<PagedList<machine>>() {
                 @Override
                 public void onChanged(@Nullable PagedList<machine> machines) {
-                    if(machines!=null){
+                    if(machines!=null && machines.size()!=0){
                         Timber.d("Going to update recycler after data update/change");
                         mMachines =machines;
                         //Ensure the Recycler only updates once per load when the model sends an update
@@ -134,11 +134,12 @@ public class machineListActivity extends AppCompatActivity {
                             if(machines.size()==0){
                                 Toast.makeText(activity,getResources().getString(R.string.list_is_zero),Toast.LENGTH_LONG).show();
                             }
-                        setupRecyclerViewWithMachines((RecyclerView) recyclerView);
-                        updatedOnce=true;
-                        editor.putString(getString(R.string.loaded_once_preference_key), "true");
-                        editor.commit();
-                        //Check if the item Came from the widget.
+                            ((RecyclerView)recyclerView).setAdapter(machineAdapter);
+                            machineAdapter.submitList(machines);
+                            updatedOnce=true;
+                            editor.putString(getString(R.string.loaded_once_preference_key), "true");
+                            editor.commit();
+                            //Check if the item Came from the widget.
                             if (cameFromWidget) {
                                 if (mTwoPane) {
                                     Bundle arguments = new Bundle();
@@ -160,12 +161,14 @@ public class machineListActivity extends AppCompatActivity {
                         }
 
                     }
+                    machineAdapter.submitList(machines);
                 }
-            });
-        }
+            });}
         else{
             mMachines = this.machineViewModel.getMachines().getValue();
-            setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+            machineAdapter.submitList(mMachines);
+            ((RecyclerView)recyclerView).setAdapter(machineAdapter);
+            //setupRecyclerViewWithMachines((RecyclerView) recyclerView);
         }
 
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pull_refresh_machine_list);
@@ -179,6 +182,7 @@ public class machineListActivity extends AppCompatActivity {
             }
         });
 
+        ((RecyclerView)recyclerView).setAdapter(machineAdapter);
     }
 
     //Change size of ImageViews Based on Screen size
@@ -209,15 +213,15 @@ public class machineListActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private void setupRecyclerViewWithMachines(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new machineAdapter(this, this.mMachines, this.mTwoPane));
-    }
+   /* private void setupRecyclerViewWithMachines(@NonNull RecyclerView recyclerView) {
+        recyclerView.setAdapter(new machineAdapter(this,this.mTwoPane));
+    }*/
 
     public class machineAdapter
             extends PagedListAdapter<machine, machineAdapter.ViewHolder> {
 
-        private final machineListActivity mParentActivity;
-        private final List<machine> mValues;
+        private machineListActivity mParentActivity;
+        //private final List<machine> mValues;
         private final boolean mTwoPane;
         private final OnClickListener mOnClickListener = new OnClickListener() {
             @Override
@@ -245,16 +249,15 @@ public class machineListActivity extends AppCompatActivity {
         };
 
         machineAdapter(machineListActivity parent,
-                       List<machine> items,
                        boolean twoPane) {
             super(DIFF_CALLBACK);
-            this.mValues = items;
             this.mParentActivity = parent;
             this.mTwoPane = twoPane;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(layout.machine_list_item, parent, false);
             return new ViewHolder(view);
@@ -262,42 +265,36 @@ public class machineListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(machineAdapter.ViewHolder holder, int position) {
+            //Checks
+            machine mMachine=null;
+            int number=getItemCount();
+            mMachine=getItem(position);
+
+            if(getItem(position)!=null){
             if(!mTwoPane){
             resizeImage(holder.imageView);}
-            if (this.mValues.get(position).getThumbnailImage()!="na"&& this.mValues.get(position).getThumbnailImage()!=null){
+            if (mMachine.getThumbnailImage()!="na"&& mMachine.getThumbnailImage()!=null){
+                holder.imageView.setVisibility(View.VISIBLE);
                 Glide.with(this.mParentActivity)
-                        .load(this.mValues.get(position).getThumbnailImage())
+                        .load(mMachine.getThumbnailImage())
                         .transition(withCrossFade()).apply(new RequestOptions().override(holder.imageView.getWidth(),holder.imageView.getHeight()))
                         .apply(new RequestOptions().transforms(new RoundedCorners(16)))
                         .into(holder.imageView);
             }
 
-            holder.mContentView.setText(this.mValues.get(position).getMachineFullName());
-            holder.itemView.setTag(this.mValues.get(position));
+            holder.mContentView.setText(mMachine.getMachineFullName());
+            holder.itemView.setTag(mMachine);
             holder.itemView.setOnClickListener(this.mOnClickListener);
             //check if the widget triggered the intent
             if(cameFromWidget&&thisItemID==position){
                 mOnClickListener.onClick(holder.itemView);
             }
-
-            //New Paged List Code
-/*
-            machine user = getItem(position);
-            if (user != null) {
-                holder.bindTo(machine);
-            } else {
+            }else{
                 // Null defines a placeholder item - PagedListAdapter will automatically invalidate
                 // this row when the actual object is loaded from the database
-                holder.clear();
-            }*/
-        }
-        //TODO May not need
-        @Override
-        public int getItemCount() {
-            if (this.mValues ==null){
-                return 0;
-            }else{
-            return this.mValues.size();}
+                holder.itemView.invalidate();
+            }
+
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -313,7 +310,7 @@ public class machineListActivity extends AppCompatActivity {
             }
         }
     }
-    public static final DiffUtil.ItemCallback<machine> DIFF_CALLBACK =
+    private static DiffUtil.ItemCallback<machine> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<machine>() {
                 @Override
                 public boolean areItemsTheSame(

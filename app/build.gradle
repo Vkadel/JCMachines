@@ -45,6 +45,10 @@ android {
             signingConfig signingConfigs.free
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {

@@ -12,7 +12,7 @@ import com.example.virginia.jcmachines.Data.machineRepository;
 import timber.log.Timber;
 
 public class machineViewModel extends AndroidViewModel {
-    private LiveData<PagedList<machine>> machines;
+    public LiveData<PagedList<machine>> machines;
     private machineRepository mRepository;
 
     @Override
