@@ -10,21 +10,21 @@
 
     "Description": "Mid-size stiff extruder",
 
-    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extruder_45_series.jpg",
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
 
-    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extruder_45_series.jpg",
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
 
-    "LargeImageTwo": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extruder_45_series.jpg",
+    "LargeImageTwo": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
 
-    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45_series_inline.png",
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_inline.png",
 
     "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
 
-    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45_series_angle.png",
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
 
-    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_45_series.pdf",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
 
-    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45atx_extruder_lube_chart.pdf",
+    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45atx_extruder_lube_chart.pdf",
 
     "KeyFeatures": [
 
@@ -160,7 +160,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
 
       },
 
@@ -174,7 +174,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
 
       },
 
@@ -188,7 +188,7 @@
 
         "Section": "SectionB",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/line_adapter_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
 
       },
 
@@ -202,7 +202,7 @@
 
         "Section": "SectionC",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/auger_45ad.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/auger_45ad.jpg"
 
       },
 
@@ -216,7 +216,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/extrusion_die_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extrusion_die_45.jpg"
 
       },
       {
@@ -229,7 +229,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/roller_bearing_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
 
       },
       {
@@ -242,7 +242,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/bearing_45_1.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
 
       },
       {
@@ -255,7 +255,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/shaft_45ad.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
 
       }
     ]
@@ -278,15 +278,15 @@
 
     "LargeImageTwo": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
 
-    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45_series_inline.png",
+    "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_inline.png",
 
     "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
 
-    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45_series_angle.png",
+    "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
 
-    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_45_series.pdf",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
 
-    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/45at_pug_sealer_lube_chart.pdf",
+    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45at_pug_sealer_lube_chart.pdf",
 
     "KeyFeatures": [
 
@@ -423,7 +423,7 @@
 
         "Section": "SectionC",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/front_pug_knife_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/front_pug_knife_45.jpg"
 
       },
 
@@ -437,7 +437,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
 
       },
 
@@ -451,7 +451,7 @@
 
         "Section": "SectionA",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/gear_box_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
 
       },
 
@@ -465,7 +465,7 @@
 
         "Section": "SectionB",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/line_adapter_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
 
       },
 
@@ -479,7 +479,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/roller_bearing_45.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
 
       },
       {
@@ -492,7 +492,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/bearing_45_1.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
 
       },
       {
@@ -505,7 +505,7 @@
 
         "Section": "SectionD",
 
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/shaft_45ad.jpg"
+        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
 
       }
 
@@ -523,9 +523,9 @@
 
     "Description": "Large stiff extruder",
 
-    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_series_extruder_steele.jpg",
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_series_extruder_steele.jpg",
 
-    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_series_extruder_steele.jpg",
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_series_extruder_steele.jpg",
 
     "LargeImageTwo": "na",
 
@@ -535,7 +535,7 @@
 
     "AngleInstallImage": "na",
 
-    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_90_series.pdf",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
 
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90ad_extruder_lube_chart.pdf",
 
@@ -631,7 +631,7 @@
 
         "description": "Removing thrust for 90 assembly",
 
-        "pdflink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/tsb_90_extruder_dsd_0001_remove_thrust_assembly_.pdf"
+        "pdflink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/tsb_90_extruder_dsd_0001_remove_thrust_assembly_.pdf"
 
       },
 
@@ -775,9 +775,9 @@
 
     "Description": "Large Pug Sealer",
 
-    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_pug_sealer_steele.jpg",
+    "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_pug_sealer_steele.jpg",
 
-    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90_pug_sealer_steele.jpg",
+    "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_pug_sealer_steele.jpg",
 
     "LargeImageTwo": "na",
 
@@ -787,9 +787,9 @@
 
     "AngleInstallImage": "na",
 
-    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/datasheet_90_series.pdf",
+    "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
 
-    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/master/app/assets/90as_pug_sealer_lube_chart.pdf",
+    "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90as_pug_sealer_lube_chart.pdf",
 
     "KeyFeatures": [
 

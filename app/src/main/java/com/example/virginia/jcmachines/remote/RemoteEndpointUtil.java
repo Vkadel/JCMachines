@@ -25,9 +25,9 @@ public class RemoteEndpointUtil {
         String itemsJson = null;
         try {
             itemsJson = RemoteEndpointUtil.fetchPlainText(Config.BASE_URL);
-            Timber.d("Going to send this data from Fetch: "+itemsJson);
+            Timber.d("Going to send this data from Fetch: %s", itemsJson);
         } catch (IOException e) {
-            Log.e(RemoteEndpointUtil.TAG, "Error fetching items JSON", e);
+            Timber.e(e, "Error fetching items JSON");
             return null;
         }
 
