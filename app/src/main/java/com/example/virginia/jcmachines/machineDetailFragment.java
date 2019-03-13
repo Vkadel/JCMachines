@@ -163,13 +163,15 @@ public class machineDetailFragment extends Fragment {
 
         //onClick listeners for pdf files. Hide the View if file is not available
 
-        if (!(this.thisMachine.getDatasheetLink()).equals("na")){
+        if (!(this.thisMachine.getLubricationChartLink()).equals("na")){
             lubrication_chart_tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, Pdf_viewer_Activity.class);
                 intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
+                intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID,thisMachine.getId());
+                intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID,Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_LUBRICATION_CHART);
                 context.startActivity(intent);
             }
         });}else{
@@ -197,6 +199,8 @@ public class machineDetailFragment extends Fragment {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, Pdf_viewer_Activity.class);
                     intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
+                    intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID,thisMachine.getId());
+                    intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID,Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_TECHNICAL_SHEET);
                     context.startActivity(intent);
                 }
             });}else{
