@@ -11,7 +11,7 @@ android {
         free {
             keyAlias 'key0'
             keyPassword 'password'
-            storeFile file('C:/Users/Virginia/Documents/Android/JCMachines/key.jks')
+            storeFile file('C:/Users/vkade/AndroidProjectsSurface/JCSteele/key.jks')
             storePassword 'password'
         }
     }
