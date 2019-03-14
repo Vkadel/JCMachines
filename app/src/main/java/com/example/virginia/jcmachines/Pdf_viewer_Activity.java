@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -31,6 +32,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
 
     private PDFView pdfView;
     private ProgressBar progressBar;
+    String mFileName;
     private String TAG="Pdf_viewer_Activity: ";
     public static String ARG_LINK="arg_link";
     public static String ARG_MACHINE_ID="machine_id";
@@ -38,17 +40,17 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
     //Document Types Arguments
     public static String ARG_DOCUMENT_TYPE_LUBRICATION_CHART="lubrication_chart";
     public static String ARG_DOCUMENT_TYPE_TECHNICAL_SHEET="technical_sheet";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
         progressBar=findViewById(R.id.progressBar);
-
-
-        //TODO: add logic to know if connected to the internet
-        //TODO: if no internet attempt to load from Disk
-
+        FloatingActionButton downloadFAB=(FloatingActionButton)findViewById(R.id.floatingActionButtonDownload);
+        TextView messageTV=(TextView)findViewById(R.id.message_tv);
+        AsyncTask mAs = null;
+        downloadFAB.hide();
 
 
         //getting the link from the intent
@@ -56,33 +58,45 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
 
         //CreateFileName: @ARG_DOCUMENT_ID+@ARG_MACHINE_ID
 
-        String mFileName=getIntent().getStringExtra(ARG_DOCUMENT_ID)
+        mFileName=getIntent().getStringExtra(ARG_DOCUMENT_ID)
                 +getIntent().getIntExtra(ARG_MACHINE_ID,0);
 
-        AsyncTask mAs = null;
 
-        if(hasActiveInternetConnection(this)){
-        // Executes the task in parallel to other tasks
-        mAs=new RetrivePDFStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,link);}
-        else{
-            //TODO:CheckIfFileExist
-            //TODO:If file exists LOAD Existing file, else let user know that needs to have internet connection
-            //or download file
+        File file=new File(getFilesDir(), String.format("%s/.pdf",mFileName));
 
+        if(file.isFile()){
+            //File exist will load from disk
+            Log.d(TAG, "onCreate: "+file.getPath());
+            pdfView.fromFile(file).load();
+            Toast toast=Toast.makeText(this,getResources().getString(R.string.file_exist),Toast.LENGTH_LONG);
+            messageTV.setText("");
+        }else{
+            //File does not exist attempt to download online and show downloadfab
+            downloadFAB.show();
+            //Check if internet is available. If yes Attempt to download online
+            if(isNetworkAvailable()){
+                // Executes the task in parallel to other tasks.To download the file online with link
+                mAs=new RetrivePDFStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,link);
+                messageTV.setText("");
+            }
+            else{
+             messageTV.setText(getResources().getString(R.string.noNetwork));
+            }
         }
 
-
-        FloatingActionButton downloadFAB=(FloatingActionButton)findViewById(R.id.floatingActionButtonDownload);
         //TODO: hide @downloadFAB If item its already downloaded
+
         downloadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast toast;
-                toast = Toast.makeText(getApplication(),"Will Download",Toast.LENGTH_LONG);
+                toast = Toast.makeText(getApplication(),getResources().getString(R.string.will_download),Toast.LENGTH_LONG);
                 toast.show();
                 AsyncTask mAs = null;
                 // Executes the task in parallel to other tasks
                 mAs=new RetrivePDFStreamToSave().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,link);
+                messageTV.setText("");
+                progressBar.setVisibility(View.INVISIBLE);
         }
         });
     }
@@ -125,7 +139,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         @Override
         protected File doInBackground(String... strings) {
             InputStream inputStream = null;
-            fileNameString=strings[0].toString();
+            fileNameString=mFileName;
             try {
                 URL uri = new URL(strings[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) uri.openConnection();
@@ -139,7 +153,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
             return getPdfOnDisk(fileNameString,getApplication(),inputStream);
         }
         @Override
-        protected void onPostExecute(File inputStream) {
+        protected void onPostExecute(File file) {
             progressBar.setVisibility(View.INVISIBLE);
             //Hide progress bar as soon as file is loaded
             OnLoadCompleteListener onLoadCompleteListener=new OnLoadCompleteListener() {
@@ -149,14 +163,13 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 }
             };
 
-            //TODO: mayNeedInput stream from disc
-            pdfView.fromFile(inputStream).load();
+            pdfView.fromFile(file).load();
 
         }
     }
 
     private File getPdfOnDisk(String filenamehere, Context context,InputStream inputStream) {
-        File file = new File(context.getFilesDir(), "myNewFile.pdf");
+        File file = new File(context.getFilesDir(), filenamehere);
         copyInputStreamToFile(inputStream,file);
         return file;
     }
@@ -193,23 +206,13 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         }
     }
 
-    public boolean hasActiveInternetConnection(Context context) {
-        if (isNetworkAvailable(context)) {
-            try {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                return (urlc.getResponseCode() == 200);
-            } catch (IOException e) {
-                Log.e(TAG, "Error checking internet connection", e);
-            }
-        } else {
-            Log.d(TAG, "No network available!");
-        }
-        return false;
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     private boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
