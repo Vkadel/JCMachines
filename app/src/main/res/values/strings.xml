@@ -46,5 +46,6 @@
     <string name="updating_data_online">Updating your data online</string>
     <string name="file_exist">This file is on disk</string>
     <string name="downloading">Downloading file from the web</string>
-    <string name="will_download">Will attempt to download file from the web</string>
+    <string name="will_download">File download started</string>
+    <string name="file_saved">File saved</string>
 </resources>

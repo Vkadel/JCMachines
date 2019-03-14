@@ -3,7 +3,6 @@ package com.example.virginia.jcmachines;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 
 public class Pdf_viewer_Activity extends AppCompatActivity {
@@ -57,35 +54,24 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         String link=getIntent().getStringExtra(ARG_LINK);
 
         //CreateFileName: @ARG_DOCUMENT_ID+@ARG_MACHINE_ID
-
         mFileName=getIntent().getStringExtra(ARG_DOCUMENT_ID)
                 +getIntent().getIntExtra(ARG_MACHINE_ID,0);
+        String filePath=this.getFilesDir().getPath()+"/"+mFileName;
 
+        File file=new File(filePath);
 
-        File file=new File(getFilesDir(), String.format("%s/.pdf",mFileName));
-
-        if(file.isFile()){
-            //File exist will load from disk
-            Log.d(TAG, "onCreate: "+file.getPath());
-            pdfView.fromFile(file).load();
-            Toast toast=Toast.makeText(this,getResources().getString(R.string.file_exist),Toast.LENGTH_LONG);
-            messageTV.setText("");
-        }else{
-            //File does not exist attempt to download online and show downloadfab
-            downloadFAB.show();
-            //Check if internet is available. If yes Attempt to download online
-            if(isNetworkAvailable()){
-                // Executes the task in parallel to other tasks.To download the file online with link
-                mAs=new RetrivePDFStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,link);
-                messageTV.setText("");
-            }
-            else{
-             messageTV.setText(getResources().getString(R.string.noNetwork));
-            }
+        if(isNetworkAvailable()){
+            networkOnDownloadFile(messageTV, link,downloadFAB);
         }
+        else{
+            if(file.exists()){
+                noNetworkFileExistsLoadFileFromCache(downloadFAB, messageTV, file); }
+            if(!file.exists()){
+                noNetworkNoFileInformUser(downloadFAB, messageTV); }
+            }
 
-        //TODO: hide @downloadFAB If item its already downloaded
 
+        //Set up downloadFAB
         downloadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +85,30 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
         }
         });
+    }
+
+    private void noNetworkFileExistsLoadFileFromCache(FloatingActionButton downloadFAB, TextView messageTV, File file) {
+        //File exist will load from disk
+        Log.d(TAG, "onCreate: "+file.getPath());
+        pdfView.fromFile(file).load();
+        downloadFAB.hide();
+        progressBar.setVisibility(View.INVISIBLE);
+        Toast toast=Toast.makeText(this,getResources().getString(R.string.file_exist),Toast.LENGTH_LONG);
+        messageTV.setText("");
+    }
+
+    private void networkOnDownloadFile(TextView messageTV, String link,FloatingActionButton downloadFAB) {
+        //File does not exist attempt to download online and show downloadfab
+        downloadFAB.show();
+        // Executes the task in parallel to other tasks.To download the file online with link
+        new RetrivePDFStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,link);
+        messageTV.setText("");
+    }
+
+    private void noNetworkNoFileInformUser(FloatingActionButton downloadFAB, TextView messageTV) {
+        downloadFAB.hide();
+        progressBar.setVisibility(View.INVISIBLE);
+        messageTV.setText(getResources().getString(R.string.noNetwork));
     }
 
     class RetrivePDFStream extends AsyncTask<String, Void, InputStream> {
@@ -155,21 +165,20 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(File file) {
             progressBar.setVisibility(View.INVISIBLE);
-            //Hide progress bar as soon as file is loaded
-            OnLoadCompleteListener onLoadCompleteListener=new OnLoadCompleteListener() {
-                @Override
-                public void loadComplete(int nbPages) {
-                    progressBar.setVisibility(View.GONE);
-                }
-            };
-
-            pdfView.fromFile(file).load();
-
+            String filePath=getApplication().getFilesDir().getPath()+"/"+mFileName;
+            File mfile=new File(filePath);
+            Boolean canExec=file.canRead();
+            //Check if file is saved let user know
+            if(mfile.canRead()){
+            Toast toast=Toast.makeText(getApplication(),getResources().getText(R.string.file_saved),Toast.LENGTH_LONG);
+                toast.show();}
         }
     }
 
     private File getPdfOnDisk(String filenamehere, Context context,InputStream inputStream) {
         File file = new File(context.getFilesDir(), filenamehere);
+        String filePathTwo=getFilesDir().getPath();
+        String filePath=file.getPath();
         copyInputStreamToFile(inputStream,file);
         return file;
     }
@@ -211,13 +220,6 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
     }
 
 }

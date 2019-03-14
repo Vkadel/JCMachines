@@ -90,15 +90,18 @@ public class machineRepository {
             List<machine> machineArrayList = new ArrayList<>();
             try {
                 this.array = RemoteEndpointUtil.fetchJsonArray();
-                int arraysize = this.array.length();
-                if (this.array == null) {
+
+                if (this.array == null||this.array.length()==0) {
                     throw new JSONException("Invalid parsed item array");
 
+                }else{
+                    int arraysize = this.array.length();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
+                if (!(array==null||array.length()==0)){
                 for (int i = 0; i <= this.array.length() - 1; i++) {
                     machine thisMachine = new machine();
                     JSONObject object = new JSONObject();
@@ -143,6 +146,7 @@ public class machineRepository {
                     thisMachine.setSpareParts(SparePartsList);
 
                     this.mAsyncTaskDao.insertOne(thisMachine);
+                }
                 }
 
             } catch (JSONException e) {
