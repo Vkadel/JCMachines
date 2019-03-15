@@ -1,5 +1,6 @@
 package com.example.virginia.jcmachines;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -12,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Pdf_viewer_Activity extends AppCompatActivity {
-
+    private Activity mActivity;
     private PDFView pdfView;
     private ProgressBar progressBar;
     String mFileName;
@@ -46,6 +48,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity=this;
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
         progressBar=findViewById(R.id.progressBar);
@@ -83,11 +86,16 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         downloadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isNetworkAvailable()){
                 sendLongToast(getResources().getString(R.string.will_download));
                 // Executes the task in parallel to other tasks
                 new RetrivePDFStreamToSave().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,link);
                 messageTV.setText("");
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);}
+                else{
+                  sendLongToast("no network connect to your network and try again");
+                  downloadFAB.hide();
+                }
         }
         });
     }
@@ -189,6 +197,8 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
 
     private void sendLongToast(String message) {
         Toast toast=Toast.makeText(getApplication(),message,Toast.LENGTH_LONG);
+        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        if( v != null) v.setGravity(Gravity.CENTER);
         toast.show();
     }
 
@@ -239,13 +249,31 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         NetworkRequest.Builder builder=new NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
         NetworkRequest networkRequest=builder.build();
-
+        //Asking to be notified of connect/disconnects from internet
         connectivityManager.registerNetworkCallback(networkRequest,new ConnectivityManager.NetworkCallback(){
             @Override
             public void onAvailable(Network network) {
-                sendLongToast("have internet");
-                downloadFAB.show();
+                sendLongToast(getResources().getString(R.string.have_internet));
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFAB.show();
+                    }
+                });
                 super.onAvailable(network);
+            }
+
+            @Override
+            public void onLost(Network network) {
+                sendLongToast(getResources().getString(R.string.lost_connection));
+                Log.e(TAG, "onAvailable: "+"sent connectionlost toast");
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFAB.hide();
+                    }
+                });
+                super.onLost(network);
             }
         });
 

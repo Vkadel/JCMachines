@@ -49,4 +49,6 @@
     <string name="will_download">File download started</string>
     <string name="file_saved">File saved</string>
     <string name="no_network_to_see_file">Please connect to a network to view and/or download file</string>
+    <string name="have_internet">App has internet connection</string>
+    <string name="lost_connection">App lost internet connection</string>
 </resources>
