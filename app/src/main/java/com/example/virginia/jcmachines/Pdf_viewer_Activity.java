@@ -246,7 +246,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 sendLongToast("have internet");
                 downloadFAB.show();
                 super.onAvailable(network);
-            }1
+            }
         });
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
