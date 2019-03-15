@@ -1,8 +1,12 @@
 package com.example.virginia.jcmachines;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +34,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
     private PDFView pdfView;
     private ProgressBar progressBar;
     String mFileName;
+    FloatingActionButton downloadFAB;
     private String TAG="Pdf_viewer_Activity: ";
     public static String ARG_LINK="arg_link";
     public static String ARG_MACHINE_ID="machine_id";
@@ -44,11 +49,10 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
         progressBar=findViewById(R.id.progressBar);
-        FloatingActionButton downloadFAB=(FloatingActionButton)findViewById(R.id.floatingActionButtonDownload);
+        downloadFAB=(FloatingActionButton)findViewById(R.id.floatingActionButtonDownload);
         TextView messageTV=(TextView)findViewById(R.id.message_tv);
         AsyncTask mAs = null;
         downloadFAB.hide();
-
 
         //getting the link from the intent
         String link=getIntent().getStringExtra(ARG_LINK);
@@ -61,9 +65,13 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         File file=new File(filePath);
 
         if(isNetworkAvailable()){
+            //if network is available always load from network
             networkOnDownloadFile(messageTV, link,downloadFAB);
         }
         else{
+            //if network is not available check if file exists
+            //if file exists show the file in memory
+            //otherwise tell user they need internet
             if(file.exists()){
                 noNetworkFileExistsLoadFileFromCache(downloadFAB, messageTV, file); }
             if(!file.exists()){
@@ -75,17 +83,15 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         downloadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast;
-                toast = Toast.makeText(getApplication(),getResources().getString(R.string.will_download),Toast.LENGTH_LONG);
-                toast.show();
-                AsyncTask mAs = null;
+                sendLongToast(getResources().getString(R.string.will_download));
                 // Executes the task in parallel to other tasks
-                mAs=new RetrivePDFStreamToSave().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,link);
+                new RetrivePDFStreamToSave().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,link);
                 messageTV.setText("");
                 progressBar.setVisibility(View.INVISIBLE);
         }
         });
     }
+
 
     private void noNetworkFileExistsLoadFileFromCache(FloatingActionButton downloadFAB, TextView messageTV, File file) {
         //File exist will load from disk
@@ -93,11 +99,17 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         pdfView.fromFile(file).load();
         downloadFAB.hide();
         progressBar.setVisibility(View.INVISIBLE);
-        Toast toast=Toast.makeText(this,getResources().getString(R.string.file_exist),Toast.LENGTH_LONG);
+        sendLongToast(getResources().getString(R.string.file_exist));
         messageTV.setText("");
     }
 
-    private void networkOnDownloadFile(TextView messageTV, String link,FloatingActionButton downloadFAB) {
+    @Override
+    protected void onPause() {
+        Log.e("pdfactivity","activityOnPause");
+        super.onPause();
+    }
+
+    private void networkOnDownloadFile(TextView messageTV, String link, FloatingActionButton downloadFAB) {
         //File does not exist attempt to download online and show downloadfab
         downloadFAB.show();
         // Executes the task in parallel to other tasks.To download the file online with link
@@ -108,7 +120,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
     private void noNetworkNoFileInformUser(FloatingActionButton downloadFAB, TextView messageTV) {
         downloadFAB.hide();
         progressBar.setVisibility(View.INVISIBLE);
-        messageTV.setText(getResources().getString(R.string.noNetwork));
+        messageTV.setText(getResources().getString(R.string.no_network_to_see_file));
     }
 
     class RetrivePDFStream extends AsyncTask<String, Void, InputStream> {
@@ -170,9 +182,14 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
             Boolean canExec=file.canRead();
             //Check if file is saved let user know
             if(mfile.canRead()){
-            Toast toast=Toast.makeText(getApplication(),getResources().getText(R.string.file_saved),Toast.LENGTH_LONG);
-                toast.show();}
+                sendLongToast(getResources().getText(R.string.file_saved).toString());
+            }
         }
+    }
+
+    private void sendLongToast(String message) {
+        Toast toast=Toast.makeText(getApplication(),message,Toast.LENGTH_LONG);
+        toast.show();
     }
 
     private File getPdfOnDisk(String filenamehere, Context context,InputStream inputStream) {
@@ -219,7 +236,21 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkRequest.Builder builder=new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        NetworkRequest networkRequest=builder.build();
+
+        connectivityManager.registerNetworkCallback(networkRequest,new ConnectivityManager.NetworkCallback(){
+            @Override
+            public void onAvailable(Network network) {
+                sendLongToast("have internet");
+                downloadFAB.show();
+                super.onAvailable(network);
+            }1
+        });
+
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.example.virginia.jcmachines;
 
 import android.app.Person;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         Timber.plant(new DebugTree());
         this.userEmail = this.findViewById(id.user_email);
         this.userPic = this.findViewById(id.user_pic);
+
         this.updateUI(null);
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.

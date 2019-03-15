@@ -44,8 +44,9 @@
     <string name="list_is_zero">There are not machines in our list at this time please check back later</string>
     <string name="noNetwork">Check your connection, your data may not be up to date</string>
     <string name="updating_data_online">Updating your data online</string>
-    <string name="file_exist">This file is on disk</string>
+    <string name="file_exist">Warning: Showing last downloaded version of this file \n Connect to network for latest version</string>
     <string name="downloading">Downloading file from the web</string>
     <string name="will_download">File download started</string>
     <string name="file_saved">File saved</string>
+    <string name="no_network_to_see_file">Please connect to a network to view and/or download file</string>
 </resources>
