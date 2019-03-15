@@ -101,6 +101,8 @@ public class machineDetailFragment extends Fragment {
             }
             this.activity = getActivity();
         }
+        if(getActivity().getIntent().hasExtra(SparePartDetailFragment.ARG_ITEM_ID)){
+            thisMachineId=getActivity().getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);}
     }
 
     @Override

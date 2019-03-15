@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Pdf_viewer_Activity extends AppCompatActivity {
+    ConnectivityManager.NetworkCallback networkCallback;
     private Activity mActivity;
     private PDFView pdfView;
     private ProgressBar progressBar;
@@ -246,11 +247,19 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void setUpConnectivityCheck(){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         NetworkRequest.Builder builder=new NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
         NetworkRequest networkRequest=builder.build();
-        //Asking to be notified of connect/disconnects from internet
-        connectivityManager.registerNetworkCallback(networkRequest,new ConnectivityManager.NetworkCallback(){
+        //Setting up networkcallback for system changes. In here the actions for when user is
+        //connected and disconnedted online are listed
+        ConnectivityManager.NetworkCallback mCallback=new ConnectivityManager.NetworkCallback(){
             @Override
             public void onAvailable(Network network) {
                 sendLongToast(getResources().getString(R.string.have_internet));
@@ -275,10 +284,27 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 });
                 super.onLost(network);
             }
-        });
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        };
+        //Asking to be notified of connect/disconnects from internet
+        connectivityManager.registerNetworkCallback(networkRequest,mCallback);
     }
 
 
+
+    @Override
+    protected void onDestroy() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //Unregistering the network callback, otherwise it will remain active as long as the
+        //application is live
+        if(networkCallback!=null){
+        connectivityManager.unregisterNetworkCallback(networkCallback);}
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        setUpConnectivityCheck();
+        super.onStart();
+    }
 }

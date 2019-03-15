@@ -139,7 +139,7 @@ public class SparePartListActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpFromSameTask(this);
+            navigateUpTo(new Intent(this, machineDetailActivity.class).putExtra(SparePartDetailFragment.ARG_ITEM_ID,thisMachineId));
             return true;
         }
         return super.onOptionsItemSelected(item);
