@@ -32,4 +32,21 @@
         <item name="android:textSize">@dimen/text_size_description_detail</item>
     </style>
 
+    <style name="fabStyleBotton">
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginStart">@dimen/fab_margin</item>
+        <item name="android:layout_marginTop">@dimen/fab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/fab_margin</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:foregroundTint">@color/colorPrimary</item>
+        <item name="android:foregroundTintMode">add</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+        <item name="android:outlineAmbientShadowColor">@color/colorPrimaryDark</item>
+        <item name="android:outlineSpotShadowColor">@color/colorPrimary</item>
+        <item name="android:tint">@color/colorPrimary</item>
+    </style>
+
 </resources>

@@ -18,10 +18,11 @@
         android:id="@+id/message_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/downloading"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:foregroundGravity="center"/>
+        android:foregroundGravity="center"
+        android:text="@string/downloading" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -34,11 +35,11 @@
         android:id="@+id/floatingActionButtonDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/stat_sys_download_done" />
+        app:backgroundTint="@color/transparent"
+        app:backgroundTintMode="screen"
+        app:elevation="6dp"
+        app:srcCompat="@android:drawable/stat_sys_download"
+        style="@style/fabStyleBotton" />
 
 
 </RelativeLayout>
