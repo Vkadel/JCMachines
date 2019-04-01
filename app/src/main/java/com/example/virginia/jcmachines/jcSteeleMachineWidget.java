@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,12 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.machineRepository;
 
+import java.io.OptionalDataException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import timber.log.Timber;
 
@@ -38,6 +44,9 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     static String thisMachineID;
     static String thisMachineImageLink;
     AppWidgetTarget appWidgetTarget;
+    static String[] thisMachineIDarray;
+    static String[] thisMachineImageLinkArray;
+    static String[] thisMachineNameArray;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -45,6 +54,9 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         //None of the manual updates to the remoteview Are actually done here but called
         //in the method on update below
         // Construct the RemoteViews object
+        //Find out How many
+        int [] existingId=appWidgetManager.getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
         views.setTextViewText(R.id.appwidget_text, thisMachineName);
 
@@ -55,6 +67,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     }
 
     public static void pushWidgetUpdate(Context context, RemoteViews remoteViews) {
+        Timber.d("AtWidget pushWidgetUpdate");
         ComponentName myWidget = new ComponentName(context, jcSteeleMachineWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         manager.updateAppWidget(myWidget, remoteViews);
@@ -62,37 +75,63 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+        Timber.plant(new Timber.DebugTree());
+        int [] thisIds= appWidgetManager.getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
 
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
+                .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
         // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int i = 0; i < N; i++) {
-            int appWidgetId = appWidgetIds[i];
-            SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
-                    .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
-            String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
-            String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
-            thisMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue);
-            thisMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), defaultValueName);
-            thisMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http");
+        Timber.d("AtWidget onUpdate");
+        String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
+        String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
+        //TODO: Split the different Machines
 
-            Timber.d("Going to add this link: " + thisMachineImageLink);
-            Timber.d("Going to add this name: " + thisMachineName);
-            Timber.d("Going to add this id: " + thisMachineName);
+        thisMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue);
+        thisMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), "Go On app and add widget");
+        thisMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http");
+        if(appWidgetIds.length==1){
+            //There a single widget update
+            List<Integer> myidsarray= Arrays.stream(thisIds).boxed().collect(Collectors.toList());
+            int thisWidgetid=appWidgetIds[0];
+
+            int position=myidsarray.indexOf(thisWidgetid);
+
+            updateOne(context,position,appWidgetIds[0]);
+        }
+        else{
+            final int N = thisIds.length;
+            updateThewidgets(context,appWidgetIds,N);}
+    }
+
+    private void updateThewidgets(Context context, int[] appWidgetIds, int N){
+
+        for (int i = 0; i < N; i++) {
+            Timber.d("AtWidget pushWidgetUpdate for N:"+i);
+            int appWidgetId = appWidgetIds[i];
+
+            String[] thisMachineIDarray=thisMachineID.split(",");
+            String[] thisMachineImageLinkArray=thisMachineImageLink.split(",");
+            String[] thisMachineNameArray=thisMachineName.split(",");
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+            Timber.d("AtWidget Going to add to this view: "+views.getLayoutId());
+            Timber.d("AtWidget Going to add this link: " + thisMachineImageLinkArray[i]);
+            Timber.d("AtWidget Going to add this name: " + thisMachineIDarray[i]);
+            Timber.d("AtWidget Going to add this id: " + thisMachineNameArray[i]);
             // Create an Intent to launch ExampleActivity
             Intent intent = new Intent(context, machineListActivity.class);
-            intent.putExtra(machineDetailFragment.ARG_ITEM_ID, thisMachineID);
+            intent.putExtra(machineDetailFragment.ARG_ITEM_ID, thisMachineIDarray[i]);
             intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET,"true");
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, i, intent, PendingIntent.FLAG_IMMUTABLE);
 
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
             views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
 
-            views.setTextViewText(R.id.appwidget_text, thisMachineName);
+            views.setTextViewText(R.id.appwidget_text, thisMachineNameArray[i]);
             //only Update picture if Link is different than NA
-            if (!thisMachineImageLink.equals("na")) {
+            if (!thisMachineImageLinkArray[i].equals("na")) {
                 RequestOptions options = new RequestOptions().
                         override(300, 300);
                 appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
@@ -104,22 +143,67 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
                 };
                 Glide.with(context.getApplicationContext())
                         .asBitmap()
-                        .load(thisMachineImageLink)
+                        .load(thisMachineImageLinkArray[i])
                         .apply(options)
                         .into(appWidgetTarget);
             } else {
                 views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
             }
-            Timber.d("On Update: Going to Add widget text: " + thisMachineName + "and " + thisMachineID);
-
+            Timber.d("AtWidget On Update: Going to Add widget text: " + thisMachineNameArray[i] + "and " + thisMachineIDarray[0]);
             // Tell the AppWidgetManager to perform an update on the current app widget
             pushWidgetUpdate(context, views);
         }
-
     }
 
+    private void updateOne(Context context,int position,int appWidgetId){
+
+            Timber.d("AtWidget pushWidgetUpdate for position:"+position);
+            String[] thisMachineIDarray=thisMachineID.split(",");
+            String[] thisMachineImageLinkArray=thisMachineImageLink.split(",");
+            String[] thisMachineNameArray=thisMachineName.split(",");
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+            Timber.d("AtWidget Going to add to this view: "+views.getLayoutId());
+            Timber.d("AtWidget Going to add this link: " + thisMachineImageLinkArray[position]);
+            Timber.d("AtWidget Going to add this name: " + thisMachineIDarray[position]);
+            Timber.d("AtWidget Going to add this id: " + thisMachineNameArray[position]);
+            // Create an Intent to launch ExampleActivity
+            Intent intent = new Intent(context, machineListActivity.class);
+            intent.putExtra(machineDetailFragment.ARG_ITEM_ID, thisMachineIDarray[position].toString());
+            intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET,"true");
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, position, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
+            // Get the layout for the App Widget and attach an on-click listener
+            // to the button
+            views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+            views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
+
+            views.setTextViewText(R.id.appwidget_text, thisMachineNameArray[position]);
+            //only Update picture if Link is different than NA
+            if (!thisMachineImageLinkArray[position].equals("na")) {
+                RequestOptions options = new RequestOptions().
+                        override(300, 300);
+                appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Timber.d("Resource Ready");
+                        super.onResourceReady(resource, transition);
+                    }
+                };
+                Glide.with(context.getApplicationContext())
+                        .asBitmap()
+                        .load(thisMachineImageLinkArray[position])
+                        .apply(options)
+                        .into(appWidgetTarget);
+            } else {
+                views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
+            }
+            Timber.d("AtWidget On Update: Going to Add widget text: " + thisMachineNameArray[position] + "and " + thisMachineIDarray[0]);
+            // Tell the AppWidgetManager to perform an update on the current app widget
+            pushWidgetUpdate(context, views);
+
+    }
 
     @Override
     public void onEnabled(Context context) {

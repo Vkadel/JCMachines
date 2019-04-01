@@ -30,7 +30,11 @@ import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.color;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
+import com.google.common.primitives.Ints;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
@@ -132,24 +136,75 @@ public class machineDetailFragment extends Fragment {
         TextView spare_parts_list_tv=rootView.findViewById(id.spare_parts_tv);
         final Button isThisAWidget=rootView.findViewById(id.make_widget);
 
+        //Todo: Check if machine has a widget
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
+                .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
+
+
+        String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
+        String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
+        //TODO: Split the different Machines/Identify if current machine is already a widget
+
+
+        String thisMachineIDpref = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue);
+        String [] thisMachineIDprefArray=thisMachineIDpref.split(",");
+        for (int i=0;i<thisMachineIDprefArray.length;i++){
+            if(thisMachineIDprefArray[i].equals(thisMachineId)){
+                //TODO: add to strings
+                isThisAWidget.setText("this is already a widget");
+                //Todo Might want to hide the but
+            }
+        }
+
         isThisAWidget.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                jcSteeleMachineWidget myWidget;
                 Timber.d("checked the box");
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getResources().
                         getString(R.string.my_machine_to_widget_key),Context.MODE_PRIVATE);
+                //TODO: Get existing Widgets before adding new
+
+                String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
+                String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
+
+                //Getting Previous images and id's
+                String prevMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue)+",";
+                String prevMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), defaultValueName)+",";
+                String prevMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http")+",";
+
+                if(prevMachineID.contains(defaultValue)){
+                    prevMachineID="";
+                    prevMachineName="";
+                    prevMachineImageLink="";
+                }
+
+                //Convert Shared pref in an arraylist
+                ArrayList<String> idPrefArray=convertSharedPrefOnArray(prevMachineID);
+                ArrayList<String> namePrefArray=convertSharedPrefOnArray(prevMachineName);
+                ArrayList<String> imageLinkPrefArray=convertSharedPrefOnArray(prevMachineImageLink);
+
+                //Only add if item is not the dummy data
+                //Concat the items
+                if(thisMachine!=null){
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.my_machine_to_widget_key),String.valueOf(thisMachine.getId()));
-                editor.putString(getString(R.string.my_machine_name_for_widget_key),thisMachine.getMachineFullName());
-                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key),thisMachine.getThumbnailImage());
+                editor.putString(getString(R.string.my_machine_to_widget_key),convertArraytoString(idPrefArray)+thisMachine.getId());
+                editor.putString(getString(R.string.my_machine_name_for_widget_key),convertArraytoString(namePrefArray)+thisMachine.getMachineFullName());
+                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key),convertArraytoString(imageLinkPrefArray)+thisMachine.getLargeImageOne());
                 editor.commit();
+
                 Toast.makeText(context,getActivity().getResources().getString(R.string.updating_your_widget_with)
                         +thisMachine.getMachineFullName(),Toast.LENGTH_SHORT).show();
                 //Calling a widget Update manually
                 int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
-                jcSteeleMachineWidget myWidget = new jcSteeleMachineWidget();
-                myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
-            }
+
+
+                    myWidget=new jcSteeleMachineWidget();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
+                    myWidget.onUpdate(context,AppWidgetManager.getInstance(context),ids);
+
+                isThisAWidget.setVisibility(View.INVISIBLE);
+            }}
         });
 
         description_tv.setText(this.thisMachine.getDescription());
@@ -208,6 +263,33 @@ public class machineDetailFragment extends Fragment {
             });}else{
             data_sheet_tv.setVisibility(View.GONE);
         }
+    }
+
+    private ArrayList<String> convertSharedPrefOnArray(String myStringOfPref) {
+        if(myStringOfPref.equals("")){
+            return null;
+        }
+        ArrayList<String> myArrayOfPref = new ArrayList<>();
+        for (int i = 0; i < myStringOfPref.split(",").length; i++){
+            myArrayOfPref.add(myStringOfPref.split(",")[i]);
+    }
+    return myArrayOfPref;
+
+    }
+
+    private String convertArraytoString(ArrayList<String> myArrayOfPref) {
+        String myStringPref="";
+        if(myArrayOfPref==null){
+            return "";
+        }
+        for (int i = 0; i < myArrayOfPref.size(); i++){
+            if(i!=myArrayOfPref.size()){
+            myStringPref=myStringPref+myArrayOfPref.get(i)+",";}
+            else{
+                myStringPref= myStringPref+myArrayOfPref.get(i);
+            }
+        }
+        return myStringPref;
     }
 
     @Override
