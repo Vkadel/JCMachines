@@ -38,6 +38,7 @@
     <string name="my_machine_to_widget_key" translatable="false">machine_id</string>
     <string name="my_machine_name_for_widget_key" translatable="false">machine_name</string>
     <string name="my_machine_pic_link_for_widget_key" translatable="false">machine_picture_link</string>
+    <string name="my_machine_widget_id_key" translatable="false">machine_widget_id</string>
     <string name="my_machine_to_widget_default" translatable="false">id</string>
     <string name="my_machine_name_for_widget_default" translatable="false">name</string>
     <string name="updating_your_widget_with">Updating your Widgets to: </string>

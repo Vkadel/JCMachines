@@ -172,17 +172,21 @@ public class machineDetailFragment extends Fragment {
                 String prevMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue)+",";
                 String prevMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), defaultValueName)+",";
                 String prevMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http")+",";
+                String thisMachineWidgetId=sharedPref.getString(context.getString(R.string.my_machine_widget_id_key), "");
 
+                //This the first time a widget is created
                 if(prevMachineID.contains(defaultValue)){
                     prevMachineID="";
                     prevMachineName="";
                     prevMachineImageLink="";
+                    thisMachineWidgetId="";
                 }
 
                 //Convert Shared pref in an arraylist
                 ArrayList<String> idPrefArray=convertSharedPrefOnArray(prevMachineID);
                 ArrayList<String> namePrefArray=convertSharedPrefOnArray(prevMachineName);
                 ArrayList<String> imageLinkPrefArray=convertSharedPrefOnArray(prevMachineImageLink);
+                ArrayList<String> widgetIDArray=convertSharedPrefOnArray(thisMachineWidgetId);
 
                 //Only add if item is not the dummy data
                 //Concat the items
@@ -195,13 +199,14 @@ public class machineDetailFragment extends Fragment {
 
                 Toast.makeText(context,getActivity().getResources().getString(R.string.updating_your_widget_with)
                         +thisMachine.getMachineFullName(),Toast.LENGTH_SHORT).show();
-                //Calling a widget Update manually
+
                 int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
 
 
+                    //Calling a widget Update manually
                     myWidget=new jcSteeleMachineWidget();
                     myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
-                    myWidget.onUpdate(context,AppWidgetManager.getInstance(context),ids);
+
 
                 isThisAWidget.setVisibility(View.INVISIBLE);
             }}

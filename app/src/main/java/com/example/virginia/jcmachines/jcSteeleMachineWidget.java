@@ -1,22 +1,15 @@
 package com.example.virginia.jcmachines;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -24,14 +17,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.virginia.jcmachines.Data.machine;
-import com.example.virginia.jcmachines.Data.machineRepository;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
-import java.io.OptionalDataException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import timber.log.Timber;
@@ -43,11 +33,12 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     static String thisMachineName;
     static String thisMachineID;
     static String thisMachineImageLink;
+    static String thisMachineWidgetId;
     AppWidgetTarget appWidgetTarget;
     static String[] thisMachineIDarray;
     static String[] thisMachineImageLinkArray;
     static String[] thisMachineNameArray;
-
+    static List thisMachineWidgetIdArrayList;
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         Timber.plant(new Timber.DebugTree());
@@ -84,23 +75,68 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         Timber.d("AtWidget onUpdate");
         String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
         String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
-        //TODO: Split the different Machines
-
+        // Split the different Machines
         thisMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue);
+        //TODO: Add to String
         thisMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), "Go On app and add widget");
         thisMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http");
+        thisMachineWidgetId=sharedPref.getString(context.getString(R.string.my_machine_widget_id_key), "");
+
         if(appWidgetIds.length==1){
             //There a single widget update
+
             List<Integer> myidsarray= Arrays.stream(thisIds).boxed().collect(Collectors.toList());
             int thisWidgetid=appWidgetIds[0];
 
-            int position=myidsarray.indexOf(thisWidgetid);
+            thisMachineWidgetIdArrayList = convertStringtoIntList(thisMachineWidgetId);
+            //Determine if this is initial setup
+            int position=-1;
 
-            updateOne(context,position,appWidgetIds[0]);
+            //If there are more widgetids in preferences but this item is not configured
+            if(thisMachineWidgetIdArrayList!=null && thisMachineWidgetIdArrayList.indexOf(thisWidgetid)==-1){
+            //Check if the current item its a widget and the position
+            position=thisIds.length+1;
+            }
+            if(thisMachineWidgetIdArrayList!=null && thisMachineWidgetIdArrayList.indexOf(thisWidgetid)!=-1){
+                //Check if the current item its a widget and the position
+                position=thisMachineWidgetIdArrayList.indexOf(thisWidgetid);
+            }
+
+            //Set up widget ID
+            if(position==-1 || appWidgetIds.length<1){
+                position=position+1;
+                //this is the first time the item is setup
+               final SharedPreferences.Editor editor= sharedPref.edit();
+               if(thisMachineWidgetIdArrayList==null){
+               editor.putString(context.getString(R.string.my_machine_widget_id_key),thisWidgetid+"");
+               editor.commit();}
+               else{
+                   editor.putString(context.getString(R.string.my_machine_widget_id_key),","+thisWidgetid);
+                   editor.commit();
+               }
+            }
+
+            updateOneWidget(context,position,appWidgetIds[0]);
         }
         else{
             final int N = thisIds.length;
             updateThewidgets(context,appWidgetIds,N);}
+    }
+
+    private List convertStringtoIntList(String thisMachineWidgetIdArrayString) {
+        Gson json=new Gson();
+        List<Integer> myIntArray=null;
+        //Convert String to String array
+        List<String> stringList=Arrays.asList(thisMachineWidgetIdArrayString.split("'"));
+        if(stringList==null||stringList.get(0)==""){
+            myIntArray=null;
+        }
+        else{
+        myIntArray= stringList.stream().map(num -> Integer.parseInt(num)).collect(Collectors.toList());
+        String myJsonString=json.toJson(myIntArray);}
+
+
+        return myIntArray;
     }
 
     private void updateThewidgets(Context context, int[] appWidgetIds, int N){
@@ -155,7 +191,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         }
     }
 
-    private void updateOne(Context context,int position,int appWidgetId){
+    private void updateOneWidget(Context context, int position, int appWidgetId){
 
             Timber.d("AtWidget pushWidgetUpdate for position:"+position);
             String[] thisMachineIDarray=thisMachineID.split(",");
