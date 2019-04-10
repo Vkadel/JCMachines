@@ -9,19 +9,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +29,15 @@ import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.color;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-import com.google.common.primitives.Ints;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A fragment representing a single machine detail screen.
@@ -50,10 +50,10 @@ public class machineDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_CAME_FROM_WIDGET="came_from_widget";
+    public static final String ARG_CAME_FROM_WIDGET = "came_from_widget";
     public static final String ARG_ITEM_ID = "item_id";
-    private static final String ARG_ITEM_ROOT_VIEW ="root_view";
-    public static final String ARG_IS_TWO_PANE ="is_two_pane";
+    private static final String ARG_ITEM_ROOT_VIEW = "root_view";
+    public static final String ARG_IS_TWO_PANE = "is_two_pane";
     List<machine> machineList;
     machine thisMachine;
     machineViewModel machineViewModel;
@@ -78,51 +78,53 @@ public class machineDetailFragment extends Fragment {
         Timber.plant(new Timber.DebugTree());
         if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             //Subscribe to the activity model
-            this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
+            this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
             //Check if this is the first the fragment was created
-            if (savedInstanceState==null){
+            if (savedInstanceState == null) {
                 this.thisMachineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
                 this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                 //observe the model
                 this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
-                @Override
-                public void onChanged(@Nullable PagedList<machine> machines) {
-                    machineList =machines;
-                    thisMachine = machineList.get(Integer.valueOf(thisMachineId));
-                    updateUI(rootView);
-                }
-            });}
+                    @Override
+                    public void onChanged(@Nullable PagedList<machine> machines) {
+                        machineList = machines;
+                        thisMachine = machineList.get(Integer.valueOf(thisMachineId));
+                        updateUI(rootView);
+                    }
+                });
+            }
             //get the existing Model and get all machines
-            else{
+            else {
                 this.machineList = this.machineViewModel.getMachines().getValue();
-                if(savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID)!=null){
-                    this.thisMachineId =savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
-                }else{
-                    thisMachineId="0";
+                if (savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID) != null) {
+                    this.thisMachineId = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
+                } else {
+                    thisMachineId = "0";
                 }
                 this.thisMachine = this.machineList.get(Integer.valueOf(thisMachineId));
-                this.isTwopane =savedInstanceState.getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
+                this.isTwopane = savedInstanceState.getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
             }
             this.activity = getActivity();
         }
-        if(getActivity().getIntent().hasExtra(SparePartDetailFragment.ARG_ITEM_ID)){
-            thisMachineId=getActivity().getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);}
+        if (getActivity().getIntent().hasExtra(SparePartDetailFragment.ARG_ITEM_ID)) {
+            thisMachineId = getActivity().getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.rootView = inflater.inflate(layout.machine_detail,container, false);
-        context=getContext();
+        this.rootView = inflater.inflate(layout.machine_detail, container, false);
+        context = getContext();
         // Show the selected machine content as text in a TextView.
-        if (this.thisMachine !=null) {
+        if (this.thisMachine != null) {
             this.updateUI(this.rootView);
         }
         return this.rootView;
     }
 
     public void updateUI(View rootView) {
-        if(!this.isTwopane){
+        if (!this.isTwopane) {
             this.appBarLayout = this.activity.findViewById(id.toolbar_layout);
             this.machineDetailAppBarBackgroundIV = this.activity.findViewById(id.app_bar_machine_image);
             this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
@@ -130,172 +132,290 @@ public class machineDetailFragment extends Fragment {
             Glide.with(this).load(this.thisMachine.getLargeImageOne()).into(this.machineDetailAppBarBackgroundIV);
         }
 
-        TextView description_tv=rootView.findViewById(R.id.description_TV);
-        TextView data_sheet_tv=rootView.findViewById(id.data_sheet_tv);
-        TextView lubrication_chart_tv=rootView.findViewById(id.lubrication_chart_tv);
-        TextView spare_parts_list_tv=rootView.findViewById(id.spare_parts_tv);
-        final Button isThisAWidget=rootView.findViewById(id.make_widget);
+        TextView description_tv = rootView.findViewById(R.id.description_TV);
+        TextView data_sheet_tv = rootView.findViewById(id.data_sheet_tv);
+        TextView lubrication_chart_tv = rootView.findViewById(id.lubrication_chart_tv);
+        TextView spare_parts_list_tv = rootView.findViewById(id.spare_parts_tv);
+        final Button isThisAWidget = rootView.findViewById(id.make_widget);
 
-        //Todo: Check if machine has a widget
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
-                .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
+        Boolean isCurrentMachineWidget = IstheCurrentMachineaWidget();
 
+        if (isCurrentMachineWidget) {
+            isThisAWidget.setText(context.getResources().getString(R.string.already_widget));
+        }
 
         String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
         String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
         //TODO: Split the different Machines/Identify if current machine is already a widget
 
 
-        String thisMachineIDpref = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue);
-        String [] thisMachineIDprefArray=thisMachineIDpref.split(",");
-        for (int i=0;i<thisMachineIDprefArray.length;i++){
-            if(thisMachineIDprefArray[i].equals(thisMachineId)){
-                //TODO: add to strings
-                isThisAWidget.setText("this is already a widget");
-                //Todo Might want to hide the but
-            }
-        }
-
         isThisAWidget.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Only add if item is not the dummy data
+                //Concat the items
+                if (thisMachine != null) {
+
+                    //Select wether you need to add or take out the widget
+                    if(isCurrentMachineWidget){
+                        JsontoArraytoJsonTakeOut();
+                        Toast.makeText(context, getActivity().getResources().getString(R.string.will_remove_thisWidget)
+                                + thisMachine.getMachineFullName(), Toast.LENGTH_SHORT).show();
+                        isThisAWidget.setVisibility(View.INVISIBLE);
+
+
+                    }
+                    else{
+                        JsontoArraytoJson();
+                    Toast.makeText(context, getActivity().getResources().getString(R.string.updating_your_widget_with)
+                            + thisMachine.getMachineFullName(), Toast.LENGTH_SHORT).show();
+                        isThisAWidget.setVisibility(View.INVISIBLE);
+                        }
+                }
+            }
+
+            private void triggerWidgetUdate() {
+                int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
+
+                //Calling a widget Update manually
                 jcSteeleMachineWidget myWidget;
-                Timber.d("checked the box");
+                myWidget = new jcSteeleMachineWidget();
+                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+            }
+
+            private void JsontoArraytoJson() {
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getResources().
-                        getString(R.string.my_machine_to_widget_key),Context.MODE_PRIVATE);
+                        getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
                 //TODO: Get existing Widgets before adding new
 
                 String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
                 String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
 
-                //Getting Previous images and id's
-                String prevMachineID = sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), defaultValue)+",";
-                String prevMachineName = sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), defaultValueName)+",";
-                String prevMachineImageLink = sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), "http")+",";
-                String thisMachineWidgetId=sharedPref.getString(context.getString(R.string.my_machine_widget_id_key), "");
+                Gson prevMachineIDjson = new Gson();
+                Gson prevMachineNamejson = new Gson();
+                Gson prevMachineImageLinkjson = new Gson();
+                Gson prevMachineWidgetIdjson = new Gson();
+                ArrayList<String> machineWidgetPrefArrayID = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayName = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayImageLink = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayWidgetId = new ArrayList<>();
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayID.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayID ", new Throwable());
+                    e.printStackTrace();
 
-                //This the first time a widget is created
-                if(prevMachineID.contains(defaultValue)){
-                    prevMachineID="";
-                    prevMachineName="";
-                    prevMachineImageLink="";
-                    thisMachineWidgetId="";
+                }
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayName.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayName ", new Throwable());
+                    e.printStackTrace();
+
                 }
 
-                //Convert Shared pref in an arraylist
-                ArrayList<String> idPrefArray=convertSharedPrefOnArray(prevMachineID);
-                ArrayList<String> namePrefArray=convertSharedPrefOnArray(prevMachineName);
-                ArrayList<String> imageLinkPrefArray=convertSharedPrefOnArray(prevMachineImageLink);
-                ArrayList<String> widgetIDArray=convertSharedPrefOnArray(thisMachineWidgetId);
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayImageLink.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayImageLink", new Throwable());
+                    e.printStackTrace();
 
-                //Only add if item is not the dummy data
-                //Concat the items
-                if(thisMachine!=null){
+                }
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayWidgetId.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from machineWidgetPrefArrayWidgetId ", new Throwable());
+                    e.printStackTrace();
+
+                }
+
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.my_machine_to_widget_key),convertArraytoString(idPrefArray)+thisMachine.getId());
-                editor.putString(getString(R.string.my_machine_name_for_widget_key),convertArraytoString(namePrefArray)+thisMachine.getMachineFullName());
-                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key),convertArraytoString(imageLinkPrefArray)+thisMachine.getLargeImageOne());
+                //Add JsonItems
+                machineWidgetPrefArrayID.add(Integer.toString(thisMachine.getId()));
+                machineWidgetPrefArrayName.add(thisMachine.getMachineFullName());
+                machineWidgetPrefArrayImageLink.add(thisMachine.getLargeImageOne());
+                editor.putString(getString(R.string.my_machine_to_widget_key), prevMachineIDjson.toJson(machineWidgetPrefArrayID));
+                editor.putString(getString(R.string.my_machine_name_for_widget_key), prevMachineNamejson.toJson(machineWidgetPrefArrayName));
+                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
                 editor.commit();
+            }
+            private void JsontoArraytoJsonTakeOut() {
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getResources().
+                        getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
+                //TODO: Get existing Widgets before adding new
 
-                Toast.makeText(context,getActivity().getResources().getString(R.string.updating_your_widget_with)
-                        +thisMachine.getMachineFullName(),Toast.LENGTH_SHORT).show();
+                String defaultValue = context.getResources().getString(R.string.my_machine_to_widget_default);
+                String defaultValueName = context.getResources().getString(R.string.my_machine_name_for_widget_default);
 
-                int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
+                Gson prevMachineIDjson = new Gson();
+                Gson prevMachineNamejson = new Gson();
+                Gson prevMachineImageLinkjson = new Gson();
+                Gson prevMachineWidgetIdjson = new Gson();
+                ArrayList<String> machineWidgetPrefArrayID = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayName = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayImageLink = new ArrayList<>();
+                ArrayList<String> machineWidgetPrefArrayWidgetId = new ArrayList<>();
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayID.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayID ", new Throwable());
+                    e.printStackTrace();
 
+                }
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_name_for_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayName.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayName ", new Throwable());
+                    e.printStackTrace();
 
-                    //Calling a widget Update manually
-                    myWidget=new jcSteeleMachineWidget();
-                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
+                }
 
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_pic_link_for_widget_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayImageLink.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from: machineWidgetPrefArrayImageLink", new Throwable());
+                    e.printStackTrace();
 
-                isThisAWidget.setVisibility(View.INVISIBLE);
-            }}
+                }
+                //Getting JSon pref DONE
+                try {
+                    ArrayList<String> myTransicionArray = prevMachineIDjson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_widget_id_key), ""), ArrayList.class);
+                    if (myTransicionArray != null) {
+                        machineWidgetPrefArrayWidgetId.addAll(myTransicionArray);
+                    }
+                } catch (JsonSyntaxException e) {
+                    Log.e(TAG, "onClick: Could not create JSON from machineWidgetPrefArrayWidgetId ", new Throwable());
+                    e.printStackTrace();
+
+                }
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //Add JsonItems
+                int position=machineWidgetPrefArrayID.indexOf(Integer.toString(thisMachine.getId()));
+                machineWidgetPrefArrayID.remove(position);
+                machineWidgetPrefArrayName.remove(position);
+                machineWidgetPrefArrayImageLink.remove(position);
+                machineWidgetPrefArrayWidgetId.remove(position);
+                editor.putString(getString(R.string.my_machine_to_widget_key), prevMachineIDjson.toJson(machineWidgetPrefArrayID));
+                editor.putString(getString(R.string.my_machine_name_for_widget_key), prevMachineNamejson.toJson(machineWidgetPrefArrayName));
+                editor.putString(getString(R.string.my_machine_pic_link_for_widget_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
+                editor.putString(getString(R.string.my_machine_widget_id_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
+                editor.commit();
+            }
         });
 
         description_tv.setText(this.thisMachine.getDescription());
-        ImageView dimensions_tv_inline=rootView.findViewById(id.inline_dimensions_image);
+        ImageView dimensions_tv_inline = rootView.findViewById(id.inline_dimensions_image);
 
         //Hide Image View for dimensios if there is no picture for it
-        if (!(this.thisMachine.getInlIneInstallImage()).equals("na")){
+        if (!(this.thisMachine.getInlIneInstallImage()).equals("na")) {
             dimensions_tv_inline.setVisibility(View.VISIBLE);
-        Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);}
-        else{
+            Glide.with(this).load(this.thisMachine.getInlIneInstallImage()).into(dimensions_tv_inline);
+        } else {
             dimensions_tv_inline.setVisibility(View.GONE);
         }
 
         //onClick listeners for pdf files. Hide the View if file is not available
 
-        if (!(this.thisMachine.getLubricationChartLink()).equals("na")){
+        if (!(this.thisMachine.getLubricationChartLink()).equals("na")) {
             lubrication_chart_tv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, Pdf_viewer_Activity.class);
-                intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
-                intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID,thisMachine.getId());
-                intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID,Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_LUBRICATION_CHART);
-                context.startActivity(intent);
-            }
-        });}else{
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, Pdf_viewer_Activity.class);
+                    intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getLubricationChartLink()));
+                    intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID, thisMachine.getId());
+                    intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID, Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_LUBRICATION_CHART);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
             lubrication_chart_tv.setVisibility(View.GONE);
         }
 
         //Creating intent to go to activity displaying list of SpareParts for this machine
-        if ((this.thisMachine.getSpareParts()!=null)){
+        if ((this.thisMachine.getSpareParts() != null)) {
             spare_parts_list_tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, SparePartListActivity.class);
-                    intent.putExtra(SparePartListActivity.ARG_ITEM_ID,thisMachineId);
+                    intent.putExtra(SparePartListActivity.ARG_ITEM_ID, thisMachineId);
                     context.startActivity(intent);
                 }
-            });}else{
+            });
+        } else {
             spare_parts_list_tv.setVisibility(View.GONE);
         }
 
-        if (!(this.thisMachine.getDatasheetLink()).equals("na")){
+        if (!(this.thisMachine.getDatasheetLink()).equals("na")) {
             data_sheet_tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, Pdf_viewer_Activity.class);
                     intent.putExtra(Pdf_viewer_Activity.ARG_LINK, String.valueOf(thisMachine.getDatasheetLink()));
-                    intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID,thisMachine.getId());
-                    intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID,Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_TECHNICAL_SHEET);
+                    intent.putExtra(Pdf_viewer_Activity.ARG_MACHINE_ID, thisMachine.getId());
+                    intent.putExtra(Pdf_viewer_Activity.ARG_DOCUMENT_ID, Pdf_viewer_Activity.ARG_DOCUMENT_TYPE_TECHNICAL_SHEET);
                     context.startActivity(intent);
                 }
-            });}else{
+            });
+        } else {
             data_sheet_tv.setVisibility(View.GONE);
         }
     }
 
-    private ArrayList<String> convertSharedPrefOnArray(String myStringOfPref) {
-        if(myStringOfPref.equals("")){
-            return null;
-        }
-        ArrayList<String> myArrayOfPref = new ArrayList<>();
-        for (int i = 0; i < myStringOfPref.split(",").length; i++){
-            myArrayOfPref.add(myStringOfPref.split(",")[i]);
-    }
-    return myArrayOfPref;
+    private Boolean IstheCurrentMachineaWidget() {
+        //Todo: Check if machine has a widget
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
+                .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
 
-    }
-
-    private String convertArraytoString(ArrayList<String> myArrayOfPref) {
-        String myStringPref="";
-        if(myArrayOfPref==null){
-            return "";
-        }
-        for (int i = 0; i < myArrayOfPref.size(); i++){
-            if(i!=myArrayOfPref.size()){
-            myStringPref=myStringPref+myArrayOfPref.get(i)+",";}
-            else{
-                myStringPref= myStringPref+myArrayOfPref.get(i);
+        Gson myMachineIDJson = new Gson();
+        ArrayList<String> myMachinesArray = new ArrayList<>();
+        try {
+            ArrayList<String> myTransicionArray = myMachineIDJson.fromJson(sharedPref.getString(context.getString(R.string.my_machine_to_widget_key), ""), ArrayList.class);
+            if (myTransicionArray != null) {
+                myMachinesArray.addAll(myTransicionArray);
             }
+        } catch (JsonSyntaxException e) {
+            Log.e(TAG, "Trying to Create Array of Machine ids", new Throwable());
+            e.printStackTrace();
         }
-        return myStringPref;
+        if (myMachinesArray.indexOf(thisMachineId) == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
+
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {

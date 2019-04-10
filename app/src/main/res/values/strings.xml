@@ -34,13 +34,15 @@
     <string name="add_this_as_widget">Add this machine as your widget</string>
     <string name="loaded_once_preference_key" translatable="false">loaded_once</string>
     <string name="loaded_once_preference_value" translatable="true">false</string>
-    <string name="select_for_widget">Select this Machine for a Widget</string>
+    <string name="select_for_widget">Select a machine to Widget</string>
+    <string name="my_machine_to_widget_preferences_key" translatable="false">machine_id_preferences</string>
     <string name="my_machine_to_widget_key" translatable="false">machine_id</string>
     <string name="my_machine_name_for_widget_key" translatable="false">machine_name</string>
     <string name="my_machine_pic_link_for_widget_key" translatable="false">machine_picture_link</string>
     <string name="my_machine_widget_id_key" translatable="false">machine_widget_id</string>
     <string name="my_machine_to_widget_default" translatable="false">id</string>
     <string name="my_machine_name_for_widget_default" translatable="false">name</string>
+    <string name="add_a_widget">Select a machine to make a widget</string>
     <string name="updating_your_widget_with">Updating your Widgets to: </string>
     <string name="list_is_zero">There are not machines in our list at this time please check back later</string>
     <string name="noNetwork">Check your connection, your data may not be up to date</string>
@@ -52,4 +54,10 @@
     <string name="no_network_to_see_file">Please connect to a network to view and/or download file</string>
     <string name="have_internet">App has internet connection</string>
     <string name="lost_connection">App lost internet connection</string>
+    <string name="removed_widget">Removed widget in position</string>
+    <string name="already_widget">Remove from widgets</string>
+    <string name="will_remove_thisWidget">Will remove this machine from widgets</string>
+    <string name="select_another">Select a machine before adding another widget</string>
+    <string name="dummy_machine_id">1000000</string>
+
 </resources>

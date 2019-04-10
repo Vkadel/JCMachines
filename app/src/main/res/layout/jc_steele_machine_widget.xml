@@ -1,29 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:minWidth="150dp"
-    android:minHeight="150dp"
+    android:layout_width="@dimen/widget_dim"
+    android:layout_height="@dimen/widget_dim"
     android:background="@drawable/shape"
+    android:minHeight="@dimen/widget_dim"
+    android:resizeMode="horizontal|vertical"
     >
 
     <ImageView
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:id="@+id/appWidget_machine_picture"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/place_holder_image" />
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:src="@drawable/steele_logo_100" />
 
     <TextView
-        android:paddingTop="@dimen/fab_margin"
+        android:padding="@dimen/fab_margin"
         android:id="@+id/appwidget_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/appWidget_machine_picture"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_alignParentBottom="true"
         android:contentDescription="@string/appwidget_text"
-        android:text="@string/my_machine_name_for_widget_default"
+        android:text="@string/add_a_widget"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"

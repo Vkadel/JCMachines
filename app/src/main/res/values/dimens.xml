@@ -19,4 +19,8 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="spare_part_description_margin">8dp</dimen>
     <dimen name="margin_take_out_for_list">400</dimen>
+    <dimen name="widget_dim">180dp</dimen>
+    <dimen name="widget_dim_min_resize">130dp</dimen>
+    <dimen name="widget_dim_min_h">100dp</dimen>
+    <dimen name="widget_dim_min_w">140dp</dimen>
 </resources>
