@@ -262,5 +262,15 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     }
     return machineWidgetPrefArrayWidgetId;
     }
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
+        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
+       onUpdate(context,appWidgetManager,ids);
+    }
+
 }
+
 
