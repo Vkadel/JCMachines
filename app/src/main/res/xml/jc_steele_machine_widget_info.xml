@@ -7,6 +7,6 @@
     android:minHeight="@dimen/widget_dim_min_h"
     android:previewImage="@drawable/steele_logo_100"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"
     ></appwidget-provider>

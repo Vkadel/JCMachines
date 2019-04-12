@@ -198,10 +198,10 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
             views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
-            views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
+
 
             //only Update picture if Link is different than NA
-            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")) {
+            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")||machineWidgetPrefArrayImageLink.get(Integer.valueOf(position))==null) {
                 RequestOptions options = new RequestOptions().
                         override(100, 100);
                 appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
@@ -218,9 +218,10 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
                         .into(appWidgetTarget);
                 // Get the layout for the App Widget and attach an on-click listener
                 // to the button
-
+                views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
             } else {
                 views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
+                views.setTextViewText(R.id.appwidget_text,context.getResources().getString(R.string.select_for_widget));
             }
 
             Timber.d("AtWidget On Update: Going to Add widget text: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)) + "and " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
