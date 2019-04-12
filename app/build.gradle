@@ -79,6 +79,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display:17.1.1'
     //Paging library
     implementation 'android.arch.paging:runtime:1.0.1'
+    //Because firebase has an old customtab reference 27 that its not compatible with appcompat
+    implementation'com.android.support:customtabs:28.0.0'
 }
 ext {
     roomVersion = '1.1.1'
