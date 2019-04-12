@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,7 @@ public class machineDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Timber.plant(new Timber.DebugTree());
         if (this.getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             //Subscribe to the activity model
@@ -109,6 +111,12 @@ public class machineDetailFragment extends Fragment {
         if (getActivity().getIntent().hasExtra(SparePartDetailFragment.ARG_ITEM_ID)) {
             thisMachineId = getActivity().getIntent().getStringExtra(SparePartDetailFragment.ARG_ITEM_ID);
         }
+    }
+
+    @Override
+    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(context, attrs, savedInstanceState);
+        triggerWidgetUdate();
     }
 
     @Override
@@ -174,14 +182,7 @@ public class machineDetailFragment extends Fragment {
                 }
             }
 
-            private void triggerWidgetUdate() {
-                int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
 
-                //Calling a widget Update manually
-                jcSteeleMachineWidget myWidget;
-                myWidget = new jcSteeleMachineWidget();
-                myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
-            }
 
             private void JsontoArraytoJson() {
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getResources().
@@ -415,7 +416,13 @@ public class machineDetailFragment extends Fragment {
             return true;
         }
     }
-
+    private void triggerWidgetUdate() {
+        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
+        //Calling a widget Update manually
+        jcSteeleMachineWidget myWidget;
+        myWidget = new jcSteeleMachineWidget();
+        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), ids);
+    }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {

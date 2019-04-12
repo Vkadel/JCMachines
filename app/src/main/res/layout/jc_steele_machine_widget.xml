@@ -7,6 +7,7 @@
     android:resizeMode="horizontal|vertical"
     >
 
+
     <ImageView
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_alignParentStart="true"
@@ -16,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:src="@drawable/steele_logo_100" />
-
     <TextView
         android:padding="@dimen/fab_margin"
         android:id="@+id/appwidget_text"
@@ -30,5 +30,13 @@
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:textStyle="italic|bold" />
+
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/widgetProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

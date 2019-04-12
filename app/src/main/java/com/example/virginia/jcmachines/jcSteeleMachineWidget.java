@@ -13,12 +13,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import timber.log.Timber;
 
 import static android.support.constraint.Constraints.TAG;
+import static android.view.View.INVISIBLE;
 
 /**
  * Implementation of App Widget functionality.
@@ -38,7 +39,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     static String thisMachineName;
     static String thisMachineID;
     AppWidgetTarget appWidgetTarget;
-    Boolean dontUpdate=false;
+    Boolean dontUpdate = false;
     Gson prevMachineIDjson = new Gson();
     Gson prevMachineWidgetIdjson = new Gson();
     ArrayList<String> machineWidgetPrefArrayID = new ArrayList<>();
@@ -68,6 +69,11 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     }
 
     @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+    }
+
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Timber.plant(new Timber.DebugTree());
         //Save widget information in preferences for first item
@@ -77,10 +83,12 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         final SharedPreferences.Editor editor = newSharedPref.edit();
         int[] allIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
         final int N = allIds.length;
-        int thisWidgetid=0;
+        int thisWidgetid = 0;
         GetSharedPreferences(context);
-
-        if (appWidgetIds.length==1) {
+        Boolean isOneItemUpdate=false;
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+        ;
+        if (appWidgetIds.length == 1) {
             thisWidgetid = appWidgetIds[0];
             position = machineWidgetPrefArrayWidgetId.indexOf(thisWidgetid + "");
         }
@@ -92,11 +100,21 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             updatePreference(context, editor);
         }
 
-
-        for (int i = 0; i < N; i++) {
-            updateOneWidget(context, i, allIds[i]);
+        if (appWidgetIds.length == 1) {
+            List<Integer> myList= Arrays.stream(allIds).boxed().collect(Collectors.toList());
+            int item = myList.indexOf(thisWidgetid);
+            isOneItemUpdate=true;
+            updateOneWidget(context, item, appWidgetIds[0]);
+            if(allIds.length>1){
+                //Trigger Update if there if this is not the onlywidget with all available widgets
+            onUpdate(context,appWidgetManager,allIds);}
         }
 
+        if(appWidgetIds.length>1){
+            for (int i = 0; i < appWidgetIds.length; i++) {
+                updateOneWidget(context, i, appWidgetIds[i]);
+            }
+        }
     }
 
     private void updatePreference(Context context, SharedPreferences.Editor editor) {
@@ -162,60 +180,59 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
 
     private void updateOneWidget(Context context, int position, int appWidgetId) {
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
         //Only update if there is a widget associated to this position
-            if (machineWidgetPrefArrayWidgetId.indexOf(Integer.toString(appWidgetId))!=-1 && machineWidgetPrefArrayID.size()>position) {
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
-                Timber.d("AtWidget pushWidgetUpdate for position:" + position);
-                Timber.d("AtWidget Going to add to this view: " + views.getLayoutId());
-                Timber.d("AtWidget Going to add this imagelink: " + machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)));
-                Timber.d("AtWidget Going to add this name: " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
-                Timber.d("AtWidget Going to add this id: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)));
+        if (machineWidgetPrefArrayWidgetId.indexOf(Integer.toString(appWidgetId)) != -1 && machineWidgetPrefArrayID.size() > position) {
 
-                // Create an Intent to launch ExampleActivity
-                Intent intent = new Intent(context, machineListActivity.class);
-                intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));
-                intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Timber.d("AtWidget pushWidgetUpdate for position:" + position);
+            Timber.d("AtWidget Going to add to this view: " + views.getLayoutId());
+            Timber.d("AtWidget Going to add this imagelink: " + machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)));
+            Timber.d("AtWidget Going to add this name: " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
+            Timber.d("AtWidget Going to add this id: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)));
 
-                views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
-                views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
-                views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
+            // Create an Intent to launch ExampleActivity
+            Intent intent = new Intent(context, machineListActivity.class);
+            intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));
+            intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                //only Update picture if Link is different than NA
-                if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")) {
-                    RequestOptions options = new RequestOptions().
-                            override(100, 100);
-                    appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            Timber.d("Resource Ready");
-                            super.onResourceReady(resource, transition);
-                        }
-                    };
-                    Glide.with(context.getApplicationContext())
-                            .asBitmap()
-                            .load(machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)))
-                            .apply(options)
-                            .into(appWidgetTarget);
-                    // Get the layout for the App Widget and attach an on-click listener
-                    // to the button
-                    pushWidgetUpdate(context, views);
-                } else {
-                    views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
-                }
+            views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+            views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
+            views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
 
-                Timber.d("AtWidget On Update: Going to Add widget text: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)) + "and " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
-                // Tell the AppWidgetManager to perform an update on the current app widget
-            }else{
-                Timber.d("AtWidget Position and Widget Size :" + position +" "+machineWidgetPrefArrayWidgetId.size());
-                Timber.d(machineWidgetPrefArrayWidgetId.toString());
+            //only Update picture if Link is different than NA
+            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")) {
+                RequestOptions options = new RequestOptions().
+                        override(100, 100);
+                appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Timber.d("Resource Ready");
+                        super.onResourceReady(resource, transition);
+                    }
+                };
+                Glide.with(context.getApplicationContext())
+                        .asBitmap()
+                        .load(machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)))
+                        .apply(options)
+                        .into(appWidgetTarget);
+                // Get the layout for the App Widget and attach an on-click listener
+                // to the button
 
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
-                //views.setTextViewText(R.id.appwidget_text, context.getResources().getString(R.string.select_another));
-                pushWidgetUpdate(context, views);
-                //Push new Update with just the first items.
+            } else {
+                views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
             }
+
+            Timber.d("AtWidget On Update: Going to Add widget text: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)) + "and " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
+            // Tell the AppWidgetManager to perform an update on the current app widget
+        } else {
+            Timber.d("AtWidget Position and Widget Size :" + position + " " + machineWidgetPrefArrayWidgetId.size());
+            Timber.d(machineWidgetPrefArrayWidgetId.toString());
+            views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+
+        }
+        views.setViewVisibility(R.id.widgetProgress,INVISIBLE);
+        pushWidgetUpdate(context, views);
 
     }
 
@@ -223,53 +240,55 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         GetSharedPreferences(context);
-
         int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
         if (appWidgetIds.length == 1 && machineWidgetPrefArrayWidgetId != null) {
             int position = machineWidgetPrefArrayWidgetId.indexOf(Integer.toString(appWidgetIds[0]));
             if (position != -1) {
                 machineWidgetPrefArrayWidgetId.remove(Integer.toString(appWidgetIds[0]));
-                Timber.d("Size of WidgetIDArray: "+machineWidgetPrefArrayName+" Position to Delete: "+position);
+                Timber.d("Size of WidgetIDArray: " + machineWidgetPrefArrayName + " Position to Delete: " + position);
                 //Toast.makeText(context, context.getResources().getString(R.string.removed_widget) + machineWidgetPrefArrayName.get(position), Toast.LENGTH_SHORT).show();
                 //Save widget information in preferences for first item
                 SharedPreferences newSharedPref = context.getSharedPreferences(context.getResources()
                         .getString(R.string.my_machine_widget_id_key), Context.MODE_PRIVATE);
                 //this is the first time the item is setup
-                machineWidgetPrefArrayWidgetId=cleanActiveWidgets(machineWidgetPrefArrayWidgetId,allIds);
+                machineWidgetPrefArrayWidgetId = cleanActiveWidgets(machineWidgetPrefArrayWidgetId, allIds);
                 final SharedPreferences.Editor editor = newSharedPref.edit();
                 editor.putString(context.getString(R.string.my_machine_widget_id_key), prevMachineWidgetIdjson.toJson(machineWidgetPrefArrayWidgetId));
                 editor.commit();
 
             }
         }
-
+        onUpdate(context, AppWidgetManager.getInstance(context),
+                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
     }
 
     private ArrayList cleanActiveWidgets(ArrayList<String> machineWidgetPrefArrayWidgetId, int[] allIds) {
-        ArrayList<Integer> itemsToDelete=new ArrayList<>();
+        ArrayList<Integer> itemsToDelete = new ArrayList<>();
         Timber.d(machineWidgetPrefArrayWidgetId.toString());
-       for(int i=0;i<machineWidgetPrefArrayWidgetId.size();i++){
-           int index= Arrays.asList(allIds).indexOf(Integer.parseInt(machineWidgetPrefArrayWidgetId.get(i)));
-           if(index!=-1){
-               //Keep
-           }else{
-               //delete
-               itemsToDelete.add(index);
-           }
-       }
-       for(int i=0;i<itemsToDelete.size();i++){
-        machineWidgetPrefArrayWidgetId.remove(itemsToDelete.get(i));
-    }
-    return machineWidgetPrefArrayWidgetId;
+        for (int i = 0; i < machineWidgetPrefArrayWidgetId.size(); i++) {
+            int index = Arrays.asList(allIds).indexOf(Integer.parseInt(machineWidgetPrefArrayWidgetId.get(i)));
+            if (index != -1) {
+                //Keep
+            } else {
+                //delete
+                Timber.d("Atwidget: WidgetIDarray: " + machineWidgetPrefArrayWidgetId.toString());
+                itemsToDelete.add(index);
+                Timber.d("Atwidget: WidgetIDarray after delete: " + machineWidgetPrefArrayWidgetId.toString());
+            }
+        }
+        for (int i = 0; i < itemsToDelete.size(); i++) {
+            machineWidgetPrefArrayWidgetId.remove(itemsToDelete.get(i));
+        }
+        return machineWidgetPrefArrayWidgetId;
     }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
-        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
-       onUpdate(context,appWidgetManager,ids);
+        onUpdate(context, AppWidgetManager.getInstance(context),
+                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
     }
+
 
 }
 
