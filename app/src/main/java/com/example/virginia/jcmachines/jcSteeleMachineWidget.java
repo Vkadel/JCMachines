@@ -112,6 +112,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
         if(appWidgetIds.length>1){
             for (int i = 0; i < appWidgetIds.length; i++) {
+
                 updateOneWidget(context, i, appWidgetIds[i]);
             }
         }
