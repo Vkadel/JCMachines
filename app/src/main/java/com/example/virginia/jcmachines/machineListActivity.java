@@ -1,10 +1,12 @@
 package com.example.virginia.jcmachines;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,7 +77,7 @@ public class machineListActivity extends AppCompatActivity {
         this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
 
         PagedList.Config.Builder config= new PagedList.Config.Builder().setPageSize(2).setPrefetchDistance(4);
-
+        Timber.d("atMachineList: Started List activity");
         Timber.plant(new DebugTree());
         activity=this;
         Toolbar toolbar = this.findViewById(id.toolbar);
@@ -141,6 +143,8 @@ public class machineListActivity extends AppCompatActivity {
                             editor.commit();
                             //Check if the item Came from the widget.
                             if (cameFromWidget) {
+                                Timber.d("At MachineListActivity: Came from Widget ");
+                                Timber.d("At MachineListActivity: Widget to display "+thisItemID);
                                 if (mTwoPane) {
                                     Bundle arguments = new Bundle();
                                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
@@ -326,4 +330,12 @@ public class machineListActivity extends AppCompatActivity {
                     return oldUser.equals(newUser);
                 }
             };
+    private void triggerWidgetUdate() {
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, jcSteeleMachineWidget.class));
+        //Calling a widget Update manually
+        jcSteeleMachineWidget myWidget;
+        myWidget = new jcSteeleMachineWidget();
+        myWidget.onUpdate(this, AppWidgetManager.getInstance(this), ids);
+    }
+
 }

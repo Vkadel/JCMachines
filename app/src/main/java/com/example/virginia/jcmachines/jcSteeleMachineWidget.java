@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -70,7 +71,15 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
+        if(intent.getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null & intent.getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Timber.plant(new Timber.DebugTree());
+            Timber.d("AtWidget OnReceive: Entered ");
+            Timber.d("AtWidget OnReceive: Request Item "+Integer.parseInt(intent.getExtras().getString(machineDetailFragment.ARG_ITEM_ID)));
+            context.startActivity(intent);
+        }else{
+            super.onReceive(context, intent);
+        }
     }
 
     @Override
@@ -84,10 +93,12 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         int[] allIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
         final int N = allIds.length;
         int thisWidgetid = 0;
-        GetSharedPreferences(context);
+
         Boolean isOneItemUpdate=false;
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
-        ;
+
+        GetSharedPreferences(context);
+
         if (appWidgetIds.length == 1) {
             thisWidgetid = appWidgetIds[0];
             position = machineWidgetPrefArrayWidgetId.indexOf(thisWidgetid + "");
@@ -112,7 +123,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
         if(appWidgetIds.length>1){
             for (int i = 0; i < appWidgetIds.length; i++) {
-
                 updateOneWidget(context, i, appWidgetIds[i]);
             }
         }
@@ -129,7 +139,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
                 .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
         // Perform this loop procedure for each App Widget that belongs to this provider
-        Timber.d("AtWidget onUpdate");
+        Timber.d("AtWidget Get SharedPref");
 
         //Getting JSon pref DONE
         try {
@@ -192,17 +202,18 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             Timber.d("AtWidget Going to add this id: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)));
 
             // Create an Intent to launch ExampleActivity
-            Intent intent = new Intent(context, machineListActivity.class);
+            Intent intent = new Intent(context, machineDetailActivity.class);
             intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));
             intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))),
+                    intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
             views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
 
-
             //only Update picture if Link is different than NA
-            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")||machineWidgetPrefArrayImageLink.get(Integer.valueOf(position))==null) {
+            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")||machineWidgetPrefArrayImageLink.get(Integer.valueOf(position))!=null) {
                 RequestOptions options = new RequestOptions().
                         override(100, 100);
                 appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
@@ -231,10 +242,10 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             Timber.d("AtWidget Position and Widget Size :" + position + " " + machineWidgetPrefArrayWidgetId.size());
             Timber.d(machineWidgetPrefArrayWidgetId.toString());
             views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
+            views.setTextViewText(R.id.appwidget_text,context.getResources().getString(R.string.select_for_widget));
 
         }
         views.setViewVisibility(R.id.widgetProgress,INVISIBLE);
-        pushWidgetUpdate(context, views);
 
     }
 
@@ -242,47 +253,24 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         GetSharedPreferences(context);
+        for(int i=0;i<appWidgetIds.length;i++){
+           Boolean exist=machineWidgetPrefArrayWidgetId.contains(Integer.toString(appWidgetIds[i]));
+           if(exist){
+               machineWidgetPrefArrayWidgetId.remove(Integer.toString(appWidgetIds[i]));
+           }
+        }
+        //Final clean
         int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
-        if (appWidgetIds.length == 1 && machineWidgetPrefArrayWidgetId != null) {
-            int position = machineWidgetPrefArrayWidgetId.indexOf(Integer.toString(appWidgetIds[0]));
-            if (position != -1) {
-                machineWidgetPrefArrayWidgetId.remove(Integer.toString(appWidgetIds[0]));
-                Timber.d("Size of WidgetIDArray: " + machineWidgetPrefArrayName + " Position to Delete: " + position);
-                //Toast.makeText(context, context.getResources().getString(R.string.removed_widget) + machineWidgetPrefArrayName.get(position), Toast.LENGTH_SHORT).show();
-                //Save widget information in preferences for first item
-                SharedPreferences newSharedPref = context.getSharedPreferences(context.getResources()
-                        .getString(R.string.my_machine_widget_id_key), Context.MODE_PRIVATE);
-                //this is the first time the item is setup
-                machineWidgetPrefArrayWidgetId = cleanActiveWidgets(machineWidgetPrefArrayWidgetId, allIds);
-                final SharedPreferences.Editor editor = newSharedPref.edit();
-                editor.putString(context.getString(R.string.my_machine_widget_id_key), prevMachineWidgetIdjson.toJson(machineWidgetPrefArrayWidgetId));
-                editor.commit();
-
-            }
+        if(allIds.length<machineWidgetPrefArrayWidgetId.size()){
+            //Do A full clean
+            Timber.d("AtWidget: Doing full clean");
+            List<String> convertedAllIDs=Arrays.asList(allIds).stream().map(ints -> ints.toString()).collect(Collectors.toList());
+            machineWidgetPrefArrayWidgetId.remove(convertedAllIDs);
         }
-        onUpdate(context, AppWidgetManager.getInstance(context),
-                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
+        Timber.d("AtWidget: FInal widgetID array "+machineWidgetPrefArrayWidgetId.toString());
     }
 
-    private ArrayList cleanActiveWidgets(ArrayList<String> machineWidgetPrefArrayWidgetId, int[] allIds) {
-        ArrayList<Integer> itemsToDelete = new ArrayList<>();
-        Timber.d(machineWidgetPrefArrayWidgetId.toString());
-        for (int i = 0; i < machineWidgetPrefArrayWidgetId.size(); i++) {
-            int index = Arrays.asList(allIds).indexOf(Integer.parseInt(machineWidgetPrefArrayWidgetId.get(i)));
-            if (index != -1) {
-                //Keep
-            } else {
-                //delete
-                Timber.d("Atwidget: WidgetIDarray: " + machineWidgetPrefArrayWidgetId.toString());
-                itemsToDelete.add(index);
-                Timber.d("Atwidget: WidgetIDarray after delete: " + machineWidgetPrefArrayWidgetId.toString());
-            }
-        }
-        for (int i = 0; i < itemsToDelete.size(); i++) {
-            machineWidgetPrefArrayWidgetId.remove(itemsToDelete.get(i));
-        }
-        return machineWidgetPrefArrayWidgetId;
-    }
+
 
     @Override
     public void onEnabled(Context context) {
@@ -290,7 +278,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         onUpdate(context, AppWidgetManager.getInstance(context),
                 AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
     }
-
 
 }
 

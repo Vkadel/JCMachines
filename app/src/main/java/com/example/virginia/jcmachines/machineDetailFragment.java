@@ -113,11 +113,6 @@ public class machineDetailFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
-        super.onInflate(context, attrs, savedInstanceState);
-        triggerWidgetUdate();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -247,10 +242,16 @@ public class machineDetailFragment extends Fragment {
                 }
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                //Add JsonItems
-                machineWidgetPrefArrayID.add(Integer.toString(thisMachine.getId()));
-                machineWidgetPrefArrayName.add(thisMachine.getMachineFullName());
-                machineWidgetPrefArrayImageLink.add(thisMachine.getLargeImageOne());
+                //Add JsonItems only if it doesnt exist
+                if(!machineWidgetPrefArrayID.contains(Integer.toString(thisMachine.getId()))){
+                    machineWidgetPrefArrayID.add(Integer.toString(thisMachine.getId()));
+                }
+                if(!machineWidgetPrefArrayName.contains(thisMachine.getMachineFullName())){
+                    machineWidgetPrefArrayName.add(thisMachine.getMachineFullName());
+                }
+               if(!machineWidgetPrefArrayImageLink.contains(thisMachine.getLargeImageOne())){
+                   machineWidgetPrefArrayImageLink.add(thisMachine.getLargeImageOne());
+               }
                 editor.putString(getString(R.string.my_machine_to_widget_key), prevMachineIDjson.toJson(machineWidgetPrefArrayID));
                 editor.putString(getString(R.string.my_machine_name_for_widget_key), prevMachineNamejson.toJson(machineWidgetPrefArrayName));
                 editor.putString(getString(R.string.my_machine_pic_link_for_widget_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));

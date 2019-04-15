@@ -30,7 +30,7 @@ import timber.log.Timber;
 public class machineDetailActivity extends AppCompatActivity {
 String thisItemID;
 private boolean mTwoPane;
-
+Boolean cameFromWidget=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,14 @@ private boolean mTwoPane;
         this.setContentView(layout.activity_machine_detail);
         Toolbar toolbar = this.findViewById(R.id.detail_toolbar);
         this.setSupportActionBar(toolbar);
+
+        //Check if Came from widget
+        if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
+            Timber.d("AtDetail Activity: Came from Widget, wiget position "+ getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
+            cameFromWidget=true;
+            //thisItemID=getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID);
+        }
+
         FloatingActionButton fab = this.findViewById(R.id.fab);
         fab.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,6 +95,27 @@ private boolean mTwoPane;
             thisItemID=savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+
+        //Check if Came from widget
+        if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
+            Timber.d("AtDetail Activity OnpostResume: Came from Widget, wiget position "+ getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID)
+                    +" "+cameFromWidget);
+            cameFromWidget=true;
+            thisItemID=getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID);
+
+        }
+        super.onPostResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        Timber.d("AtDetail Activity OnPause:");
+        super.onPause();
     }
 
     @Override
