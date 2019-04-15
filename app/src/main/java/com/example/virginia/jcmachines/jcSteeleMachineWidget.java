@@ -70,19 +70,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        if(intent.getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null & intent.getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Timber.plant(new Timber.DebugTree());
-            Timber.d("AtWidget OnReceive: Entered ");
-            Timber.d("AtWidget OnReceive: Request Item "+Integer.parseInt(intent.getExtras().getString(machineDetailFragment.ARG_ITEM_ID)));
-            context.startActivity(intent);
-        }else{
-            super.onReceive(context, intent);
-        }
-    }
-
-    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Timber.plant(new Timber.DebugTree());
         //Save widget information in preferences for first item
