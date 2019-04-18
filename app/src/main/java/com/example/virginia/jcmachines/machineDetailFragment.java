@@ -127,12 +127,15 @@ public class machineDetailFragment extends Fragment {
     }
 
     public void updateUI(View rootView) {
-        if (!this.isTwopane) {
+        if (!this.isTwopane && rootView!=null) {
             this.appBarLayout = this.activity.findViewById(id.toolbar_layout);
+            if(appBarLayout!=null){
+                this.appBarLayout.setTitle(this.thisMachine.getMachineFullName());
+                this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
+            }
             this.machineDetailAppBarBackgroundIV = this.activity.findViewById(id.app_bar_machine_image);
-            this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
-            this.appBarLayout.setTitle(this.thisMachine.getMachineFullName());
-            Glide.with(this).load(this.thisMachine.getLargeImageOne()).into(this.machineDetailAppBarBackgroundIV);
+            if(machineDetailAppBarBackgroundIV!=null){
+            Glide.with(this).load(this.thisMachine.getLargeImageOne()).into(this.machineDetailAppBarBackgroundIV);}
         }
 
         TextView description_tv = rootView.findViewById(R.id.description_TV);

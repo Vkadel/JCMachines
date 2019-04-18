@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,10 +20,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +39,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-
-import java.util.List;
 
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -68,7 +64,13 @@ public class machineListActivity extends AppCompatActivity {
     private Boolean updatedOnce=false;
     private int thisItemID;
     private Boolean cameFromWidget=false;
+    private RecyclerView saveInstanceOfRecyclerView;
     Activity activity;
+    Boolean isLarge;
+    Boolean isSmall;
+    Boolean isLandScape=false;
+    Boolean isPortrait=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +85,6 @@ public class machineListActivity extends AppCompatActivity {
         Toolbar toolbar = this.findViewById(id.toolbar);
         this.setSupportActionBar(toolbar);
         toolbar.setTitle(this.getTitle());
-        FloatingActionButton fab = this.findViewById(id.fab);
-        fab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
 
         //Check if the application is connected to the web, and give the user a toast to signal that the information may not be up to date
@@ -99,7 +93,7 @@ public class machineListActivity extends AppCompatActivity {
         }
         if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
             cameFromWidget=true;
-            thisItemID=Integer.parseInt(getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
+            thisItemID=Integer.parseInt(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID));
         }
 
         View recyclerView = this.findViewById(id.machine_list);
@@ -116,6 +110,7 @@ public class machineListActivity extends AppCompatActivity {
         //will be used to prevent the blips when data loads more than once in
         //the recycler. Otherwise when preventing the blip the application
         //will not load data upon install unless is restarted
+
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
@@ -145,6 +140,7 @@ public class machineListActivity extends AppCompatActivity {
                             if (cameFromWidget) {
                                 Timber.d("At MachineListActivity: Came from Widget ");
                                 Timber.d("At MachineListActivity: Widget to display "+thisItemID);
+
                                 if (mTwoPane) {
                                     Bundle arguments = new Bundle();
                                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
@@ -155,24 +151,28 @@ public class machineListActivity extends AppCompatActivity {
                                             .replace(id.machine_detail_container, fragment)
                                             .commit();
                                     cameFromWidget=false;
+
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), machineDetailActivity.class);
                                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
                                     startActivity(intent);
                                     cameFromWidget=false;
+
                                 }
+                                ((RecyclerView) recyclerView).scrollToPosition(thisItemID);
                             }
                         }
 
                     }
                     machineAdapter.submitList(machines);
+
                 }
             });}
         else{
             mMachines = this.machineViewModel.getMachines().getValue();
             machineAdapter.submitList(mMachines);
             ((RecyclerView)recyclerView).setAdapter(machineAdapter);
-            //setupRecyclerViewWithMachines((RecyclerView) recyclerView);
+            ((RecyclerView) recyclerView).scrollToPosition(thisItemID);
         }
 
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pull_refresh_machine_list);
@@ -187,10 +187,13 @@ public class machineListActivity extends AppCompatActivity {
         });
 
         ((RecyclerView)recyclerView).setAdapter(machineAdapter);
-        if(cameFromWidget){
-            ((RecyclerView) recyclerView).scrollToPosition(thisItemID);
-        }
+
+        if(cameFromWidget&&thisItemID!=0){
+        ((RecyclerView) recyclerView).scrollToPosition(thisItemID);}
+
     }
+
+
 
     //Change size of ImageViews Based on Screen size
     public ImageView resizeImage(ImageView imageView){
@@ -198,7 +201,6 @@ public class machineListActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-
         int orgWidth = imageView.getWidth();
         int orgHeight = imageView.getHeight();
 
@@ -220,10 +222,6 @@ public class machineListActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-   /* private void setupRecyclerViewWithMachines(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new machineAdapter(this,this.mTwoPane));
-    }*/
-
     public class machineAdapter
             extends PagedListAdapter<machine, machineAdapter.ViewHolder> {
 
@@ -234,7 +232,7 @@ public class machineListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 machine item = (machine) view.getTag();
-                if (machineAdapter.this.mTwoPane) {
+                if (machineAdapter.this.mTwoPane&&!isPortraitAndLarge(getApplicationContext())) {
                     Bundle arguments = new Bundle();
                     thisItemID=item.getId();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
@@ -244,7 +242,7 @@ public class machineListActivity extends AppCompatActivity {
                     machineAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(id.machine_detail_container, fragment)
                             .commit();
-                } else {
+                } else if(isPortraitAndLarge(getApplicationContext())) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, machineDetailActivity.class);
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
@@ -330,15 +328,67 @@ public class machineListActivity extends AppCompatActivity {
                         @NonNull machine oldUser, @NonNull machine newUser) {
                     // NOTE: if you use equals, your object must properly override Object#equals()
                     // Incorrectly returning false here will result in too many animations.
-                    return oldUser.equals(newUser);
+                    return oldUser.getId()== newUser.getId();
                 }
             };
+    private Boolean isPortraitAndLarge(Context context){
+        getScreenSize(context);
+        getScreenOrientation(context);
+        return isLarge&&isPortrait;
+    }
     private void triggerWidgetUdate() {
         int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, jcSteeleMachineWidget.class));
         //Calling a widget Update manually
         jcSteeleMachineWidget myWidget;
         myWidget = new jcSteeleMachineWidget();
         myWidget.onUpdate(this, AppWidgetManager.getInstance(this), ids);
+    }
+    void getScreenSize(Context context) {
+        int screenSize = context.getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+        String toastMsg;
+        switch (screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                toastMsg = "Extra Large screen";
+                isLarge =true;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                toastMsg = "Large screen";
+                isLarge =true;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                isSmall=true;
+                toastMsg = "Normal screen";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                isSmall=true;
+                toastMsg = "Small screen";
+                break;
+            default:
+                toastMsg = "Screen size is neither large, normal or small";
+        }
+        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+    }
+    void getScreenOrientation(Context context) {
+        int screenOrientation = context.getResources().getConfiguration().orientation;
+        String toastMsg;
+        switch (screenOrientation) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                toastMsg = "Landscape";
+                isLandScape=true;
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                toastMsg = "Portrait";
+                isPortrait=true;
+                break;
+            case Configuration.ORIENTATION_UNDEFINED:
+                isSmall=true;
+                toastMsg = "Screen Undefined";
+                break;
+            default:
+                toastMsg = "Screen size is neither landscape or portrait";
+        }
+        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
     }
 
 }

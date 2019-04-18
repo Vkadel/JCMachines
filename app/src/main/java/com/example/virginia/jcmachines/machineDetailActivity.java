@@ -43,7 +43,7 @@ Boolean cameFromWidget=false;
         if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
             Timber.d("AtDetail Activity: Came from Widget, wiget position "+ getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID));
             cameFromWidget=true;
-            //thisItemID=getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID);
+            thisItemID=getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID);
         }
 
         FloatingActionButton fab = this.findViewById(R.id.fab);
@@ -99,7 +99,6 @@ Boolean cameFromWidget=false;
 
     @Override
     protected void onPostResume() {
-
         //Check if Came from widget
         if(getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID)!=null&getIntent().getStringExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET)!=null){
             Timber.d("AtDetail Activity OnpostResume: Came from Widget, wiget position "+ getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID)
@@ -130,7 +129,6 @@ Boolean cameFromWidget=false;
             //
 
             this.navigateUpTo(new Intent(this, machineListActivity.class));
-
             Intent intent = new Intent(this, machineListActivity.class);
             intent.putExtra(machineDetailFragment.ARG_ITEM_ID,thisItemID);
             startActivity(intent);
