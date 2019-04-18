@@ -365,7 +365,7 @@ public class machineListActivity extends AppCompatActivity {
             default:
                 toastMsg = "Screen size is neither large, normal or small";
         }
-        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+        Timber.d("Screen Size is: "+ toastMsg) ;
     }
     void getScreenOrientation(Context context) {
         int screenOrientation = context.getResources().getConfiguration().orientation;
@@ -386,7 +386,7 @@ public class machineListActivity extends AppCompatActivity {
             default:
                 toastMsg = "Screen size is neither landscape or portrait";
         }
-        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+        Timber.d("Screen Orientation is: "+ toastMsg) ;
     }
 
 }

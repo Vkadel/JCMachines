@@ -307,7 +307,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             default:
                 toastMsg = "Screen size is neither large, normal or small";
         }
-        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+        Timber.d("Screen Size is: "+toastMsg);
     }
 
     @Override
