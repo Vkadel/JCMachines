@@ -7,19 +7,24 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -48,6 +53,8 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     ArrayList<String> machineWidgetPrefArrayImageLink = new ArrayList<>();
     ArrayList<String> machineWidgetPrefArrayWidgetId = new ArrayList<>();
     int position;
+    Boolean islarge=false;
+    Boolean isSmall=false;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -55,10 +62,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         //None of the manual updates to the remoteview Are actually done here but called
         //in the method on update below
         // Construct the RemoteViews object
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
-        views.setTextViewText(R.id.appwidget_text, "changed");
-        // Create an Intent to launch ExampleActivity
 
     }
 
@@ -81,36 +84,30 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         final int N = allIds.length;
         int thisWidgetid = 0;
 
-        Boolean isOneItemUpdate=false;
+        Boolean isOneItemUpdate = false;
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
 
         GetSharedPreferences(context);
 
         if (appWidgetIds.length == 1) {
             thisWidgetid = appWidgetIds[0];
-            position = machineWidgetPrefArrayWidgetId.indexOf(thisWidgetid + "");
-        }
-        //Setup Item widgetID
-        if ((position == -1 || appWidgetIds.length < 1)) {
-            //This is the first widget that got set up
-            position = position + 1;
-            machineWidgetPrefArrayWidgetId.add(Integer.toString(thisWidgetid));
-            updatePreference(context, editor);
         }
 
         if (appWidgetIds.length == 1) {
-            List<Integer> myList= Arrays.stream(allIds).boxed().collect(Collectors.toList());
+            List<Integer> myList = Arrays.stream(allIds).boxed().collect(Collectors.toList());
             int item = myList.indexOf(thisWidgetid);
-            isOneItemUpdate=true;
-            updateOneWidget(context, item, appWidgetIds[0]);
-            if(allIds.length>1){
+            isOneItemUpdate = true;
+            updateOneWidget(context, appWidgetIds[0], allIds,item);
+            if (allIds.length > 1 && !dontUpdate) {
                 //Trigger Update if there if this is not the onlywidget with all available widgets
-            onUpdate(context,appWidgetManager,allIds);}
+                onUpdate(context, appWidgetManager, allIds);
+                dontUpdate=true;
+            }
         }
 
-        if(appWidgetIds.length>1){
+        if (appWidgetIds.length > 1) {
             for (int i = 0; i < appWidgetIds.length; i++) {
-                updateOneWidget(context, i, appWidgetIds[i]);
+                updateOneWidget(context, appWidgetIds[i], allIds,i);
             }
         }
     }
@@ -177,10 +174,26 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     }
 
 
-    private void updateOneWidget(Context context, int position, int appWidgetId) {
+    private void updateOneWidget(Context context, int appWidgetId, int[] allIds,int position) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
         //Only update if there is a widget associated to this position
-        if (machineWidgetPrefArrayWidgetId.indexOf(Integer.toString(appWidgetId)) != -1 && machineWidgetPrefArrayID.size() > position) {
+        List<Integer> listAllIds = Arrays.stream(allIds).boxed().collect(Collectors.toList());
+        int index=listAllIds.indexOf(appWidgetId);
+        int i=1;
+        int pos=position;
+        //Adjust position
+        while (pos>machineWidgetPrefArrayID.size()){
+            pos=pos-(allIds.length/machineWidgetPrefArrayID.size());
+            i=i+1;
+        }
+
+        if ( index!= -1 && machineWidgetPrefArrayID.size() > position) {
+
+            views.setViewVisibility(R.id.widgetProgress, View.VISIBLE);
+            views.setTextViewText(R.id.appwidget_text, context.getResources().getString(R.string.loading));
+            views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_PX, 50f);}
 
             Timber.d("AtWidget pushWidgetUpdate for position:" + position);
             Timber.d("AtWidget Going to add to this view: " + views.getLayoutId());
@@ -188,11 +201,22 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             Timber.d("AtWidget Going to add this name: " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
             Timber.d("AtWidget Going to add this id: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)));
 
-            // Create an Intent to launch ExampleActivity
-            Intent intent = new Intent(context, machineDetailActivity.class);
+            //Find out screen Size
+            getScreenSize(context);
+
+
+            Intent intent=new Intent();
+            // Create an Intent to launch Detail activity if the screen is small
+            if(isSmall){
+                intent.setClass(context,machineDetailActivity.class);}
+            // Create an Intent to launch List activity if the screen is Large
+            else if(islarge){
+                intent.setClass(context,machineListActivity.class);;
+            }
+
             intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));
             intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))),
                     intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -200,14 +224,21 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);
 
             //only Update picture if Link is different than NA
-            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na")||machineWidgetPrefArrayImageLink.get(Integer.valueOf(position))!=null) {
+            if (!machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)).equals("na") || machineWidgetPrefArrayImageLink.get(Integer.valueOf(position)) != null) {
                 RequestOptions options = new RequestOptions().
                         override(100, 100);
                 appWidgetTarget = new AppWidgetTarget(context, R.id.appWidget_machine_picture, views, appWidgetId) {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         Timber.d("Resource Ready");
+                        views.setViewVisibility(R.id.widgetProgress, View.GONE);
                         super.onResourceReady(resource, transition);
+                    }
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        views.setViewVisibility(R.id.widgetProgress, View.GONE);
+                        super.onLoadFailed(errorDrawable);
                     }
                 };
                 Glide.with(context.getApplicationContext())
@@ -217,22 +248,17 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
                         .into(appWidgetTarget);
                 // Get the layout for the App Widget and attach an on-click listener
                 // to the button
-                views.setTextViewText(R.id.appwidget_text, machineWidgetPrefArrayName.get(Integer.valueOf(position)));
-            } else {
-                views.setViewVisibility(R.id.appWidget_machine_picture, View.INVISIBLE);
-                views.setTextViewText(R.id.appwidget_text,context.getResources().getString(R.string.select_for_widget));
             }
 
             Timber.d("AtWidget On Update: Going to Add widget text: " + machineWidgetPrefArrayName.get(Integer.valueOf(position)) + "and " + machineWidgetPrefArrayID.get(Integer.valueOf(position)));
             // Tell the AppWidgetManager to perform an update on the current app widget
-        } else {
-            Timber.d("AtWidget Position and Widget Size :" + position + " " + machineWidgetPrefArrayWidgetId.size());
-            Timber.d(machineWidgetPrefArrayWidgetId.toString());
-            views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
-            views.setTextViewText(R.id.appwidget_text,context.getResources().getString(R.string.select_for_widget));
 
         }
-        views.setViewVisibility(R.id.widgetProgress,INVISIBLE);
+        else{
+            views.setViewVisibility(R.id.widgetProgress, View.GONE);
+            views.setTextViewText(R.id.withText,context.getResources().getString(R.string.add_a_widget));
+        }
+
 
     }
 
@@ -240,32 +266,77 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         GetSharedPreferences(context);
-        for(int i=0;i<appWidgetIds.length;i++){
-           Boolean exist=machineWidgetPrefArrayWidgetId.contains(Integer.toString(appWidgetIds[i]));
-           if(exist){
-               machineWidgetPrefArrayWidgetId.remove(Integer.toString(appWidgetIds[i]));
-           }
+        for (int i = 0; i < appWidgetIds.length; i++) {
+            Boolean exist = machineWidgetPrefArrayWidgetId.contains(Integer.toString(appWidgetIds[i]));
+            if (exist) {
+                machineWidgetPrefArrayWidgetId.remove(Integer.toString(appWidgetIds[i]));
+            }
         }
         //Final clean
         int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
-        if(allIds.length<machineWidgetPrefArrayWidgetId.size()){
+        if (allIds.length < machineWidgetPrefArrayWidgetId.size()) {
             //Do A full clean
             Timber.d("AtWidget: Doing full clean");
-            List<String> convertedAllIDs=Arrays.asList(allIds).stream().map(ints -> ints.toString()).collect(Collectors.toList());
+            List<String> convertedAllIDs = Arrays.asList(allIds).stream().map(ints -> ints.toString()).collect(Collectors.toList());
             machineWidgetPrefArrayWidgetId.remove(convertedAllIDs);
         }
-        Timber.d("AtWidget: FInal widgetID array "+machineWidgetPrefArrayWidgetId.toString());
+        Timber.d("AtWidget: Final widgetID array " + machineWidgetPrefArrayWidgetId.toString());
     }
 
+    void getScreenSize(Context context) {
+        int screenSize = context.getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+        String toastMsg;
+        switch (screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                toastMsg = "Extra Large screen";
+                islarge=true;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                toastMsg = "Large screen";
+                islarge=true;
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                isSmall=true;
+                toastMsg = "Normal screen";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                isSmall=true;
+                toastMsg = "Small screen";
+                break;
+            default:
+                toastMsg = "Screen size is neither large, normal or small";
+        }
+        Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void onDisabled(Context context) {
+        //To prevent widget configurations and state to be lost overnight
+        onUpdate(context, AppWidgetManager.getInstance(context),
+                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
+        super.onDisabled(context);
+    }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
+        //To prevent widget configurations and state to be lost overnight
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(
+                new ComponentName(context, jcSteeleMachineWidget.class),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
         onUpdate(context, AppWidgetManager.getInstance(context),
                 AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
+
     }
 
+    @Override
+    public IBinder peekService(Context myContext, Intent service) {
+        return super.peekService(myContext, service);
+    }
 }
 
 

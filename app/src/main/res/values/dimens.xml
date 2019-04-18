@@ -23,4 +23,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_dim_min_resize">130dp</dimen>
     <dimen name="widget_dim_min_h">100dp</dimen>
     <dimen name="widget_dim_min_w">140dp</dimen>
+
 </resources>

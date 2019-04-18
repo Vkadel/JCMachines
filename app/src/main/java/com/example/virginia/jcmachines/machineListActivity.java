@@ -187,6 +187,9 @@ public class machineListActivity extends AppCompatActivity {
         });
 
         ((RecyclerView)recyclerView).setAdapter(machineAdapter);
+        if(cameFromWidget){
+            ((RecyclerView) recyclerView).scrollToPosition(thisItemID);
+        }
     }
 
     //Change size of ImageViews Based on Screen size
