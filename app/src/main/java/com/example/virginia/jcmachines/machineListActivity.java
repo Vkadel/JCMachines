@@ -203,8 +203,6 @@ public class machineListActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int orgWidth = imageView.getWidth();
         int orgHeight = imageView.getHeight();
-
-
         imageView.getLayoutParams().height=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
         imageView.getLayoutParams().width=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
         return imageView;
