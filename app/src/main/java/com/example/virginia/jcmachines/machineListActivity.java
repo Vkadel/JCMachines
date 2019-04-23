@@ -66,8 +66,8 @@ public class machineListActivity extends AppCompatActivity {
     private Boolean cameFromWidget=false;
     private RecyclerView saveInstanceOfRecyclerView;
     Activity activity;
-    Boolean isLarge;
-    Boolean isSmall;
+    Boolean isLarge=false;
+    Boolean isSmall=true;
     Boolean isLandScape=false;
     Boolean isPortrait=false;
 
@@ -230,7 +230,7 @@ public class machineListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 machine item = (machine) view.getTag();
-                if (machineAdapter.this.mTwoPane&&!isPortraitAndLarge(getApplicationContext())) {
+                if (machineAdapter.this.mTwoPane && !isPortraitAndLarge(getApplicationContext())) {
                     Bundle arguments = new Bundle();
                     thisItemID=item.getId();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
@@ -240,7 +240,7 @@ public class machineListActivity extends AppCompatActivity {
                     machineAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(id.machine_detail_container, fragment)
                             .commit();
-                } else if(isPortraitAndLarge(getApplicationContext())) {
+                } else if(isPortraitAndLarge(getApplicationContext())||isSmall) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, machineDetailActivity.class);
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
@@ -349,17 +349,21 @@ public class machineListActivity extends AppCompatActivity {
             case Configuration.SCREENLAYOUT_SIZE_XLARGE:
                 toastMsg = "Extra Large screen";
                 isLarge =true;
+                isSmall=false;
                 break;
             case Configuration.SCREENLAYOUT_SIZE_LARGE:
                 toastMsg = "Large screen";
                 isLarge =true;
+                isSmall=false;
                 break;
             case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                 isSmall=true;
+                isLarge =false;
                 toastMsg = "Normal screen";
                 break;
             case Configuration.SCREENLAYOUT_SIZE_SMALL:
                 isSmall=true;
+                isLarge =false;
                 toastMsg = "Small screen";
                 break;
             default:
@@ -374,13 +378,16 @@ public class machineListActivity extends AppCompatActivity {
             case Configuration.ORIENTATION_LANDSCAPE:
                 toastMsg = "Landscape";
                 isLandScape=true;
+                isPortrait=false;
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
                 toastMsg = "Portrait";
                 isPortrait=true;
+                isLandScape=false;
                 break;
             case Configuration.ORIENTATION_UNDEFINED:
                 isSmall=true;
+                isLandScape=false;
                 toastMsg = "Screen Undefined";
                 break;
             default:

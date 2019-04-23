@@ -84,6 +84,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         final int N = allIds.length;
         int thisWidgetid = 0;
 
+
         Boolean isOneItemUpdate = false;
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jc_steele_machine_widget);
 
@@ -181,6 +182,9 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         int index=listAllIds.indexOf(appWidgetId);
         int i=1;
         int pos=position;
+
+
+
         //Adjust position
         while (pos>machineWidgetPrefArrayID.size()){
             pos=pos-(allIds.length/machineWidgetPrefArrayID.size());
@@ -204,9 +208,8 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             //Find out screen Size
             getScreenSize(context);
 
-
             Intent intent=new Intent();
-            // Create an Intent to launch Detail activity if the screen is small
+            // Create an Intent to launch Detail activity if the screen is Small
             if(isSmall){
                 intent.setClass(context,machineDetailActivity.class);}
             // Create an Intent to launch List activity if the screen is Large
