@@ -1,1020 +1,569 @@
 [
-
   {
-
     "id": 0,
-
     "series": "45",
-
     "machineFullName": "45AT Extruder",
-
     "Description": "Mid-size stiff extruder",
-
     "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
-
     "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
-
     "LargeImageTwo": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extruder_45_series.jpg",
-
     "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_inline.png",
-
     "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
-
     "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
-
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
-
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45atx_extruder_lube_chart.pdf",
-
+    "augertypes": [
+      {
+        "id": 0,
+        "augerName": "C SET",
+        "theoreticalvolumeimp": "1790",
+        "theoreticalvolumemet": "0.02933"
+      },
+      {
+        "id": 1,
+        "augerName": "PR-16 SET",
+        "theoreticalvolume": "1050",
+        "theoreticalvolumemet": "0.01721"
+      }
+    ],
     "KeyFeatures": [
-
       {
-
         "id": 0,
-
         "name": "Resilience",
-
         "description": "Processes tough, plastic and sticky clays, and abrasive fines and dusts"
-
       },
-
       {
-
         "id": 1,
-
         "name": "Maintenance",
-
         "description": "Trouble-free operation with minimal maintenance"
-
       },
-
       {
-
         "id": 2,
-
         "name": "Simplicity",
-
         "description": "Fewer process steps for lower production costs"
-
       },
-
       {
-
         "id": 3,
-
         "name": "Simplicity",
-
         "description": "Drive options for easier installation"
-
       },
-
       {
-
         "id": 4,
-
         "name": "Versatility",
-
         "description": "Accepts batch-mixed materials"
-
       }
-
     ],
-
     "InstructionalVids": [
-
       {
-
         "id": 0,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       }
-
     ],
-
     "TechnicalBulletins": [
-
       {
-
         "id": 0,
-
         "tittle": "TechnicalBulletins1",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "TechnicalBulletins2",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 2,
-
         "tittle": "TechnicalBulletins3",
-
         "description": "na",
-
         "pdflink": "na"
-
       }
-
     ],
-
     "SpareParts": [
-
       {
-
         "id": 0,
-
         "name": "Main Gear 45ADHS",
-
         "description": " This gear is attached to sectionA position 3 in your machine diagram",
-
         "Section": "SectionA",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
       },
-
       {
-
         "id": 1,
-
         "name": "Gear Box 45854D",
-
         "description": " This gearbox is attached to sectionA position 5 in your machine diagram",
-
         "Section": "SectionA",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
       },
-
       {
-
         "id": 2,
-
         "name": "Line Adapter",
-
         "description": " This Line adapter acn be located in Section B of your machine diagram",
-
         "Section": "SectionB",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
       },
-
       {
-
         "id": 3,
-
         "name": "Auger",
-
         "description": " This auger wheel can be found in Section C of your machine diagram.",
-
         "Section": "SectionC",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/auger_45ad.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/auger_45ad.jpg"
       },
-
       {
-
         "id": 4,
-
         "name": "Extrusion Die basic",
-
         "description": " Basic head for section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extrusion_die_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/extrusion_die_45.jpg"
       },
       {
-
         "id": 5,
-
         "name": "Roller Bearing 45AS458",
-
         "description": " Basic Roller Bearing for section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
       },
       {
-
         "id": 6,
-
         "name": "Cylindrical  Bearing 4587872",
-
         "description": " Basic Bearing for section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
       },
       {
-
         "id": 7,
-
         "name": "GearBox Shaft 554720",
-
         "description": " Gearbox section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
       }
     ]
-
   },
-
   {
-
     "id": 1,
-
     "series": "45",
-
     "machineFullName": "45AT PugSealer",
-
     "Description": "Mid-size stiff Pug Sealer",
-
     "ThumbnailImage": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
-
     "LargeImageOne": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
-
     "LargeImageTwo": "https://www.jcsteele.com/wp-content/uploads/45-a-pugsealer.jpg",
-
     "InlIneInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_inline.png",
-
     "DimensionsSpecsImage": "https://www.jcsteele.com/wp-content/uploads/45-series-table.png",
-
     "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
-
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
-
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45at_pug_sealer_lube_chart.pdf",
-
-    "KeyFeatures": [
-
+    "augertypes": [
       {
-
         "id": 0,
-
+        "augerName": "C SET",
+        "theoreticalvolumeimp": "1790",
+        "theoreticalvolumemet": "0.02933"
+      },
+      {
+        "id": 0,
+        "augerName": "PR-16 SET",
+        "theoreticalvolume": "1050",
+        "theoreticalvolumemet": "0.01721"
+      }
+    ],
+    "KeyFeatures": [
+      {
+        "id": 0,
         "name": "Resilience",
-
         "description": "Processes tough, plastic and sticky clays, and abrasive fines and dusts"
-
       },
-
       {
-
         "id": 1,
-
         "name": "Maintenance",
-
         "description": "Trouble-free operation with minimal maintenance"
-
       },
-
       {
-
         "id": 2,
-
         "name": "Simplicity",
-
         "description": "Fewer process steps for lower production costs"
-
       },
-
       {
-
         "id": 3,
-
         "name": "Simplicity",
-
         "description": "Drive options for easier installation"
-
       },
-
       {
-
         "id": 4,
-
         "name": "Versatility",
-
         "description": "Accepts batch-mixed materials"
-
       }
-
     ],
-
     "InstructionalVids": [
-
       {
-
         "id": 0,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       }
-
     ],
-
     "TechnicalBulletins": [
-
       {
-
         "id": 0,
-
         "tittle": "TechnicalBulletins1",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "TechnicalBulletins2",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 2,
-
         "tittle": "TechnicalBulletins3",
-
         "description": "na",
-
         "pdflink": "na"
-
       }
-
     ],
-
     "SpareParts": [
-
-
       {
-
         "id": 0,
-
         "name": "Front Pug Knife",
-
         "description": " This Pug Knife is placed in Section C",
-
         "Section": "SectionC",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/front_pug_knife_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/front_pug_knife_45.jpg"
       },
-
       {
-
         "id": 1,
-
         "name": "Main Gear 45ADHS",
-
         "description": " This gear is attached to sectionA position 3 in your machine diagram",
-
         "Section": "SectionA",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_45.jpg"
       },
-
       {
-
         "id": 2,
-
         "name": "Gear Box 45854D",
-
         "description": " This gearbox is attached to sectionA position 5 in your machine diagram",
-
         "Section": "SectionA",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/gear_box_45.jpg"
       },
-
       {
-
         "id": 3,
-
         "name": "Line Adapter",
-
         "description": " This Line adapter acn be located in Section B of your machine diagram",
-
         "Section": "SectionB",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/line_adapter_45.jpg"
       },
-
       {
-
         "id": 5,
-
         "name": "Roller Bearing 45AS458",
-
         "description": " Basic Roller Bearing for section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/roller_bearing_45.jpg"
       },
       {
-
         "id": 6,
-
         "name": "Cylindrical  Bearing 4587872",
-
         "description": " Basic Bearing for section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/bearing_45_1.jpg"
       },
       {
-
         "id": 7,
-
         "name": "GearBox Shaft 554720",
-
         "description": " Gearbox section D of your machine Diagram.",
-
         "Section": "SectionD",
-
-        "ImageLink":"https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
-
+        "ImageLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/shaft_45ad.jpg"
       }
-
     ]
-
   },
-
   {
-
     "id": 2,
-
     "series": "90",
-
     "machineFullName": "90AD Extruder",
-
     "Description": "Large stiff extruder",
-
     "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_series_extruder_steele.jpg",
-
     "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_series_extruder_steele.jpg",
-
     "LargeImageTwo": "na",
-
     "InlIneInstallImage": "na",
-
     "DimensionsSpecsImage": "na",
-
     "AngleInstallImage": "na",
-
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
-
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90ad_extruder_lube_chart.pdf",
-
-    "KeyFeatures": [
-
+    "augertypes": [
       {
-
         "id": 0,
-
-        "name": "Castings",
-
-        "description": "Structural components are cast from virtually unbreakable ductile iron; wear parts are extremely long-wearing 28PC high chrome iron alloy"
-
+        "augerName": "HCV",
+        "theoreticalvolumeimp": "2060",
+        "theoreticalvolumemet": "0.03376"
       },
-
       {
-
         "id": 1,
-
+        "augerName": "HTR",
+        "theoreticalvolume": "1750",
+        "theoreticalvolumemet": "0.02868"
+      }
+    ],
+    "KeyFeatures": [
+      {
+        "id": 0,
+        "name": "Castings",
+        "description": "Structural components are cast from virtually unbreakable ductile iron; wear parts are extremely long-wearing 28PC high chrome iron alloy"
+      },
+      {
+        "id": 1,
         "name": "Augers and liners",
-
         "description": " Several designs are available. Auger sections are cast from 28PC and are 'preslicked' to minimize or eliminate the break-in period. 75AD machines have a long cumulative service history extruding a wide range of materials utilizing various auger/liner combinations. "
-
       },
-
       {
-
         "id": 2,
-
         "name": "Gears",
-
         "description": " All are helical, double reduction, hardened alloy steel. The gearbox is force lubricated with pumped oil and protected by magnetic and mechanical oil filters."
-
       },
-
       {
-
         "id": 3,
-
         "name": "Bearings",
-
         "description": " Roller bearings are used throughout. The oversized thrust and radial bearings are immersed in oil"
-
       },
-
       {
-
         "id": 4,
-
         "name": "Versatility",
-
         "description": "Accepts batch-mixed materials"
-
       }
-
     ],
-
     "InstructionalVids": [
-
       {
-
         "id": 0,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       }
-
     ],
-
     "TechnicalBulletins": [
-
       {
-
         "id": 0,
-
         "tittle": "TechnicalBulletins1",
-
         "description": "Removing thrust for 90 assembly",
-
         "pdflink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/tsb_90_extruder_dsd_0001_remove_thrust_assembly_.pdf"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "TechnicalBulletins2",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 2,
-
         "tittle": "TechnicalBulletins3",
-
         "description": "na",
-
         "pdflink": "na"
-
       }
-
     ],
-
     "SpareParts": [
-
       {
-
         "id": 0,
-
         "name": "SparePart1",
-
         "description": " SparePart1 description",
-
         "Section": "SectionA",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 1,
-
         "name": "SparePart2",
-
         "description": " SparePart2 description",
-
         "Section": "SectionA",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 2,
-
         "name": "SparePart3",
-
         "description": " SparePart3 description",
-
         "Section": "SectionB",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 3,
-
         "name": "SparePart4",
-
         "description": " SparePart4 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 4,
-
         "name": "SparePart5",
-
         "description": " SparePart5 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 5,
-
         "name": "SparePart6",
-
         "description": " SparePart6 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 6,
-
         "name": "SparePart7",
-
         "description": " SparePart7 description",
-
         "Section": "SectionD",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       }
-
     ]
-
   },
-
   {
-
     "id": 3,
-
     "series": "90",
-
     "machineFullName": "90AD PugSealer",
-
     "Description": "Large Pug Sealer",
-
     "ThumbnailImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_pug_sealer_steele.png",
-
     "LargeImageOne": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90_pug_sealer_steele.png",
-
     "LargeImageTwo": "na",
-
     "InlIneInstallImage": "na",
-
     "DimensionsSpecsImage": "na",
-
     "AngleInstallImage": "na",
-
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
-
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90as_pug_sealer_lube_chart.pdf",
-
+    "augertypes": [
+      {
+        "id": 0,
+        "augerName": "HCV",
+        "theoreticalvolumeimp": "2060",
+        "theoreticalvolumemet": "0.03376"
+      },
+      {
+        "id": 1,
+        "augerName": "HTR",
+        "theoreticalvolume": "1750",
+        "theoreticalvolumemet": "0.02868"
+      }
+    ],
     "KeyFeatures": [
-
       {
-
         "id": 0,
-
         "name": "Castings",
-
         "description": "Structural components are cast from virtually unbreakable ductile iron; wear parts are extremely long-wearing 28PC high chrome iron alloy"
-
       },
-
       {
-
         "id": 1,
-
         "name": "Augers and liners",
-
         "description": " Several designs are available. Auger sections are cast from 28PC and are 'preslicked' to minimize or eliminate the break-in period. 75AD machines have a long cumulative service history extruding a wide range of materials utilizing various auger/liner combinations. "
-
       },
-
       {
-
         "id": 2,
-
         "name": "Gears",
-
         "description": " All are helical, double reduction, hardened alloy steel. The gearbox is force lubricated with pumped oil and protected by magnetic and mechanical oil filters."
-
       },
-
       {
-
         "id": 3,
-
         "name": "Bearings",
-
         "description": " Roller bearings are used throughout. The oversized thrust and radial bearings are immersed in oil"
-
       },
-
       {
-
         "id": 4,
-
         "name": "Shafts",
-
         "description": "Main driving shaft are as large as 7 1/4in (184mm) in diameter"
-
       }
-
     ],
-
     "InstructionalVids": [
-
       {
-
         "id": 0,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "na",
-
         "description": "na",
-
         "VideoLink": "na"
-
       }
-
     ],
-
     "TechnicalBulletins": [
-
       {
-
         "id": 0,
-
         "tittle": "TechnicalBulletins1",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 1,
-
         "tittle": "TechnicalBulletins2",
-
         "description": "na",
-
         "pdflink": "na"
-
       },
-
       {
-
         "id": 2,
-
         "tittle": "TechnicalBulletins3",
-
         "description": "na",
-
         "pdflink": "na"
-
       }
-
     ],
-
     "SpareParts": [
-
       {
-
         "id": 0,
-
         "name": "SparePart1",
-
         "description": " SparePart1 description",
-
         "Section": "SectionA",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 1,
-
         "name": "SparePart2",
-
         "description": " SparePart2 description",
-
         "Section": "SectionA",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 2,
-
         "name": "SparePart3",
-
         "description": " SparePart3 description",
-
         "Section": "SectionB",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 3,
-
         "name": "SparePart4",
-
         "description": " SparePart4 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 4,
-
         "name": "SparePart5",
-
         "description": " SparePart5 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 5,
-
         "name": "SparePart6",
-
         "description": " SparePart6 description",
-
         "Section": "SectionC",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       },
-
       {
-
         "id": 6,
-
         "name": "SparePart7",
-
         "description": " SparePart7 description",
-
         "Section": "SectionD",
-
-        "ImageLink":"na"
-
+        "ImageLink": "na"
       }
-
     ]
-
   }
-
 ]
