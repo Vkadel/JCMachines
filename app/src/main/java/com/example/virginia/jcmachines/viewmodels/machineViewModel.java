@@ -1,4 +1,4 @@
-package com.example.virginia.jcmachines;
+package com.example.virginia.jcmachines.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

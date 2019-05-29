@@ -214,7 +214,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
                 intent.setClass(context,machineDetailActivity.class);}
             // Create an Intent to launch List activity if the screen is Large
             else if(islarge){
-                intent.setClass(context,machineListActivity.class);;
+                intent.setClass(context,machineListActivity.class);
             }
 
             intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));

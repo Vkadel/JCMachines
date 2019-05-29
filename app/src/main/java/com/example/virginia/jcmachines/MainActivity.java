@@ -37,6 +37,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     ImageView userPic;
     static final int RC_SIGN_IN=1;
     TextView userEmail;
+    static Boolean firebaseIsSetUp=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         Timber.plant(new DebugTree());
         this.userEmail = this.findViewById(id.user_email);
         this.userPic = this.findViewById(id.user_pic);
-
         this.updateUI(null);
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -66,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         this.findViewById(id.sign_in_button).setOnClickListener(this);
         this.findViewById(id.sign_out_button).setOnClickListener(this);
 
+        //Setting up database persistence
+        if(!firebaseIsSetUp){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true);
+            firebaseIsSetUp=true;
+        }
     }
 
     @Override

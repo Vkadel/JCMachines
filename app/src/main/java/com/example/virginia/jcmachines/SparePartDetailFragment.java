@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
+import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class SparePartDetailFragment extends Fragment {
     machine thisMachine;
     List<spareParts> sparePartsList;
     spareParts thisSparePart;
-    machineViewModel machineViewModel;
+    com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;
     Activity activity;
     String thisMachineId;
     int thisSparePartID;
@@ -108,14 +109,13 @@ public class SparePartDetailFragment extends Fragment {
     }
 
     public void updateUI(View rootView) {
-
         sparePartDescTV=rootView.findViewById(R.id.spare_part_description_tv);
         SparePartSectionTV=rootView.findViewById(R.id.spare_part_section_tv);
         SparePartNameTV=rootView.findViewById(R.id.spare_part_name_tv);
         if (thisSparePart != null) {
         //if We are looking at small screens. Show spare part info
             if (!isTwopane) {
-            appBarLayout = this.activity.findViewById(R.id.toolbar_layout);
+            appBarLayout = this.activity.findViewById(R.id.toolbar);
             appBarLayout.setExpandedTitleColor(this.getResources().getColor(R.color.colorAccent,null));
             appBarLayout.setTitle(thisSparePart.getName());
                 SparePartIV=appBarLayout.findViewById(R.id.spare_part_bar_iv);

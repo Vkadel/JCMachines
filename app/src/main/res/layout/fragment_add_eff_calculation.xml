@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.Editable" />
+        <import type="android.widget.EditText" />
+
+        <variable
+            name="calculation"
+            type="com.example.virginia.jcmachines.AddEffCalculationActivityFragment.Callbacks" />
+        <variable
+            name="livedata"
+            type="com.example.virginia.jcmachines.AddEffCalculationActivityFragment.MyLiveEffCalculation" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".AddEffCalculationActivityFragment">
+
+            <LinearLayout
+                android:id="@+id/company_name_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/enter_company_name_tv_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_company_name" />
+
+                <EditText
+                    android:id="@+id/enter_company_name_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@={livedata.compidString}"
+                    android:hint="@string/enter_company_name" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_one"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/company_name_layout" />
+
+            <LinearLayout
+                android:id="@+id/units_cutter_options_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/div_one">
+
+                <Switch
+                    android:id="@+id/user_has_cutter"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onCheckedChanged="@{(calculation::userHasCutter)}"
+                    android:text="@string/system_does_not_have_cutter" />
+
+                <Switch
+                    android:id="@+id/imperial_metric_switch"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/paddingSmall"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onCheckedChanged="@{(calculation::imperialMetric)}"
+                    android:text="@string/imperial" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_two"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/units_cutter_options_layout" />
+
+            <LinearLayout
+                android:id="@+id/cut_length_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/column_speed_layout">
+
+                <TextView
+                    android:id="@+id/cut_length_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cut_length_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:id="@+id/cut_length_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@={livedata.CString}"
+                    android:ems="10"
+                    android:inputType="number|numberDecimal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cut_rate_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/cut_length_layout">
+
+                <TextView
+                    android:id="@+id/cut_rate_layout_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cut_rate_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:text="@={livedata.LString}"
+                    android:id="@+id/cut_rate_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/estimation_waste_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/cut_rate_layout">
+
+                <TextView
+                    android:id="@+id/estimation_of_waste_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/estimation_of_waste" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:text="@={livedata.RString}"
+                    android:id="@+id/estimation_waste_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:elevation="2dp"
+                android:id="@+id/column_speed_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/units_cutter_options_layout">
+
+                <Switch
+                    android:id="@+id/know_column_speed"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:onCheckedChanged="@{(calculation::knowColumnSpeed)}"
+                    android:text="@string/known" />
+
+                <TextView
+                    android:id="@+id/column_speed_label"
+                    style="@style/labels_eff_calc_main_variable_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/column_speed_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:id="@+id/column_speed_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@={livedata.VString}"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_three"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/estimation_waste_layout" />
+
+            <LinearLayout
+                android:id="@+id/cuts_per_sec_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/div_three">
+
+                <Switch
+                    android:id="@+id/known_product_section"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:onCheckedChanged="@{(calculation::knownProductSection)}"
+                    android:text="@string/known" />
+
+                <TextView
+                    android:id="@+id/cuts_per_sec_label"
+                    style="@style/labels_eff_calc_main_variable_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:text="@string/enter_material_area_imp" />
+
+                <EditText
+                    android:id="@+id/ax_material_section"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="@={livedata.AxString}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/brick_width_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/cuts_per_sec_layout">
+
+                <TextView
+                    android:id="@+id/brick_w_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enter_brick_w_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:text="@={livedata.WString}"
+                    android:id="@+id/brick_w_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/brick_height_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/brick_width_layout">
+
+                <TextView
+                    android:id="@+id/brick_h_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enter_brick_h_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:id="@+id/brick_h_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@={livedata.HString}"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/brick_void_percentage_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/brick_height_layout">
+
+                <TextView
+                    android:id="@+id/void_percentage_label"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enter_void_percentage" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:id="@+id/brick_void_percentage_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@={livedata.ZString}"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_four"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/brick_void_percentage_layout" />
+
+            <LinearLayout
+                android:id="@+id/auger_speed_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/div_four">
+
+                <TextView
+                    android:id="@+id/auge_speed_tv"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/auger_speed_imp" />
+
+                <EditText
+                    android:afterTextChanged="@{calculation::afterTextChanged}"
+                    android:id="@+id/auge_speed_et"
+                    style="@style/enter_text_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@={livedata.NString}"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_five"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/auger_speed_layout" />
+
+<LinearLayout
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/div_five"
+    android:id="@+id/select_auger_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_weight="1"
+        android:text="@string/select_auger_type"
+        style="@style/labels_eff_calc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:layout_weight="1"
+        android:id="@+id/select_auger_spinner"
+        android:layout_width="@dimen/auger_spinner_w"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        />
+</LinearLayout>
+            <View
+                android:id="@+id/div_six"
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/div_thickness"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/select_auger_layout" />
+
+            <LinearLayout
+                android:id="@+id/efficiency_layout"
+                style="@style/layout_efficiency_calc"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/div_six">
+
+                <TextView
+                    android:id="@+id/eff_calculation_label"
+                    style="@style/labels_eff_calc_main_variable_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/efficiency"
+                    android:textAlignment="textStart" />
+
+                <TextView
+
+                    android:id="@+id/efficiency_tv"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={livedata.effString}"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/efficiency_unit_tv"
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:text="@string/efficiency_unit_imperial" />
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>

@@ -60,5 +60,51 @@
     <string name="select_another">Select a machine before adding another widget</string>
     <string name="dummy_machine_id">1000000</string>
     <string name="loading">Loading</string>
+    <string name="no_network">No network connect to your network and try again</string>
+    <string name="calculate_efficiency">Calculate efficiency for this machine</string>
+    <string name="title_activity_add_eff_calculation">AddEffCalculationActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="enter_company_name">Company Name: </string>
+    <string name="imperial">Imperial unit: </string>
+    <string name="metric"> Metric unit:</string>
+    <string name="change_imperial"> Changed to imperial units</string>
+    <string name="change_metric"> Changed to Metric </string>
+    <string name="system_has_cutter">System has cutter: </string>
+    <string name="system_does_not_have_cutter">No cutter</string>
+
+
+    <string name="estimation_of_waste">Estimation of % of waste: </string>
+
+    <string name="enter_if_you_dont_know_column_speed">Enter if you do not know your column speed</string>
+    <string name="known">Known</string>
+    <string name="not_known">Not known</string>
+
+    <string name="enter_void_percentage">Enter void %: </string>
+    <string name="efficiency">Efficiency: </string>
+    <string name="zero">00.0</string>
+    <string name="efficiency_unit_imperial">%</string>
+    <string name="efficiency_calculator_activity_name">Efficiency Calculator</string>
+
+    <string name="need_to_calculate_product_area">Need to calculate total material area</string>
+    <string name="need_to_calculate_column_speed">Enter column speed</string>
+    <string name="dont_need_to_calculate_column_speed">Enter Column Speed</string>
+    <string name="dont_need_to_calculate_product_area">Enter total material area</string>
+
+    <string name="column_speed_metric">Column speed v (m/s):</string>
+    <string name="column_speed_imp">Column speed v (in/min):</string>
+    <string name="cut_length_imp">Enter cut length (in): </string>
+    <string name="cut_length_metric">Enter cut length (m): </string>
+    <string name="cut_rate_imp">Enter Cut Rate (cuts/min): </string>
+    <string name="cut_rate_metric">Enter Cut Rate (cuts/min): </string>
+
+    <string name="enter_material_area_imp">Enter material section Ax (in^2):</string>
+    <string name="enter_brick_w_imp">Enter brick width (in): </string>
+    <string name="enter_brick_h_imp">Enter brick height (in):</string>
+    <string name="enter_material_area_metric">Enter material section Ax (m^2):</string>
+    <string name="enter_brick_w_metric">Enter brick width (m): </string>
+    <string name="enter_brick_h_metric">Enter brick height (m):</string>
+    <string name="auger_speed_metric">Auger Speed (rpm): </string>
+    <string name="auger_speed_imp">Auger Speed (rpm): </string>
+    <string name="select_auger_type">Select auger type:</string>
 
 </resources>

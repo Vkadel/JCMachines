@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "machine_table")
-@TypeConverters(converterFeatures.class)
+@TypeConverters({converterFeatures.class,converterInstructionalVids.class,converterTechnicalBulletins.class,converterSpareParts.class,converteraugers.class})
 public class machine {
     @PrimaryKey
     int id;
@@ -46,12 +46,14 @@ public class machine {
     List<spareParts> SpareParts;
     @ColumnInfo(name = "isWidget")
     Boolean isWidget;
+    @ColumnInfo(name = "augers")
+    List<augers> augers;
 
     public machine(int mid,String mseries,String mmachineFullName,String mThumbnailImage,
                    String mLargeImageOne,String mLargeImageTwo,String mInlIneInstallImage,String mDescription,
                    String mDimensionsSpecsImage,String mAngleInstallImage,String mDatasheetLink,String mLubricationChartLink,
                    List<keyFeatures> mKeyFeatures,List<instructionalVids> mInstructionalVids,
-                   List<technicalBulletins> mTechnicalBulletins,List<spareParts> mSpareParts){
+                   List<technicalBulletins> mTechnicalBulletins,List<spareParts> mSpareParts,List<augers> maugers){
 
         this.id =mid;
         this.series =mseries;
@@ -69,6 +71,7 @@ public class machine {
         this.InstructionalVids =mInstructionalVids;
         this.TechnicalBulletins =mTechnicalBulletins;
         this.SpareParts =mSpareParts;
+        this.augers=maugers;
     }
     public machine(){
 
@@ -81,7 +84,13 @@ public class machine {
         return this.id;
     }
 
+    public List<augers> getAugers() {
+        return augers;
+    }
 
+    public void setAugers(List<augers> augers) {
+        this.augers = augers;
+    }
 
     public String getAngleInstallImage() {
         return this.AngleInstallImage;

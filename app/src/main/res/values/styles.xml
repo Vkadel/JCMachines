@@ -49,4 +49,52 @@
         <item name="android:tint">@color/colorPrimary</item>
     </style>
 
+    <style name="buttons_in_machine_detail">
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="labels_eff_calc">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="enter_text_style">
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="divider_style">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="layout_efficiency_calc">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="app_bar_image_style">
+        <item name="android:foregroundTint">@color/colorAccent</item>
+        <item name="android:foregroundTintMode">screen</item>
+        <item name="android:outlineAmbientShadowColor">@color/colorAccent</item>
+        <item name="android:outlineSpotShadowColor">@color/colorPrimary</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    <style name="CollapsingToolbarLayout_style">
+        <item name="android:foregroundTint">@color/colorAccent</item>
+        <item name="android:foregroundTintMode">screen</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:outlineAmbientShadowColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="labels_eff_calc_main_variable_style" parent="labels_eff_calc">
+       <item name="android:layout_margin">16dp</item>
+    </style>
+
 </resources>

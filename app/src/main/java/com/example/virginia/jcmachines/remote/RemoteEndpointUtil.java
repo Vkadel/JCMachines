@@ -17,7 +17,7 @@ import timber.log.Timber;
 
 public class RemoteEndpointUtil {
     private static final String TAG = "RemoteEndpointUtil";
-
+    private static String JsonString;
     private RemoteEndpointUtil() {
     }
 
@@ -45,6 +45,17 @@ public class RemoteEndpointUtil {
 
         return null;
     }
+    public static String fetchJsonString() {
+        String itemsJson = null;
+        try {
+            itemsJson = RemoteEndpointUtil.fetchPlainText(Config.BASE_URL);
+            //Timber.d("Going to send this data from Fetch: %s", itemsJson);
+        } catch (IOException e) {
+            Timber.e(e, "Error fetching items JSON");
+            return null;
+        }
+        return itemsJson;
+    }
 
     static String fetchPlainText(URL url) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -54,6 +65,10 @@ public class RemoteEndpointUtil {
                 .build();
 
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        String JsonString=response.body().string();
+        return JsonString;
     }
+
+
+
 }

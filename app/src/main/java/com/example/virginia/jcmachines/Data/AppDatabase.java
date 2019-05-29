@@ -8,8 +8,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
-@Database(entities = machine.class, version = 2, exportSchema = false)
-@TypeConverters({converterFeatures.class,converterInstructionalVids.class,converterTechnicalBulletins.class,converterSpareParts.class})
+@Database(entities = machine.class, version = 3, exportSchema = false)
+@TypeConverters({converterFeatures.class,converterInstructionalVids.class,converterTechnicalBulletins.class,converterSpareParts.class,converteraugers.class})
 
 public abstract class AppDatabase extends RoomDatabase {
     public abstract machineDAO machineDAO();

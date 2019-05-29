@@ -20,18 +20,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
+import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class SparePartListActivity extends AppCompatActivity {
      */
     public static final String ARG_ITEM_ID = "item_id";
     private boolean mTwoPane;
-    private machineViewModel machineViewModel;
+    private com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;
     private List<machine> mMachines;
     private List<spareParts> sparePartsList;
     private machine mMachine;

@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 
@@ -88,13 +89,13 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isNetworkAvailable()){
-                sendLongToast(getResources().getString(R.string.will_download));
+                new SendALongToast(getApplicationContext(),getResources().getString(R.string.will_download)).show();
                 // Executes the task in parallel to other tasks
                 new RetrivePDFStreamToSave().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,link);
                 messageTV.setText("");
                 progressBar.setVisibility(View.INVISIBLE);}
                 else{
-                  sendLongToast("no network connect to your network and try again");
+                    new SendALongToast(getApplicationContext(),getResources().getString(R.string.no_network)).show();
                   downloadFAB.hide();
                 }
         }
@@ -108,7 +109,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         pdfView.fromFile(file).load();
         downloadFAB.hide();
         progressBar.setVisibility(View.INVISIBLE);
-        sendLongToast(getResources().getString(R.string.file_exist));
+        new SendALongToast(getApplicationContext(),getResources().getString(R.string.file_exist)).show();
         messageTV.setText("");
     }
 
@@ -191,17 +192,11 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
             Boolean canExec=file.canRead();
             //Check if file is saved let user know
             if(mfile.canRead()){
-                sendLongToast(getResources().getText(R.string.file_saved).toString());
+                new SendALongToast(getApplicationContext() ,getResources().getText(R.string.file_saved).toString()).show();
             }
         }
     }
 
-    private void sendLongToast(String message) {
-        Toast toast=Toast.makeText(getApplication(),message,Toast.LENGTH_LONG);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-        if( v != null) v.setGravity(Gravity.CENTER);
-        toast.show();
-    }
 
     private File getPdfOnDisk(String filenamehere, Context context,InputStream inputStream) {
         File file = new File(context.getFilesDir(), filenamehere);
@@ -262,7 +257,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         ConnectivityManager.NetworkCallback mCallback=new ConnectivityManager.NetworkCallback(){
             @Override
             public void onAvailable(Network network) {
-                sendLongToast(getResources().getString(R.string.have_internet));
+                new SendALongToast(getApplicationContext(),getResources().getString(R.string.have_internet)).show();
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -274,7 +269,7 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
 
             @Override
             public void onLost(Network network) {
-                sendLongToast(getResources().getString(R.string.lost_connection));
+                new SendALongToast(getApplicationContext(),getResources().getString(R.string.lost_connection)).show();
                 Log.e(TAG, "onAvailable: "+"sent connectionlost toast");
                 mActivity.runOnUiThread(new Runnable() {
                     @Override

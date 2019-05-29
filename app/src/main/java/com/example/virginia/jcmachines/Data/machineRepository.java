@@ -5,19 +5,19 @@ import android.arch.lifecycle.LiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.virginia.jcmachines.R;
 import com.example.virginia.jcmachines.remote.RemoteEndpointUtil;
+import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import timber.log.Timber;
@@ -32,11 +32,11 @@ public class machineRepository {
         AppDatabase db = AppDatabase.getDatabase(application);
         Timber.d("VK:Getting Items updated");
         this.mMachineDAO = db.machineDAO();
-        mApplication=application;
+        mApplication = application;
         //Old Implementation without PagedList
-       //mMachines = this.mMachineDAO.getAll();
+        //mMachines = this.mMachineDAO.getAll();
 
-        mMachines=new LivePagedListBuilder<>(mMachineDAO.getAll(),application.getResources().getInteger(R.integer.page_size)).build();
+        mMachines = new LivePagedListBuilder<>(mMachineDAO.getAll(), application.getResources().getInteger(R.integer.page_size)).build();
         //If mMachines is empty call an Async Task to update online. Or if
         //is the first Time the Repository is initialized
         //TODO: may want to delete this because user can just drag down and update
@@ -75,7 +75,7 @@ public class machineRepository {
     }
 
     private static class getJsonArrayOnline extends AsyncTask<LiveData<PagedList<machine>>, Void, Void> {
-
+        private String JsonBack;
         private final machineDAO mAsyncTaskDao;
         private JSONArray array;
         private LiveData<PagedList<machine>> mMachines;
@@ -88,72 +88,30 @@ public class machineRepository {
         @Override
         protected Void doInBackground(LiveData<PagedList<machine>>... liveData) {
             List<machine> machineArrayList = new ArrayList<>();
+            Collection<machine> thisMachineList;
+
+
+            JsonBack = RemoteEndpointUtil.fetchJsonString();
+
+            Gson gson = new Gson();
+            machine thisMachine = new machine();
+            Type collectionType = new TypeToken<Collection<machine>>() {}.getType();
+
             try {
-                this.array = RemoteEndpointUtil.fetchJsonArray();
-
-                if (this.array == null||this.array.length()==0) {
-                    throw new JSONException("Invalid parsed item array");
-
-                }else{
-                    int arraysize = this.array.length();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+              thisMachineList = gson.fromJson(JsonBack, collectionType);
+              machineArrayList.addAll(thisMachineList);
+            }catch (Exception e){
+                thisMachineList=null;
             }
-            try {
-                if (!(array==null||array.length()==0)){
-                for (int i = 0; i <= this.array.length() - 1; i++) {
-                    machine thisMachine = new machine();
-                    JSONObject object = new JSONObject();
-                    object = this.array.getJSONObject(i);
-                    thisMachine.setId(Integer.parseInt(object.getString("id")));
-                    thisMachine.setSeries(object.getString("series"));
-                    thisMachine.setMachineFullName(object.getString("machineFullName"));
-                    thisMachine.setDescription(object.getString("Description"));
-                    thisMachine.setThumbnailImage(object.getString("ThumbnailImage"));
-                    thisMachine.setLargeImageOne(object.getString("LargeImageOne"));
-                    thisMachine.setLargeImageTwo(object.getString("LargeImageTwo"));
-                    thisMachine.setInlIneInstallImage(object.getString("InlIneInstallImage"));
-                    thisMachine.setDimensionsSpecsImage(object.getString("DimensionsSpecsImage"));
-                    thisMachine.setAngleInstallImage(object.getString("AngleInstallImage"));
-                    thisMachine.setDatasheetLink(object.getString("DatasheetLink"));
-                    thisMachine.setLubricationChartLink(object.getString("LubricationChartLink"));
 
-                    //Convertion for array items: keyFeatures
-                    String keyFeatureString=object.getJSONArray("KeyFeatures").toString();
-                    Gson gson = new Gson();
-                    Type type = new TypeToken<List<keyFeatures>>(){}.getType();
-                    List<keyFeatures> keyFeaturesList = gson.fromJson(keyFeatureString, type);
-                    thisMachine.setKeyFeatures(keyFeaturesList);
-
-                    //Convertion for array items: InstructionalVids
-                    String InstructionalVidsString=object.getJSONArray("InstructionalVids").toString();
-                    type = new TypeToken<List<instructionalVids>>(){}.getType();
-                    List<instructionalVids> instructionalVidsList = gson.fromJson(InstructionalVidsString, type);
-                    thisMachine.setInstructionalVids(instructionalVidsList);
-
-
-                    //Convertion for array items: "TechnicalBulletins"
-                    String technicalBulletinsString=object.getJSONArray("TechnicalBulletins").toString();
-                    type = new TypeToken<List<technicalBulletins>>(){}.getType();
-                    List<technicalBulletins> technicalBulletinsVidsList = gson.fromJson(technicalBulletinsString, type);
-                    thisMachine.setTechnicalBulletins(technicalBulletinsVidsList);
-
-                    //Convertion for array items: "TechnicalBulletins"
-                    String SparePartsString=object.getJSONArray("SpareParts").toString();
-                    type = new TypeToken<List<spareParts>>(){}.getType();
-                    List<spareParts> SparePartsList = gson.fromJson(SparePartsString, type);
-                    thisMachine.setSpareParts(SparePartsList);
-
+            if(thisMachineList!=null) {
+                for (int i = 0; i <= thisMachineList.size() - 1; i++) {
+                    thisMachine=machineArrayList.get(i);
                     this.mAsyncTaskDao.insertOne(thisMachine);
                 }
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
             Timber.d("VK:Updating the pagesize data Online");
-            mMachines=new LivePagedListBuilder<>(mAsyncTaskDao.getAll(),3).build();
+            mMachines = new LivePagedListBuilder<>(mAsyncTaskDao.getAll(), 3).build();
             //this.mArticles = this.mAsyncTaskDao.getAll().getValue();
             return null;
         }

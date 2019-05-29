@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +22,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.color;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
+import com.example.virginia.jcmachines.utils.SendALongToast;
+import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -57,9 +57,9 @@ public class machineDetailFragment extends Fragment {
     public static final String ARG_IS_TWO_PANE = "is_two_pane";
     List<machine> machineList;
     machine thisMachine;
-    machineViewModel machineViewModel;
+    com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;
     View rootView;
-    CollapsingToolbarLayout appBarLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     ImageView machineDetailAppBarBackgroundIV;
     String thisMachineId;
     Activity activity;
@@ -128,10 +128,10 @@ public class machineDetailFragment extends Fragment {
 
     public void updateUI(View rootView) {
         if (!this.isTwopane && rootView!=null) {
-            this.appBarLayout = this.activity.findViewById(id.toolbar_layout);
-            if(appBarLayout!=null){
-                this.appBarLayout.setTitle(this.thisMachine.getMachineFullName());
-                this.appBarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
+            this.collapsingToolbarLayout = this.activity.findViewById(id.detail_CollapsingToolbarLayout);
+            if(collapsingToolbarLayout !=null){
+                this.collapsingToolbarLayout.setTitle(this.thisMachine.getMachineFullName());
+                this.collapsingToolbarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
             }
             this.machineDetailAppBarBackgroundIV = this.activity.findViewById(id.app_bar_machine_image);
             if(machineDetailAppBarBackgroundIV!=null){
@@ -143,7 +143,7 @@ public class machineDetailFragment extends Fragment {
         TextView lubrication_chart_tv = rootView.findViewById(id.lubrication_chart_tv);
         TextView spare_parts_list_tv = rootView.findViewById(id.spare_parts_tv);
         final Button isThisAWidget = rootView.findViewById(id.make_widget);
-
+        final Button goToformula=rootView.findViewById(id.eff_calculation);
         Boolean isCurrentMachineWidget = IstheCurrentMachineaWidget();
 
         if (isCurrentMachineWidget) {
@@ -165,16 +165,16 @@ public class machineDetailFragment extends Fragment {
                     //Select wether you need to add or take out the widget
                     if(isCurrentMachineWidget){
                         JsontoArraytoJsonTakeOut();
-                        Toast.makeText(context, getActivity().getResources().getString(R.string.will_remove_thisWidget)
-                                + thisMachine.getMachineFullName(), Toast.LENGTH_SHORT).show();
+                        new SendALongToast(context,getActivity().getResources().getString(R.string.will_remove_thisWidget)
+                                + thisMachine.getMachineFullName()).show();
                         isThisAWidget.setVisibility(View.INVISIBLE);
 
 
                     }
                     else{
                         JsontoArraytoJson();
-                    Toast.makeText(context, getActivity().getResources().getString(R.string.updating_your_widget_with)
-                            + thisMachine.getMachineFullName(), Toast.LENGTH_SHORT).show();
+                        new SendALongToast(context,getActivity().getResources().getString(R.string.updating_your_widget_with)
+                                + thisMachine.getMachineFullName()).show();
                         isThisAWidget.setVisibility(View.INVISIBLE);
                         }
                 }
@@ -334,6 +334,15 @@ public class machineDetailFragment extends Fragment {
                 editor.putString(getString(R.string.my_machine_pic_link_for_widget_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
                 editor.putString(getString(R.string.my_machine_widget_id_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
                 editor.commit();
+            }
+        });
+
+        goToformula.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),AddEffCalculationActivity.class);
+                intent.putExtra(ARG_ITEM_ID,thisMachineId);
+                startActivity(intent);
             }
         });
 

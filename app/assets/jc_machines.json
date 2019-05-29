@@ -12,18 +12,18 @@
     "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45atx_extruder_lube_chart.pdf",
-    "augertypes": [
+    "augers": [
       {
         "id": 0,
-        "augerName": "C SET",
-        "theoreticalvolumeimp": "1790",
-        "theoreticalvolumemet": "0.02933"
+        "anam": "C SET",
+        "tvoli": "1790",
+        "tvolm": "0.02933"
       },
       {
         "id": 1,
-        "augerName": "PR-16 SET",
-        "theoreticalvolume": "1050",
-        "theoreticalvolumemet": "0.01721"
+        "anam": "PR-16 SET",
+        "tvoli": "1050",
+        "tvolm": "0.01721"
       }
     ],
     "KeyFeatures": [
@@ -159,18 +159,18 @@
     "AngleInstallImage": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45_series_angle.png",
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_45_series.pdf",
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/45at_pug_sealer_lube_chart.pdf",
-    "augertypes": [
+    "augers": [
       {
         "id": 0,
-        "augerName": "C SET",
-        "theoreticalvolumeimp": "1790",
-        "theoreticalvolumemet": "0.02933"
+        "anam": "C SET",
+        "tvoli": "1790",
+        "tvolm": "0.02933"
       },
       {
-        "id": 0,
-        "augerName": "PR-16 SET",
-        "theoreticalvolume": "1050",
-        "theoreticalvolumemet": "0.01721"
+        "id": 1,
+        "anam": "PR-16 SET",
+        "tvoli": "1050",
+        "tvolm": "0.01721"
       }
     ],
     "KeyFeatures": [
@@ -299,18 +299,18 @@
     "AngleInstallImage": "na",
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90ad_extruder_lube_chart.pdf",
-    "augertypes": [
+    "augers": [
       {
         "id": 0,
-        "augerName": "HCV",
-        "theoreticalvolumeimp": "2060",
-        "theoreticalvolumemet": "0.03376"
+        "anam": "HCV",
+        "tvoli": "2060",
+        "tvolm": "0.03376"
       },
       {
         "id": 1,
-        "augerName": "HTR",
-        "theoreticalvolume": "1750",
-        "theoreticalvolumemet": "0.02868"
+        "anam": "HTR",
+        "tvoli": "1750",
+        "tvolm": "0.02868"
       }
     ],
     "KeyFeatures": [
@@ -439,18 +439,18 @@
     "AngleInstallImage": "na",
     "DatasheetLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/datasheet_90_series.pdf",
     "LubricationChartLink": "https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/90as_pug_sealer_lube_chart.pdf",
-    "augertypes": [
+    "augers": [
       {
         "id": 0,
-        "augerName": "HCV",
-        "theoreticalvolumeimp": "2060",
-        "theoreticalvolumemet": "0.03376"
+        "anam": "HCV",
+        "tvoli": "2060",
+        "tvolm": "0.03376"
       },
       {
         "id": 1,
-        "augerName": "HTR",
-        "theoreticalvolume": "1750",
-        "theoreticalvolumemet": "0.02868"
+        "anam": "HTR",
+        "tvoli": "1750",
+        "tvolm": "0.02868"
       }
     ],
     "KeyFeatures": [

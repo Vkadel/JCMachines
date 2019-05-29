@@ -39,6 +39,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
+import com.example.virginia.jcmachines.utils.SendALongToast;
+import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -59,7 +61,7 @@ public class machineListActivity extends AppCompatActivity {
      */
 
     private boolean mTwoPane;
-    private machineViewModel machineViewModel;
+    private com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;
     private PagedList<machine> mMachines;
     private Boolean updatedOnce=false;
     private int thisItemID;
@@ -181,7 +183,7 @@ public class machineListActivity extends AppCompatActivity {
             public void onRefresh() {
                 machineViewModel.loadArticlesOnline();
                 pullToRefresh.setRefreshing(false);
-                Toast.makeText(activity,getResources().getString(R.string.updating_data_online),Toast.LENGTH_LONG).show();
+                new SendALongToast(activity,getResources().getString(R.string.updating_data_online)).show();
 
             }
         });
@@ -246,9 +248,7 @@ public class machineListActivity extends AppCompatActivity {
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
                     context.startActivity(intent);
                 }
-
             }
-
         };
 
         machineAdapter(machineListActivity parent,

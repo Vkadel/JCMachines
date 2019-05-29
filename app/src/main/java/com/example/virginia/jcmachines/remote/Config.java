@@ -12,7 +12,7 @@ public class Config {
     static {
         URL url = null;
         try {
-            url = new URL("https://raw.githubusercontent.com/Vkadel/JCMachines/DataBinding/app/assets/jc_machines.json");
+            url = new URL("https://firebasestorage.googleapis.com/v0/b/jcmachines-1542559889392.appspot.com/o/jc_machines.json?alt=media&token=442f2ad5-3aec-4644-9eb2-957ca88285ad");
         } catch (MalformedURLException ignored) {
             Log.e(Config.TAG, "Please check your internet connection.");
         }
