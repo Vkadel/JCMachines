@@ -5,15 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,14 +27,20 @@ import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.animations.appearAnim;
 import com.example.virginia.jcmachines.animations.fadeAnim;
+import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
+import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.utils.SendALongToast;
+import com.example.virginia.jcmachines.utils.SendMyEmail;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.function.Consumer;
 
 
@@ -44,6 +49,7 @@ import java.util.function.Consumer;
  */
 public class AddEffCalculationActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     static FragmentAddEffCalculationBinding binding;
+    static ActivityAddEffCalculationBinding activityAddEffCalculationBinding;
     static final String EFF_CALC_ARG = "eff_calc_arg";
     private static Context mContext;
     private static machineViewModel viewModel;
@@ -57,6 +63,8 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private ImageView machineImageImage;
     private efficiencyFormulaViewModel viewModeleffcal;
     private String calculationId;
+    private View.OnClickListener listener;
+    private View.OnClickListener updateAndSendEmailListener;
 
 
     public AddEffCalculationActivityFragment() {
@@ -71,14 +79,49 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         super.onViewCreated(view, savedInstanceState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
+        activityAddEffCalculationBinding=DataBindingUtil.findBinding((View) container.getParent());
+        //TODO: check if it came from list or came from detail. Subscribe to the calculations Viewmodel. Get and replace the selected item with the current item
+        if(activityAddEffCalculationBinding!=null){
+        activityAddEffCalculationBinding.setLifecycleOwner(this);}
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
         binding.setCalculation(new Callbacks());
+        listener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SendALongToast(getActivity(),"Will Send Email").show();
+                new SendMyEmail(meffcalculationLive.getValue(),getActivity());
+            }
+        };
+        updateAndSendEmailListener =new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(view, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG)
+                        .setAction("Email", listener).show();
+                //Get the information from the fragment
+                long currentTimeinMillis = Calendar.getInstance().getTimeInMillis();
+
+                String mydate=new MDateFormating(getActivity()).getMdate();
+                meffcalculationLive.getValue().setUserid(FirebaseAuth.getInstance().getUid());
+                meffcalculationLive.getValue().setDate(currentTimeinMillis);
+                meffcalculationLive.getValue().setDateS(mydate);
+                meffcalculationLive.getValue().setMid(thismachine.getMachineFullName());
+                Gson json=new Gson();
+                String newItemID=meffcalculationLive.getValue().getUserid();
+
+                newItemID.trim();
+                newItemID.replace("","").replace(":","");
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.firebase_ref_calculations_add_one,newItemID,currentTimeinMillis));
+                ref.setValue(meffcalculationLive.getValue());
+            }
+        };
+
         //Get sent machine information
         if (getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             machineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
@@ -117,6 +160,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 initialUIsetup();
             }
         }
+
         return view;
     }
 
@@ -143,8 +187,11 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.brickWidthLayout.setVisibility(View.GONE);
         binding.brickHeightLayout.setVisibility(View.GONE);
         binding.brickVoidPercentageLayout.setVisibility(View.GONE);
-        ImageView machineImage = getActivity().findViewById(R.id.app_bar_machine_image);
-        Glide.with(this).load(thismachine.getLargeImageOne()).into(machineImage);
+        //If it came from the detail activity set the picture
+        if(activityAddEffCalculationBinding!=null){
+            activityAddEffCalculationBinding.fab.setOnClickListener(updateAndSendEmailListener);
+            Glide.with(this).load(thismachine.getLargeImageOne())
+                .into(activityAddEffCalculationBinding.appBarMachineImage);}
         //setup spinner
         setUpspinner(binding.selectAugerSpinner);
     }
@@ -251,6 +298,10 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         new fadeAnim(binding.brickWidthLayout, getActivity()).animate();
         new fadeAnim(binding.brickHeightLayout, getActivity()).animate();
         new fadeAnim(binding.brickVoidPercentageLayout, getActivity()).animate();
+    }
+
+    public effcalculation getCalculation(){
+        return meffcalculationLive.getValue();
     }
 
     @Override

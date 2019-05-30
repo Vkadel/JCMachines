@@ -86,6 +86,7 @@
         <item name="android:outlineSpotShadowColor">@color/colorPrimary</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
+
     <style name="CollapsingToolbarLayout_style">
         <item name="android:foregroundTint">@color/colorAccent</item>
         <item name="android:foregroundTintMode">screen</item>
@@ -94,7 +95,7 @@
     </style>
 
     <style name="labels_eff_calc_main_variable_style" parent="labels_eff_calc">
-       <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_margin">16dp</item>
     </style>
 
 </resources>

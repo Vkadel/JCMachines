@@ -1,166 +1,131 @@
 package com.example.virginia.jcmachines;
 
-import android.app.Person;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.virginia.jcmachines.R.drawable;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.virginia.jcmachines.databinding.ActivityMainBinding;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
+import java.util.List;
 
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.google.firebase.database.FirebaseDatabase;
 
-
-public class MainActivity extends AppCompatActivity implements OnClickListener {
+public class MainActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     ImageView userPic;
-    static final int RC_SIGN_IN=1;
+    static final int RC_SIGN_IN = 1;
     TextView userEmail;
-    static Boolean firebaseIsSetUp=false;
+    static Boolean firebaseIsSetUp = false;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(layout.activity_main);
+        binding= DataBindingUtil.setContentView(this,layout.activity_main);
+        ((ViewDataBinding) binding).setLifecycleOwner(this);
         Timber.plant(new DebugTree());
-        this.userEmail = this.findViewById(id.user_email);
-        this.userPic = this.findViewById(id.user_pic);
-        this.updateUI(null);
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestProfile()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        this.mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        //On click for user, to start signing flow
-        this.findViewById(id.sign_in_button).setOnClickListener(this);
-        this.findViewById(id.sign_out_button).setOnClickListener(this);
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         //Setting up database persistence
-        if(!firebaseIsSetUp){
+        if (!firebaseIsSetUp) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             database.setPersistenceEnabled(true);
-            firebaseIsSetUp=true;
+            firebaseIsSetUp = true;
         }
+        binding.signInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchSignIn();
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        this.updateUI(account);
-    }
 
-    private void updateUI(GoogleSignInAccount account) {
-        if (account==null){
-            this.userEmail.setText("Please login");
-            this.userPic.setImageResource(drawable.place_holder_image);}
-        else
-        {
-            this.userEmail.setText(account.getDisplayName());
-            Uri PhotoURL=account.getPhotoUrl();
-            String id=account.getId();
-            String Name=account.getDisplayName();
-            Timber.d(id+"photo");
-            if (PhotoURL!=null){
-                String convertURI=PhotoURL.toString();
-                GlideApp.with(this).load(PhotoURL.toString())
-                        .apply(RequestOptions.centerInsideTransform())
-                        .into(this.userPic);
-            }
-        }
-       if(account!=null){
-
-        Intent intent = new Intent(this, machineListActivity.class);
-           this.startActivity(intent);}
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case id.sign_in_button:
-                this.signIn();
-                break;
-            case id.sign_out_button:
-                this.signOut();
-                break;
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            updateUI(currentUser);
+        } else {
+         launchSignIn();
         }
     }
 
-    private void signOut() {
-        this.mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
-                });
-        this.updateUI(null);
+    private void launchSignIn(){
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
 
-    }
-
-    private void signIn() {
-        Intent signInIntent = this.mGoogleSignInClient.getSignInIntent();
-        this.startActivityForResult(signInIntent, MainActivity.RC_SIGN_IN);
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setLogo(R.drawable.steele_logo_100)
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == MainActivity.RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            this.handleSignInResult(task);
-    }
-}
 
-    private void handleSignInResult(Task<GoogleSignInAccount> task) {
-        try {
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            // only try to get data if sign in isSuccessful, show authenticated UI.
-            if(task.isSuccessful()){
-                this.updateUI(account);
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Intent intent=new Intent(this,machineListActivity.class);
+                startActivity(intent);
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+
+
             }
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Timber.w("signInResult:failed code=" + e.getStatusCode());
-            this.updateUI(null);
         }
     }
+
+    private void logout(){
+
     }
+
+    private void updateUI(FirebaseUser account) {
+        if (account == null) {
+            //Do something when user is null
+            ;
+        } else {
+            //Do someting when user is not null
+        }
+    }
+
+
+}

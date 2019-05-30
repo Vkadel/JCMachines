@@ -55,6 +55,7 @@ public class machineDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     private static final String ARG_ITEM_ROOT_VIEW = "root_view";
     public static final String ARG_IS_TWO_PANE = "is_two_pane";
+    public static final String EFF_ARG_ITEM_ID="eff_cal_id";
     List<machine> machineList;
     machine thisMachine;
     com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;

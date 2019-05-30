@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,9 +24,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +44,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
+import com.example.virginia.jcmachines.databinding.ActivityMachineListBinding;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 
@@ -59,7 +65,7 @@ public class machineListActivity extends AppCompatActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-
+    private ActivityMachineListBinding binding;
     private boolean mTwoPane;
     private com.example.virginia.jcmachines.viewmodels.machineViewModel machineViewModel;
     private PagedList<machine> mMachines;
@@ -77,16 +83,16 @@ public class machineListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(layout.activity_machine_list);
+        binding= DataBindingUtil.setContentView(this,layout.activity_machine_list);
+        binding.setLifecycleOwner(this);
         this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
 
         PagedList.Config.Builder config= new PagedList.Config.Builder().setPageSize(2).setPrefetchDistance(4);
         Timber.d("atMachineList: Started List activity");
         Timber.plant(new DebugTree());
         activity=this;
-        Toolbar toolbar = this.findViewById(id.toolbar);
-        this.setSupportActionBar(toolbar);
-        toolbar.setTitle(this.getTitle());
+        this.setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitle(this.getTitle());
 
 
         //Check if the application is connected to the web, and give the user a toast to signal that the information may not be up to date
@@ -220,6 +226,29 @@ public class machineListActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(machineDetailFragment.ARG_ITEM_ID,thisItemID);
         super.onSaveInstanceState(outState);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case id.go_to_calculations:
+               new SendALongToast(this,"I will take you to your calculations").show();
+               Intent intent=new Intent(this,effcalculationListActivity.class);
+               startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add_eff_calculation, menu);
+        return true;
     }
 
     public class machineAdapter

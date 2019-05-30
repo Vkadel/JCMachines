@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.virginia.jcmachines"
     android:installLocation="internalOnly">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -20,6 +21,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".effcalculationListActivity"
+            android:label="@string/title_effcalculation_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".effcalculationDetailActivity"
+            android:label="@string/title_effcalculation_detail"
+            android:parentActivityName=".effcalculationListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.virginia.jcmachines.effcalculationListActivity" />
+        </activity>
         <activity
             android:name=".AddEffCalculationActivity"
             android:label="@string/title_activity_add_eff_calculation"

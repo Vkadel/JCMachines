@@ -3,6 +3,7 @@ package com.example.virginia.jcmachines;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,22 +11,34 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
+import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddEffCalculationActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingBar;
-    ActivityAddEffCalculationBinding binding;
+    public ActivityAddEffCalculationBinding binding;
     AddEffCalculationActivityFragment fragment;
     Toolbar toolbar;
     String thisItemID;
     private static machineViewModel viewModel;
     private static machine thismachine;
     private String machineId;
+    private View.OnClickListener listener;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +48,9 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         binding.effCalculationCollapsingBarlayuout.setTitle(getResources().getString(R.string.efficiency_calculator_activity_name));
         binding.effCalculationCollapsingBarlayuout.setExpandedTitleColor(getResources().getColor(R.color.colorAccent, getTheme()));
         setSupportActionBar(binding.calcEffToolbar);
+        mContext=this;
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         //Create and Attach the fragment
         Bundle arguments = new Bundle();

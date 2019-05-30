@@ -1,6 +1,7 @@
 package com.example.virginia.jcmachines.Data;
 
 
+import com.google.firebase.database.Exclude;
 
 public class effcalculation {
     /**
@@ -51,7 +52,8 @@ public class effcalculation {
     private double h;
     private double z;
     private double n;
-    private String date;
+    private long date;
+    private String dateS;
     double vd;
 
 
@@ -144,6 +146,15 @@ public class effcalculation {
         return ax;
     }
 
+
+    public String getDateS() {
+        return dateS;
+    }
+
+    public void setDateS(String dateS) {
+        this.dateS = dateS;
+    }
+
     public String getCompid() {
         return compid;
     }
@@ -160,11 +171,11 @@ public class effcalculation {
         this.compid = compid;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -288,9 +299,6 @@ public class effcalculation {
         this.z = z;
     }
 
-    public void setImp(Boolean imp) {
-        this.imp = imp;
-    }
 
     public double getVd() {
         return vd;
@@ -301,6 +309,7 @@ public class effcalculation {
     }
 
     //Converter Classes for binding
+    @Exclude
     public String getEffString() {
         return String.valueOf(eff);
     }
@@ -309,6 +318,7 @@ public class effcalculation {
         this.eff = Double.valueOf(effString);
     }
 
+    @Exclude
     public String getCompidString() {
         return compid;
     }
@@ -318,6 +328,7 @@ public class effcalculation {
         this.compid = compidString;}
     }
 
+    @Exclude
     public String getVString() {
         if(v==0){
             return "";}
@@ -354,6 +365,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getCString() {
         if(c==0){
             return "";}
@@ -374,6 +386,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getLString() {
         if(l==0){
             return "";}
@@ -393,6 +406,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getRString() {
         if(r==0){
             return "";}
@@ -412,6 +426,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getAxString() {
         if(ax==0){
             return "";}
@@ -431,6 +446,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getWString() {
         if(w==0){
             return "";}
@@ -439,6 +455,7 @@ public class effcalculation {
 
     }
 
+    @Exclude
     public String getHString() {
         if(h==0){
             return "";}
@@ -458,6 +475,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getZString() {
         if(z==0){
             return "";}
@@ -477,6 +495,7 @@ public class effcalculation {
         }
     }
 
+    @Exclude
     public String getNString() {
         if(n==0){
             return "";}

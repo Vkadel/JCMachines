@@ -61,9 +61,9 @@
     <string name="dummy_machine_id">1000000</string>
     <string name="loading">Loading</string>
     <string name="no_network">No network connect to your network and try again</string>
-    <string name="calculate_efficiency">Calculate efficiency for this machine</string>
+    <string name="calculate_efficiency">Calculate efficiency</string>
     <string name="title_activity_add_eff_calculation">AddEffCalculationActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="see_all_calculations">Go to Eff Calculations</string>
     <string name="enter_company_name">Company Name: </string>
     <string name="imperial">Imperial unit: </string>
     <string name="metric"> Metric unit:</string>
@@ -106,5 +106,18 @@
     <string name="auger_speed_metric">Auger Speed (rpm): </string>
     <string name="auger_speed_imp">Auger Speed (rpm): </string>
     <string name="select_auger_type">Select auger type:</string>
+    <string name="will_save_your_calculation">Saving your calculation</string>
+
+    //Firebase ref
+
+    <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s%d/</string>
+    <string name="date_for_calculation_format">%d_%d_%d_time_%d_%d</string>
+    <string name="email_addresss_from_cc_calculations">virginiakadel@gmail.com</string>
+    <string name="theoretical_volume_displacement">Theoretical Volume Displacement:</string>
+    <string name="subject_efficiency_email">%s Sent you a calculation for Efficiency</string>
+    <string name="type_of_machine">Type of machine:</string>
+    <string name="title_effcalculation_list">effcalculations</string>
+    <string name="title_effcalculation_detail">effcalculation Detail</string>
+
 
 </resources>
