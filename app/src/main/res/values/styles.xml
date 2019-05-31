@@ -98,4 +98,8 @@
         <item name="android:layout_margin">16dp</item>
     </style>
 
+    <style name="labels_eff_calc_item" parent="labels_eff_calc">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
 </resources>

@@ -235,8 +235,8 @@ public class SparePartListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = (TextView) view.findViewById(R.id.machine_id);
+                mContentView = (TextView) view.findViewById(R.id.eff);
                 SparePartImage=(ImageView)view.findViewById(R.id.spare_part_item_iv);
             }
         }

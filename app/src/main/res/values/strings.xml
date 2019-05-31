@@ -108,9 +108,7 @@
     <string name="select_auger_type">Select auger type:</string>
     <string name="will_save_your_calculation">Saving your calculation</string>
 
-    //Firebase ref
 
-    <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s%d/</string>
     <string name="date_for_calculation_format">%d_%d_%d_time_%d_%d</string>
     <string name="email_addresss_from_cc_calculations">virginiakadel@gmail.com</string>
     <string name="theoretical_volume_displacement">Theoretical Volume Displacement:</string>
@@ -119,5 +117,12 @@
     <string name="title_effcalculation_list">effcalculations</string>
     <string name="title_effcalculation_detail">effcalculation Detail</string>
 
+    //Firebase ref
+    <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s%d/</string>
+    <string name="firebase_ref_calculations_all_for_user" translatable="false">/effcalculations/</string>
 
+    //FirebaseKeys
+    <string name="firebase_key_user_under_effcalc" translatable="false">userid</string>
+    <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%d%s</string>
+    <string name="hour_zero_add">0%d</string>
 </resources>

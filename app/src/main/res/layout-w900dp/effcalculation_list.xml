@@ -28,7 +28,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.virginia.jcmachines.effcalculationListActivity"
-        tools:listitem="@layout/effcalculation_list_content" />
+        tools:listitem="@layout/effcalculation_list_item" />
 
     <FrameLayout
         android:id="@+id/effcalculation_detail_container"

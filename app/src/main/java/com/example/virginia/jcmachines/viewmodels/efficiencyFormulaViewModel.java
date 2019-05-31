@@ -7,18 +7,17 @@ import android.content.Context;
 
 import com.example.virginia.jcmachines.Data.FirebaseEffFormulaLive;
 import com.example.virginia.jcmachines.Data.effcalculation;
+import com.example.virginia.jcmachines.R;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class efficiencyFormulaViewModel extends ViewModel {
     Context mContext;
     LiveData<effcalculation> meffCalculation;
     MutableLiveData<effcalculation> effCalculationMutable;
-    LiveData<List<effcalculation>> meffCalculationList;
     public efficiencyFormulaViewModel(final Context context, DatabaseReference myRef){
     mContext=context;
     }
@@ -27,8 +26,7 @@ public class efficiencyFormulaViewModel extends ViewModel {
         super();
     }
 
-    public MutableLiveData<effcalculation> getMeffCalculation(effcalculation calc)
-    {
+    public MutableLiveData<effcalculation> getMeffCalculation(effcalculation calc) {
         effCalculationMutable.setValue(calc);
         return effCalculationMutable;
     }
@@ -39,9 +37,12 @@ public class efficiencyFormulaViewModel extends ViewModel {
         return meffCalculation;
     }
 
-    public LiveData<List<effcalculation>> getMeffCalculationList(String mrefString) {
+    public LiveData<DataSnapshot> getMeffCalculationList(String userID, Context context) {
+        String mrefString=context.getString(R.string.firebase_ref_calculations_all_for_user);
         DatabaseReference mref= FirebaseDatabase.getInstance().getReference(mrefString);
-        FirebaseEffFormulaLive getoneCalculation=new FirebaseEffFormulaLive(mref);
-        return meffCalculationList;
+        mref.equalTo(userID,context.getString(R.string.firebase_key_user_under_effcalc));
+        mref.orderByChild("date");
+        FirebaseEffFormulaLive getList=new FirebaseEffFormulaLive(mref);
+        return getList;
     }
 }

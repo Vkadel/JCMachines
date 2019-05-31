@@ -5,12 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +37,15 @@ import com.example.virginia.jcmachines.utils.SendMyEmail;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -54,6 +59,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private static Context mContext;
     private static machineViewModel viewModel;
     private static machine thismachine;
+    private efficiencyFormulaViewModel viewModeleffList=new efficiencyFormulaViewModel();;
     private PagedList<machine> mmachines;
     ArrayList<String> augerList = new ArrayList<>();
     ArrayList<String> augerValueList = new ArrayList<>();
@@ -99,34 +105,19 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 new SendMyEmail(meffcalculationLive.getValue(),getActivity());
             }
         };
-        updateAndSendEmailListener =new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(view, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG)
-                        .setAction("Email", listener).show();
-                //Get the information from the fragment
-                long currentTimeinMillis = Calendar.getInstance().getTimeInMillis();
-
-                String mydate=new MDateFormating(getActivity()).getMdate();
-                meffcalculationLive.getValue().setUserid(FirebaseAuth.getInstance().getUid());
-                meffcalculationLive.getValue().setDate(currentTimeinMillis);
-                meffcalculationLive.getValue().setDateS(mydate);
-                meffcalculationLive.getValue().setMid(thismachine.getMachineFullName());
-                Gson json=new Gson();
-                String newItemID=meffcalculationLive.getValue().getUserid();
-
-                newItemID.trim();
-                newItemID.replace("","").replace(":","");
-                DatabaseReference ref= FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.firebase_ref_calculations_add_one,newItemID,currentTimeinMillis));
-                ref.setValue(meffcalculationLive.getValue());
-            }
-        };
 
         //Get sent machine information
         if (getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             machineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
         } else {
             machineId = "0";
+        }
+
+        //Connect to the loadAllcalcViewModel
+        if(getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)&&savedInstanceState==null){
+            disableAllDataEntry();
+            viewModeleffList= ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
+            viewModeleffList.getMeffCalculationList(FirebaseAuth.getInstance().getUid(),getActivity()).observe(this,new myObserver());
         }
 
         if (savedInstanceState == null) {
@@ -163,6 +154,21 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         return view;
     }
+    private void disableAllDataEntry(){
+        binding.enterCompanyNameEt.setEnabled(false);
+        binding.userHasCutter.setEnabled(false);
+        binding.imperialMetricSwitch.setEnabled(false);
+        binding.cutLengthEt.setEnabled(false);
+        binding.cutRateEt.setEnabled(false);
+        binding.columnSpeedEt.setEnabled(false);
+        binding.augeSpeedEt.setEnabled(false);
+        binding.brickHEt.setEnabled(false);
+        binding.brickWEt.setEnabled(false);
+        binding.brickVoidPercentageEt.setEnabled(false);
+        binding.axMaterialSection.setEnabled(false);
+        binding.estimationWasteEt.setEnabled(false);
+        //TODO: hide the FAB
+    }
 
     private void rePopViewsAfterConfigUpdate() {
         //Is imperial
@@ -189,7 +195,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.brickVoidPercentageLayout.setVisibility(View.GONE);
         //If it came from the detail activity set the picture
         if(activityAddEffCalculationBinding!=null){
-            activityAddEffCalculationBinding.fab.setOnClickListener(updateAndSendEmailListener);
+            activityAddEffCalculationBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
             Glide.with(this).load(thismachine.getLargeImageOne())
                 .into(activityAddEffCalculationBinding.appBarMachineImage);}
         //setup spinner
@@ -442,5 +448,72 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         }
     }
 
+    public class myUpdateAndSendEmailListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            Snackbar.make(v, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG)
+                    .setAction("Email", listener).show();
+            //Get the information from the fragment
+            long currentTimeinMillis = Calendar.getInstance().getTimeInMillis();
+
+            String mydate=new MDateFormating(getActivity()).getMdate();
+            meffcalculationLive.getValue().setUserid(FirebaseAuth.getInstance().getUid());
+            meffcalculationLive.getValue().setDate(currentTimeinMillis);
+            meffcalculationLive.getValue().setDateS(mydate);
+            meffcalculationLive.getValue().setMid(thismachine.getMachineFullName());
+            Gson json=new Gson();
+            String newItemID=meffcalculationLive.getValue().getUserid();
+
+            newItemID.trim();
+            newItemID.replace("","").replace(":","");
+            DatabaseReference ref= FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.firebase_ref_calculations_add_one,newItemID,currentTimeinMillis));
+            ref.setValue(meffcalculationLive.getValue());
+        }
+    }
+
+    public class myObserver implements Observer<DataSnapshot>{
+        @Override
+        public void onChanged(@Nullable DataSnapshot dataSnapshot) {
+            List<effcalculation> myList=new ArrayList<>();
+            dataSnapshot.getChildren().forEach(new Consumer<DataSnapshot>() {
+                @Override
+                public void accept(DataSnapshot dataSnapshot) {
+                    myList.add(dataSnapshot.getValue(effcalculation.class));
+                }
+            });
+
+            effcalculation mycal=myList.get(Integer.parseInt(getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID)));
+            binding.efficiencyTv.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getEff())));
+            binding.enterCompanyNameEt.setText(mycal.getCompid());
+            if(mycal.getV()!=0){
+            binding.columnSpeedEt.setText(String.valueOf(mycal.getV()));}
+
+            if(mycal.getC()!=0){
+                binding.cutLengthEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getC())));}
+
+            if(mycal.getL()!=0){
+                binding.cutRateEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getL())));}
+
+            if(mycal.getR()!=0){
+                binding.estimationWasteEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getR())));}
+
+            if(mycal.getAx()!=0){
+                binding.axMaterialSection.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getAx())));}
+
+            if(mycal.getW()!=0){
+                binding.brickWEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getW())));}
+
+            if(mycal.getH()!=0){
+                binding.brickHEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getH())));}
+
+            if(mycal.getZ()!=0){
+                binding.brickVoidPercentageEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getZ())));}
+
+            if(mycal.getN()!=0){
+                binding.augeSpeedEt.setText(String.valueOf(new DecimalFormat("#.##").format(mycal.getN())));}
+
+        }
+    }
 
 }
