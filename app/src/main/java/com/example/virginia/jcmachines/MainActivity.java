@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         ((ViewDataBinding) binding).setLifecycleOwner(this);
         Timber.plant(new DebugTree());
 
+        launchSignIn();
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.text.Editable" />
+        <import type="android.arch.lifecycle.LiveData" />
         <import type="android.widget.EditText" />
+
 
         <variable
             name="calculation"
@@ -14,6 +14,9 @@
         <variable
             name="livedata"
             type="com.example.virginia.jcmachines.AddEffCalculationActivityFragment.MyLiveEffCalculation" />
+        <variable
+            name="Converter"
+            type="com.example.virginia.jcmachines.AddEffCalculationActivityFragment.Converter" />
     </data>
 
     <ScrollView
@@ -46,7 +49,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.compidString}"
+                    android:text="@={livedata.compid}"
                     android:hint="@string/enter_company_name" />
 
             </LinearLayout>
@@ -116,13 +119,12 @@
                     android:text="@string/cut_length_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:id="@+id/cut_length_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.CString}"
+                    android:text="@={Converter.doubleToString(livedata.c)}"
                     android:ems="10"
                     android:inputType="number|numberDecimal" />
 
@@ -145,8 +147,7 @@
                     android:text="@string/cut_rate_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
-                    android:text="@={livedata.LString}"
+                    android:text="@={Converter.doubleToString(livedata.l)}"
                     android:id="@+id/cut_rate_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
@@ -174,8 +175,7 @@
                     android:text="@string/estimation_of_waste" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
-                    android:text="@={livedata.RString}"
+                    android:text="@={Converter.doubleToString(livedata.r)}"
                     android:id="@+id/estimation_waste_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
@@ -213,13 +213,12 @@
                     android:text="@string/column_speed_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:id="@+id/column_speed_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@={livedata.VString}"
+                    android:text="@={Converter.doubleToString(livedata.v)}"
                     android:ems="10"
                     android:inputType="numberDecimal" />
 
@@ -265,10 +264,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:ems="10"
                     android:inputType="numberDecimal"
-                    android:text="@={livedata.AxString}" />
+                    android:text="@={Converter.doubleToString(livedata.ax)}" />
 
             </LinearLayout>
 
@@ -289,8 +287,7 @@
                     android:text="@string/enter_brick_w_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
-                    android:text="@={livedata.WString}"
+                    android:text="@={Converter.doubleToString(livedata.w)}"
                     android:id="@+id/brick_w_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
@@ -317,13 +314,12 @@
                     android:text="@string/enter_brick_h_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:id="@+id/brick_h_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.HString}"
+                    android:text="@={Converter.doubleToString(livedata.h)}"
                     android:ems="10"
                     android:inputType="numberDecimal" />
 
@@ -346,13 +342,12 @@
                     android:text="@string/enter_void_percentage" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:id="@+id/brick_void_percentage_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.ZString}"
+                    android:text="@={Converter.doubleToString(livedata.z)}"
                     android:ems="10"
                     android:inputType="numberDecimal" />
 
@@ -382,13 +377,12 @@
                     android:text="@string/auger_speed_imp" />
 
                 <EditText
-                    android:afterTextChanged="@{calculation::afterTextChanged}"
                     android:id="@+id/auge_speed_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.NString}"
+                    android:text="@={Converter.doubleToString(livedata.n)}"
                     android:ems="10"
                     android:inputType="numberDecimal" />
 
@@ -448,12 +442,11 @@
                     android:textAlignment="textStart" />
 
                 <TextView
-
                     android:id="@+id/efficiency_tv"
                     style="@style/labels_eff_calc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@={livedata.effString}"
+                    android:text="@={Converter.doubleToString(livedata.eff)}"
                     android:textSize="32sp" />
 
                 <TextView

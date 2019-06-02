@@ -125,4 +125,5 @@
     <string name="firebase_key_user_under_effcalc" translatable="false">userid</string>
     <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%d%s</string>
     <string name="hour_zero_add">0%d</string>
+    <string name="decimalSymbol">.</string>
 </resources>

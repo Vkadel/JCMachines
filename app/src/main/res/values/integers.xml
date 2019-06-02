@@ -3,4 +3,5 @@
     <integer name="margin_take_out_for_list">10</integer>
     <integer name="page_size">5</integer>
     <integer name="layout_animation_duration">600</integer>
+    <integer name="rounding_places">2</integer>
 </resources>

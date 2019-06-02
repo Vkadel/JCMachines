@@ -1,12 +1,15 @@
 package com.example.virginia.jcmachines.Data;
 
 
-import com.google.firebase.database.Exclude;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.support.annotation.NonNull;
 
-public class effcalculation {
+import com.example.virginia.jcmachines.BR;
+
+public class effcalculation extends BaseObservable {
     /**
      * Generates class for calculation of the efficiency
-     *
      *
      * @param compid company Id.
      * @param userid Authenticated UserId.
@@ -27,18 +30,17 @@ public class effcalculation {
      * @param n auger speed customer provided rpm
      * @param date time at saving
      * @param vd theoretical volume displacement (in^3) metric and m^3
-     *                    Convertions: STANDARD / METRIC
+     * Convertions: STANDARD / METRIC
      * 1 inch /25.4 mm
      * 1 foot /0.3048 m
      * 1 lb /0.4536 kg
      * 1 in/min 0.000423 m/s
-     *
      * @return effcalculation calculation object.
      */
     private String compid;
     private String userid;
     private String mid;
-    private Boolean imp=true;
+    private Boolean imp = true;
     private double ms;
     private boolean hasc;
     private String apptype;
@@ -57,13 +59,13 @@ public class effcalculation {
     double vd;
 
 
-    public  effcalculation(){
+    public effcalculation()  {
 
     }
 
-    public effcalculation clear(){
+    public effcalculation clear() {
         effcalculation myeff;
-        myeff=new effcalculation();
+        myeff = new effcalculation();
         myeff.setCompid("");
         myeff.setC(0);
         myeff.setN(0);
@@ -75,78 +77,82 @@ public class effcalculation {
         myeff.setApptype("");
         myeff.setUserid("");
         myeff.setMid("");
-       return myeff;
+        return myeff;
     }
 
-    public void convertToMetric(){
-        imp=false;
-        if(c!=0){
-            c=c*0.0254;
+    public void convertToMetric() {
+        imp = false;
+        if (c != 0) {
+            setC(c * 0.0254);
         }
-        if(w!=0){
-            w=w*0.0254;
+        if (w != 0) {
+            setW(w * 0.0254);
         }
-        if(l!=0){
-            l=l*0.0254;
+        if (l != 0) {
+            setL(l * 0.0254);
         }
-        if(v!=0){
-            v=v*0.000423;
+        if (v != 0) {
+            setV(v * 0.000423);
         }
-        if(ax!=0){
-            ax=ax*0.00064516;
+        if (ax != 0) {
+            setAx(ax * 0.00064516);
         }
-        if(n!=0){
-            n=n/60;
-        }
-    }
-
-    public void convertToImp(){
-        imp=true;
-        if(c!=0){
-            c=c/0.0254;
-        }
-        if(w!=0){
-            w=w/0.0254;
-        }
-        if(l!=0){
-            l=l/0.0254;
-        }
-        if(v!=0){
-            v=v/0.000423;
-        }
-        if(ax!=0){
-            ax=ax/0.00064516;
-        }
-        if(n!=0){
-            n=n*60;
+        if (n != 0) {
+            setN(n / 60);
         }
     }
 
-    public double calculateEf(){
-        int myconstant=60;//this is a time conversion to change the cuts per sec to per min
-        eff=Math.round(((v*ax)/(n*vd))*100);
+    public void convertToImp() {
+        imp = true;
+        if (c != 0) {
+            setC(c / 0.0254);
+        }
+        if (w != 0) {
+            setW(w / 0.0254);
+        }
+        if (l != 0) {
+            setL(l / 0.0254);
+        }
+        if (v != 0) {
+            setV(v / 0.000423);
+        }
+        if (ax != 0) {
+            setAx(ax / 0.00064516);
+        }
+        if (n != 0) {
+            setN(n * 60);
+        }
+    }
+
+    public double calculateEf() {
+        int myconstant = 60;//this is a time conversion to change the cuts per sec to per min
+        setEff(Math.round(((v * ax) / (n * vd)) * 100));
         return eff;
     }
 
-    public double calculateColumnSpeed(){
+    public double calculateColumnSpeed() {
         //Calculate product section if ax not known
-
-            double number=r/100;
-            v=c*l*(1-number);
-
+        double number = r / 100;
+        v = c * l * (1 - number);
         return v;
     }
 
-    public double calculateProductSection(){
-        double number=z/100;
+    public double calculateProductSection() {
+        double number = z / 100;
         //Calculate produ
-
-            ax=w*h*(1-(number));
-
+        ax = w * h * (1 - (number));
         return ax;
     }
 
+    private boolean checkIfEffCanBecalculated() {
+        if (ax != 0 && v != 0 && vd != 0 && n != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    @Bindable
     public String getDateS() {
         return dateS;
     }
@@ -155,10 +161,12 @@ public class effcalculation {
         this.dateS = dateS;
     }
 
+    @Bindable
     public String getCompid() {
         return compid;
     }
 
+    @Bindable
     public boolean getImp() {
         return imp;
     }
@@ -171,6 +179,7 @@ public class effcalculation {
         this.compid = compid;
     }
 
+    @Bindable
     public long getDate() {
         return date;
     }
@@ -179,6 +188,7 @@ public class effcalculation {
         this.date = date;
     }
 
+    @Bindable
     public double getEff() {
         return eff;
     }
@@ -187,10 +197,12 @@ public class effcalculation {
         return hasc;
     }
 
+    @Bindable
     public String getApptype() {
         return apptype;
     }
 
+    @Bindable
     public double getAx() {
         return ax;
     }
@@ -199,42 +211,52 @@ public class effcalculation {
         return c;
     }
 
+    @Bindable
     public double getH() {
         return h;
     }
 
+    @Bindable
     public double getL() {
         return l;
     }
 
+    @Bindable
     public double getMs() {
         return ms;
     }
 
+    @Bindable
     public double getN() {
         return n;
     }
 
+    @Bindable
     public double getR() {
         return r;
     }
 
+    @Bindable
     public double getV() {
         return v;
     }
 
+    @Bindable
     public double getW() {
         return w;
     }
 
+    @Bindable
     public double getZ() {
         return z;
     }
 
+    @Bindable
     public String getMid() {
         return mid;
     }
 
+    @Bindable
     public String getUserid() {
         return userid;
     }
@@ -244,276 +266,116 @@ public class effcalculation {
     }
 
     public void setAx(double ax) {
+        if(this.ax!=ax){
         this.ax = ax;
+        notifyPropertyChanged(BR.livedata);}
+
+        if(checkIfEffCanBecalculated()){
+            setEff(calculateEf());
+        }
+
     }
 
     public void setC(double c) {
-        this.c = c;
+        if(this.c!=c){
+            this.c = c;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setEff(double eff) {
-        this.eff = eff;
+        if(this.eff!=eff){
+            this.eff = eff;
+            notifyPropertyChanged(BR.eff);}
     }
 
     public void setH(double h) {
-        this.h = h;
+        if(this.h!=h){
+            this.h = h;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setHasc(boolean hasc) {
-        this.hasc = hasc;
+        if(this.hasc!=hasc){
+            this.hasc = hasc;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setL(double l) {
-        this.l = l;
+        if(this.l!=l){
+            this.l = l;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setMid(String mid) {
-        this.mid = mid;
+        if(this.mid!=mid){
+            this.mid = mid;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setMs(double ms) {
-        this.ms = ms;
+        if(this.ms!=ms){
+            this.ms = ms;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setN(double n) {
-        this.n = n;
+        if(this.n!=n){
+            this.n = n;
+            notifyPropertyChanged(BR.livedata);}
+        if(checkIfEffCanBecalculated()){
+            setEff(calculateEf());
+        }
     }
 
     public void setR(double r) {
-        this.r = r;
+        if(this.r!=r){
+            this.r = r;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setV(double v) {
-        this.v = v;
+        if(this.v!=v){
+            this.v = v;
+            notifyPropertyChanged(BR.livedata);}
+        if(checkIfEffCanBecalculated()){
+            setEff(calculateEf());
+        }
+
     }
 
     public void setUserid(String userid) {
+        if(this.userid!=userid){
+            this.userid = userid;
+            notifyPropertyChanged(BR.livedata);}
         this.userid = userid;
     }
 
     public void setW(double w) {
-        this.w = w;
+        if(this.w!=w){
+            this.w = w;
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setZ(double z) {
-        this.z = z;
+        if(this.z!=z){
+            this.z = z;
+            notifyPropertyChanged(BR.livedata);}
     }
 
-
+    @Bindable
     public double getVd() {
         return vd;
     }
 
     public void setVd(double vd) {
-        this.vd = vd;
-    }
-
-    //Converter Classes for binding
-    @Exclude
-    public String getEffString() {
-        return String.valueOf(eff);
-    }
-
-    public void setEffString(String effString) {
-        this.eff = Double.valueOf(effString);
-    }
-
-    @Exclude
-    public String getCompidString() {
-        return compid;
-    }
-
-    public void setCompidString(String compidString) {
-        if(!compidString.equals(compid)){
-        this.compid = compidString;}
-    }
-
-    @Exclude
-    public String getVString() {
-        if(v==0){
-            return "";}
-        else{ return String.valueOf(v);
+        if(this.vd!=vd){
+            this.vd = vd;
+            notifyPropertyChanged(BR.livedata);}
+        if(checkIfEffCanBecalculated()){
+            setEff(calculateEf());
         }
     }
 
-    public void setVString(String VString) {
-        //Makes sure the user doesnt continue deleting beyong empty
-        //and sets a proper value to the variable
-        if(VString.isEmpty()){
-            this.v=0;
-            return;
-        }
-        //Checks the value is different from the new
-        //one before setting it
-        if(VString!=null||!VString.equals("")){
-            if(Double.parseDouble(VString)!=v)
-            this.v = Double.parseDouble(VString);
-        }
-    }
-
-    public void setCString(String CString) {
-
-        if(CString.isEmpty()){
-            this.c=0;
-            return;
-        }
-        //Checks the value is different from the new
-        //one before setting it
-        if(CString!=null||!CString.equals("")){
-            if(Double.parseDouble(CString)!=c)
-                this.c = Double.parseDouble(CString);
-        }
-    }
-
-    @Exclude
-    public String getCString() {
-        if(c==0){
-            return "";}
-        else{ return String.valueOf(c);
-        }
-    }
-
-
-    public void setLString(String LString) {
-        if(LString.isEmpty()){
-            this.l=0;
-            return;
-        }
-        if(LString!=null||!LString.equals("")){
-            if(Double.parseDouble(LString)!=l)
-                this.l = Double.parseDouble(LString);
-
-        }
-    }
-
-    @Exclude
-    public String getLString() {
-        if(l==0){
-            return "";}
-        else{ return String.valueOf(l);
-        }
-    }
-
-    public void setRString(String RString) {
-        if(RString.isEmpty()){
-            this.r=0;
-            return;
-        }
-        if(RString!=null||!RString.equals("")){
-            if(Double.parseDouble(RString)!=r)
-                this.r = Double.parseDouble(RString);
-
-        }
-    }
-
-    @Exclude
-    public String getRString() {
-        if(r==0){
-            return "";}
-        else{ return String.valueOf(r);
-        }
-    }
-
-    public void setAxString(String axString) {
-        if(axString.isEmpty()){
-            this.ax=0;
-            return;
-        }
-        if(axString!=null||!axString.equals("")){
-            if(Double.parseDouble(axString)!=ax)
-                this.ax = Double.parseDouble(axString);
-
-        }
-    }
-
-    @Exclude
-    public String getAxString() {
-        if(ax==0){
-            return "";}
-        else{ return String.valueOf(ax);
-        }
-    }
-
-    public void setWString(String WString) {
-        if(WString.isEmpty()){
-            this.w=0;
-            return;
-        }
-        if(WString!=null||!WString.equals("")){
-            if(Double.parseDouble(WString)!=w)
-                this.w = Double.parseDouble(WString);
-
-        }
-    }
-
-    @Exclude
-    public String getWString() {
-        if(w==0){
-            return "";}
-        else{ return String.valueOf(w);
-        }
-
-    }
-
-    @Exclude
-    public String getHString() {
-        if(h==0){
-            return "";}
-        else{ return String.valueOf(h);
-        }
-    }
-
-    public void setHString(String HString) {
-        if(HString.isEmpty()){
-            this.h=0;
-            return;
-        }
-        if(HString!=null||!HString.equals("")){
-            if(Double.parseDouble(HString)!=h)
-                this.h = Double.parseDouble(HString);
-
-        }
-    }
-
-    @Exclude
-    public String getZString() {
-        if(z==0){
-            return "";}
-        else{ return String.valueOf(z);
-        }
-    }
-
-    public void setZString(String ZString) {
-        if(ZString.isEmpty()){
-            this.z=0;
-            return;
-        }
-        if(ZString!=null||!ZString.equals("")){
-            if(Double.parseDouble(ZString)!=z)
-                this.z = Double.parseDouble(ZString);
-
-        }
-    }
-
-    @Exclude
-    public String getNString() {
-        if(n==0){
-            return "";}
-        else{ return String.valueOf(n);
-        }
-    }
-
-    public void setNString(String NString) {
-        if(NString.isEmpty()){
-            this.n=0;
-            return;
-        }
-        if(NString!=null||!NString.equals("")){
-            if(Double.parseDouble(NString)!=n)
-                this.n = Double.parseDouble(NString);
-
-        }
-    }
 
 }
 

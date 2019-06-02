@@ -77,14 +77,13 @@ public class effcalculationListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        //Get the list of items
-        if(savedInstanceState==null){
-        viewModel= ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
-        viewModel.getMeffCalculationList(FirebaseAuth.getInstance().getUid(),mContext).observe(this,new myObserver());}
-
         recyclerView = findViewById(R.id.effcalculation_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+        //Get the list of items
+        viewModel= ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
+        viewModel.getMeffCalculationList(FirebaseAuth.getInstance().getUid(),mContext).observe(this,new myObserver());
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

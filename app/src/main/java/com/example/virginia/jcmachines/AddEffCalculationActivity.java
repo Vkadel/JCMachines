@@ -69,7 +69,6 @@ public class AddEffCalculationActivity extends AppCompatActivity {
             });
             fragment = new AddEffCalculationActivityFragment();
             fragment.setArguments(arguments);
-
             this.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.form_container, fragment, "tag")
@@ -78,11 +77,6 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         } else if (savedInstanceState.containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             thisItemID = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
             arguments.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
-            fragment = new AddEffCalculationActivityFragment();
-            fragment.setArguments(arguments);
-            this.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.form_container, fragment)
-                    .commit();
 
         }
 
@@ -92,9 +86,4 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         Glide.with(this).load(thismachine.getLargeImageOne()).into(binding.appBarMachineImage);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
-        super.onSaveInstanceState(outState);
-    }
 }
