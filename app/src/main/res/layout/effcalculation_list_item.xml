@@ -8,7 +8,8 @@
 <android.support.constraint.ConstraintLayout
     android:background="@color/colorPrimary"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/eff_item_layout">
 
     <TextView
         android:id="@+id/machine_id"
@@ -53,7 +54,7 @@
         android:layout_margin="@dimen/text_margin"
         android:background="@drawable/shape_round_for_eff"
         android:text="100"
-        android:elevation="12dp"
+        android:elevation="16dp"
         android:paddingTop="24dp"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem"

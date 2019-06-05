@@ -18,6 +18,8 @@ public class efficiencyFormulaViewModel extends ViewModel {
     Context mContext;
     LiveData<effcalculation> meffCalculation;
     MutableLiveData<effcalculation> effCalculationMutable;
+    FirebaseEffFormulaLive getList;
+
     public efficiencyFormulaViewModel(final Context context, DatabaseReference myRef){
     mContext=context;
     }
@@ -42,7 +44,15 @@ public class efficiencyFormulaViewModel extends ViewModel {
         DatabaseReference mref= FirebaseDatabase.getInstance().getReference(mrefString);
         mref.equalTo(userID,context.getString(R.string.firebase_key_user_under_effcalc));
         mref.orderByChild("date");
-        FirebaseEffFormulaLive getList=new FirebaseEffFormulaLive(mref);
+        getList=new FirebaseEffFormulaLive(mref);
+        return getList;
+    }
+
+    public LiveData<effcalculation> getMeffCalculation() {
+        return meffCalculation;
+    }
+
+    public FirebaseEffFormulaLive getGetList() {
         return getList;
     }
 }

@@ -126,4 +126,5 @@
     <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%d%s</string>
     <string name="hour_zero_add">0%d</string>
     <string name="decimalSymbol">.</string>
+    <string name="list_of_calculations_eff_brick">Extrusion Efficiency</string>
 </resources>

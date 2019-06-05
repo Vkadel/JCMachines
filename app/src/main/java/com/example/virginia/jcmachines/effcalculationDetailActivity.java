@@ -60,6 +60,9 @@ public class effcalculationDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.effcalculation_detail_container, fragment)
                     .commit();
+        }else{
+            //check If activity
+
         }
     }
 

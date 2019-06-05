@@ -2,21 +2,16 @@ package com.example.virginia.jcmachines;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Context;
-import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
 import android.databinding.InverseMethod;
-import android.databinding.Observable;
-import android.databinding.Observable.OnPropertyChangedCallback;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +28,7 @@ import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.animations.appearAnim;
 import com.example.virginia.jcmachines.animations.fadeAnim;
 import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
+import com.example.virginia.jcmachines.databinding.EffcalculationListBindingW900dpImpl;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
 import com.example.virginia.jcmachines.utils.DoubleTruncate;
 import com.example.virginia.jcmachines.utils.MDateFormating;
@@ -46,7 +42,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -58,13 +53,12 @@ import java.util.function.Consumer;
  */
 public class AddEffCalculationActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     static FragmentAddEffCalculationBinding binding;
-    static ActivityAddEffCalculationBinding activityAddEffCalculationBinding;
     static final String EFF_CALC_ARG_EXIST = "eff_calc_arg";
+    static final String IS_TWO_PANE ="is_two_pane";
     private static Context mContext;
     private static machineViewModel viewModel;
     private static machine thismachine;
     private efficiencyFormulaViewModel viewModeleffList = new efficiencyFormulaViewModel();
-    ;
     private PagedList<machine> mmachines;
     ArrayList<String> augerList = new ArrayList<>();
     ArrayList<String> augerValueList = new ArrayList<>();
@@ -76,6 +70,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private String calculationId;
     private View.OnClickListener listener;
     private View.OnClickListener updateAndSendEmailListener;
+    private Boolean isTwoPane;
 
 
     public AddEffCalculationActivityFragment() {
@@ -96,11 +91,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
-        activityAddEffCalculationBinding = DataBindingUtil.findBinding((View) container.getParent());
-        //TODO: check if it came from list or came from detail. Subscribe to the calculations Viewmodel. Get and replace the selected item with the current item
-        if (activityAddEffCalculationBinding != null) {
-            activityAddEffCalculationBinding.setLifecycleOwner(this);
-        }
+        //Check if the screen is in TwoPane
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
@@ -205,12 +196,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             binding.brickHeightLayout.setVisibility(View.GONE);
             binding.brickVoidPercentageLayout.setVisibility(View.GONE);
         }
-        //If it came from the detail activity set the picture
-        if (activityAddEffCalculationBinding != null) {
-            activityAddEffCalculationBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
-            Glide.with(this).load(thismachine.getLargeImageOne())
-                    .into(activityAddEffCalculationBinding.appBarMachineImage);
-        }
+
         //setup spinner
         setUpspinner(binding.selectAugerSpinner);
     }
@@ -452,7 +438,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                     myList.add(dataSnapshot.getValue(effcalculation.class));
                 }
             });
-            effcalculation mycal = myList.get(Integer.parseInt(getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID))-1);
+            effcalculation mycal = myList.get(Integer.parseInt(getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID)));
             meffcalculationLive.setValue(mycal);
         }
     }

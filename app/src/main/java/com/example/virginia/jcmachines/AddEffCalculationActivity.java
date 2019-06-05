@@ -6,6 +6,7 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
@@ -39,6 +40,7 @@ public class AddEffCalculationActivity extends AppCompatActivity {
     private String machineId;
     private View.OnClickListener listener;
     private Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,7 @@ public class AddEffCalculationActivity extends AppCompatActivity {
 
         } else if (savedInstanceState.containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             thisItemID = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
-            arguments.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
-
+            setupUIStart();
         }
 
     }
@@ -86,4 +87,10 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         Glide.with(this).load(thismachine.getLargeImageOne()).into(binding.appBarMachineImage);
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
+        super.onSaveInstanceState(outState);
+    }
 }
