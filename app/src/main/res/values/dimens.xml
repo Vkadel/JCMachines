@@ -27,5 +27,6 @@
     <dimen name="eff_calc_fragmnent_height">900dp</dimen>
     <dimen name="send_long_toast_top">12sp</dimen>
     <dimen name="auger_spinner_w">200dp</dimen>
-    <dimen name="round_w">70dp</dimen>
+    <dimen name="round_w">60dp</dimen>
+    <dimen name="company_name_w">100dp</dimen>
 </resources>

@@ -79,7 +79,6 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        /*binding.executePendingBindings();*/
         //Setting up the listener
         mContext = getActivity();
         super.onViewCreated(view, savedInstanceState);
@@ -91,8 +90,10 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
-        //Check if the screen is in TwoPane
         binding.setLifecycleOwner(this);
+        ActivityAddEffCalculationBinding activityBinding=DataBindingUtil.getBinding((View) container.getParent());
+        activityBinding.setLifecycleOwner(this);
+        activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
         binding.setCalculation(new Callbacks());
@@ -162,6 +163,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.brickVoidPercentageEt.setEnabled(false);
         binding.axMaterialSection.setEnabled(false);
         binding.estimationWasteEt.setEnabled(false);
+        binding.imperialMetricSwitch.setEnabled(false);
+        binding.knowColumnSpeed.setEnabled(false);
+        binding.knownProductSection.setEnabled(false);
         //TODO: hide the FAB
     }
 
@@ -199,6 +203,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         //setup spinner
         setUpspinner(binding.selectAugerSpinner);
+
     }
 
     private void setUpspinner(Spinner spinner) {
@@ -407,8 +412,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         @Override
         public void onClick(View v) {
-            Snackbar.make(v, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG)
-                    .setAction("Email", listener).show();
+            Snackbar.make(v, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG).show();
             //Get the information from the fragment
             long currentTimeinMillis = Calendar.getInstance().getTimeInMillis();
 

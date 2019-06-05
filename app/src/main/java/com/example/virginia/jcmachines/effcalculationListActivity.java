@@ -128,8 +128,9 @@ public class effcalculationListActivity extends AppCompatActivity {
             if (mycalculations.size() > 0 || mycalculations != null) {
                 binding.machineId.setText(mycalculations.get(position).getMid());
                 binding.measurementDate.setText(new MDateFormating(mParentActivity).convertMillisTodate(mycalculations.get(position).getDate()));
+                binding.companyName.setText(mycalculations.get(position).getCompid());
                 binding.eff.setText(String.valueOf(mycalculations.get(position).getEff()));
-              /*  binding.eff.setOnClickListener(new ItemDeleteListener(mactivivityBinding));*/
+                binding.eff.setOnClickListener(new ItemDeleteListener(mactivivityBinding));
                 binding.getRoot().setTag(String.valueOf(position));
                 binding.getRoot().setOnClickListener(mOnClickListener);
             }
@@ -178,15 +179,13 @@ public class effcalculationListActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             //make delete button visible
-           /* mactivivityBinding = DataBindingUtil.findBinding((View) v.getParent().getParent());
-            mactivivityBinding.fab.show();*/
+            mactivivityBinding = DataBindingUtil.findBinding((View) v.getParent().getParent());
+            mactivivityBinding.fab.show();
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-    activivityBinding.invalidateAll();
-    activivityBinding.unbind();
         super.onSaveInstanceState(outState);
     }
 }
