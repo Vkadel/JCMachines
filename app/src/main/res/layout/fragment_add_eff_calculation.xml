@@ -23,14 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".AddEffCalculationActivityFragment">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/company_name_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -49,14 +47,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={livedata.compid}"
-                    android:hint="@string/enter_company_name" />
+                    android:hint="@string/enter_company_name"
+                    android:text="@={livedata.compid}" />
 
             </LinearLayout>
 
             <View
                 android:id="@+id/div_one"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:layout_marginTop="8dp"
@@ -65,7 +62,6 @@
 
             <LinearLayout
                 android:id="@+id/units_cutter_options_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -95,7 +91,6 @@
 
             <View
                 android:id="@+id/div_two"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:background="@color/colorPrimary"
@@ -103,7 +98,6 @@
 
             <LinearLayout
                 android:id="@+id/cut_length_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
@@ -124,15 +118,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={Converter.doubleToString(livedata.c)}"
                     android:ems="10"
-                    android:inputType="number|numberDecimal" />
+                    android:inputType="number|numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.c)}" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/cut_rate_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -147,20 +140,19 @@
                     android:text="@string/cut_rate_imp" />
 
                 <EditText
-                    android:text="@={Converter.doubleToString(livedata.l)}"
                     android:id="@+id/cut_rate_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.l)}" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/estimation_waste_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -175,23 +167,22 @@
                     android:text="@string/estimation_of_waste" />
 
                 <EditText
-                    android:text="@={Converter.doubleToString(livedata.r)}"
                     android:id="@+id/estimation_waste_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.r)}" />
             </LinearLayout>
 
             <LinearLayout
-                android:elevation="2dp"
                 android:id="@+id/column_speed_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:elevation="2dp"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/units_cutter_options_layout">
 
@@ -218,15 +209,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@={Converter.doubleToString(livedata.v)}"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.v)}" />
 
             </LinearLayout>
 
             <View
                 android:id="@+id/div_three"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:background="@color/colorPrimary"
@@ -234,7 +224,6 @@
 
             <LinearLayout
                 android:id="@+id/cuts_per_sec_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -272,7 +261,6 @@
 
             <LinearLayout
                 android:id="@+id/brick_width_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -287,19 +275,18 @@
                     android:text="@string/enter_brick_w_imp" />
 
                 <EditText
-                    android:text="@={Converter.doubleToString(livedata.w)}"
                     android:id="@+id/brick_w_et"
                     style="@style/enter_text_style"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.w)}" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/brick_height_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -319,15 +306,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={Converter.doubleToString(livedata.h)}"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.h)}" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/brick_void_percentage_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -347,15 +333,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={Converter.doubleToString(livedata.z)}"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.z)}" />
 
             </LinearLayout>
 
             <View
                 android:id="@+id/div_four"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:background="@color/colorPrimary"
@@ -382,44 +367,44 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@={Converter.doubleToString(livedata.n)}"
                     android:ems="10"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="@={Converter.doubleToString(livedata.n)}" />
 
             </LinearLayout>
 
             <View
                 android:id="@+id/div_five"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:background="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@+id/auger_speed_layout" />
 
-<LinearLayout
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/div_five"
-    android:id="@+id/select_auger_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:layout_weight="1"
-        android:text="@string/select_auger_type"
-        style="@style/labels_eff_calc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Spinner
-        android:layout_weight="1"
-        android:id="@+id/select_auger_spinner"
-        android:layout_width="@dimen/auger_spinner_w"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        />
-</LinearLayout>
+            <LinearLayout
+                android:id="@+id/select_auger_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/div_five">
+
+                <TextView
+                    style="@style/labels_eff_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/select_auger_type" />
+
+                <Spinner
+                    android:id="@+id/select_auger_spinner"
+                    android:layout_width="@dimen/auger_spinner_w"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp" />
+            </LinearLayout>
+
             <View
                 android:id="@+id/div_six"
-                style="@style/divider_style"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/div_thickness"
                 android:background="@color/colorPrimary"
@@ -427,7 +412,6 @@
 
             <LinearLayout
                 android:id="@+id/efficiency_layout"
-                style="@style/layout_efficiency_calc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
@@ -457,7 +441,7 @@
                     android:layout_gravity="center|right"
                     android:text="@string/efficiency_unit_imperial" />
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 

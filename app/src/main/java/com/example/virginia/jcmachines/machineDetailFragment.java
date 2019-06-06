@@ -2,18 +2,11 @@ package com.example.virginia.jcmachines;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
+
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.color;
@@ -30,6 +30,7 @@ import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -38,7 +39,6 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * A fragment representing a single machine detail screen.
@@ -66,6 +66,7 @@ public class machineDetailFragment extends Fragment {
     Activity activity;
     Boolean isTwopane;
     private Context context;
+    String TAG="machinedetailFragment";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,6 +88,7 @@ public class machineDetailFragment extends Fragment {
                 this.thisMachineId = this.getArguments().getString(machineDetailFragment.ARG_ITEM_ID);
                 this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
                 //observe the model
+
                 this.machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                     @Override
                     public void onChanged(@Nullable PagedList<machine> machines) {

@@ -17,22 +17,22 @@
     master/detail flow.
     
     -->
-<android.support.v4.widget.SwipeRefreshLayout
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/pull_refresh_machine_list"
     android:layout_width="@dimen/machine_item_width"
     android:layout_height="wrap_content">
-
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/machine_list"
         android:name="com.example.virginia.jcmachines.machineListFragment"
         android:layout_width="@dimen/machine_item_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context="com.example.virginia.jcmachines.machineListActivity"
         tools:listitem="@layout/machine_list_item" />
-</android.support.v4.widget.SwipeRefreshLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/machine_detail_container"

@@ -1,6 +1,7 @@
 package com.example.virginia.jcmachines.utils;
 
-import android.databinding.InverseMethod;
+
+import androidx.databinding.InverseMethod;
 
 public class Converter {
     @InverseMethod("stringToDouble")

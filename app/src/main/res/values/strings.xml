@@ -1,41 +1,23 @@
 <resources>
     <string name="app_name">JCMachines</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="user_email">User Email</string>
     <string name="Signout">Sign Out</string>
     <string name="title_machine_list">JC Steele Machines</string>
     <string name="title_machine_detail">machine Detail</string>
-    <string name="dimensions_link">Dimensions Link</string>
     <string name="data"> See Data Sheet</string>
     <string name="lubrication_chart">See Lubrication Chart</string>
     <string name="spare_parts">See Spare Parts List</string>
     <string name="description">Description</string>
-    <string name="title_item_list">Items</string>
-    <string name="title_item_detail">Item Detail</string>
     <string name="long_machine_name">This Machine Name</string>
     <string name="title_sparepart_list">SpareParts</string>
     <string name="title_sparepart_detail">SparePart Detail</string>
     <string name="spare_part_name">Spare Part Name</string>
     <string name="spare_part_description">Spare Part Description</string>
     <string name="spare_part_section">Spare Part Section</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="add_this_as_widget">Add this machine as your widget</string>
     <string name="loaded_once_preference_key" translatable="false">loaded_once</string>
     <string name="loaded_once_preference_value" translatable="true">false</string>
     <string name="select_for_widget">Select a machine to Widget</string>
-    <string name="my_machine_to_widget_preferences_key" translatable="false">machine_id_preferences</string>
     <string name="my_machine_to_widget_key" translatable="false">machine_id</string>
     <string name="my_machine_name_for_widget_key" translatable="false">machine_name</string>
     <string name="my_machine_pic_link_for_widget_key" translatable="false">machine_picture_link</string>
@@ -54,11 +36,8 @@
     <string name="no_network_to_see_file">Please connect to a network to view and/or download file</string>
     <string name="have_internet">App has internet connection</string>
     <string name="lost_connection">App lost internet connection</string>
-    <string name="removed_widget">Removed widget in position</string>
     <string name="already_widget">Remove from widgets</string>
     <string name="will_remove_thisWidget">Will remove this machine from widgets</string>
-    <string name="select_another">Select a machine before adding another widget</string>
-    <string name="dummy_machine_id">1000000</string>
     <string name="loading">Loading</string>
     <string name="no_network">No network connect to your network and try again</string>
     <string name="calculate_efficiency">Calculate efficiency</string>
@@ -67,21 +46,16 @@
     <string name="enter_company_name">Company Name: </string>
     <string name="imperial">Imperial unit: </string>
     <string name="metric"> Metric unit:</string>
-    <string name="change_imperial"> Changed to imperial units</string>
-    <string name="change_metric"> Changed to Metric </string>
-    <string name="system_has_cutter">System has cutter: </string>
     <string name="system_does_not_have_cutter">No cutter</string>
 
 
     <string name="estimation_of_waste">Estimation of % of waste: </string>
 
-    <string name="enter_if_you_dont_know_column_speed">Enter if you do not know your column speed</string>
     <string name="known">Known</string>
     <string name="not_known">Not known</string>
 
     <string name="enter_void_percentage">Enter void %: </string>
     <string name="efficiency">Efficiency: </string>
-    <string name="zero">00.0</string>
     <string name="efficiency_unit_imperial">%</string>
     <string name="efficiency_calculator_activity_name">Efficiency Calculator</string>
 
@@ -125,6 +99,5 @@
     <string name="firebase_key_user_under_effcalc" translatable="false">userid</string>
     <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%d%s</string>
     <string name="hour_zero_add">0%d</string>
-    <string name="decimalSymbol">.</string>
     <string name="list_of_calculations_eff_brick">Extrusion Efficiency</string>
 </resources>

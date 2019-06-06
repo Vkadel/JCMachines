@@ -13,13 +13,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -34,9 +34,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import timber.log.Timber;
-
-import static android.support.constraint.Constraints.TAG;
-import static android.view.View.INVISIBLE;
 
 /**
  * Implementation of App Widget functionality.
@@ -121,6 +118,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
 
     @NonNull
     private void GetSharedPreferences(Context context) {
+        final String  TAG="WidgetError: ";
         SharedPreferences sharedPref = context.getSharedPreferences(context.getResources()
                 .getString(R.string.my_machine_to_widget_key), Context.MODE_PRIVATE);
         // Perform this loop procedure for each App Widget that belongs to this provider

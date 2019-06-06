@@ -6,12 +6,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="8"
-        >
+        android:layout_weight="8">
 
         <ImageView
             android:id="@+id/imageView"
@@ -21,28 +20,27 @@
             android:paddingTop="16dp"
             android:scaleType="fitCenter"
             android:src="@drawable/place_holder_image"
-           app:layout_constraintBottom_toTopOf="@id/machine_name"
+            app:layout_constraintBottom_toTopOf="@id/machine_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/machine_name"
-            style="@style/DescriptionTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
+            android:elevation="6dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:paddingBottom="8dp"
             android:shadowColor="@color/colorAccent"
-            android:elevation="6dp"
             android:text="@string/long_machine_name"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView

@@ -2,25 +2,14 @@ package com.example.virginia.jcmachines;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
-import android.arch.paging.PagedListAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,11 +22,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-
 import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.id;
@@ -48,6 +46,8 @@ import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
  * An activity representing a list of machines. This activity
@@ -124,6 +124,7 @@ public class machineListActivity extends AppCompatActivity {
         final String pref = sharedPref.getString(getString(R.string.loaded_once_preference_key), defaultValue);
          //check if this is the first time the activity loads. Will subscribe to
         //Viewmodel
+
         if(savedInstanceState==null){
             machineViewModel.machines.observe(this, new Observer<PagedList<machine>>() {
                 @Override

@@ -1,33 +1,23 @@
 package com.example.virginia.jcmachines;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
+
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.Toolbar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 
 import com.bumptech.glide.Glide;
-import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
-import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class AddEffCalculationActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingBar;
@@ -60,15 +50,16 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         arguments.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
         if (savedInstanceState == null) {
             machineViewModel viewModel = ViewModelProviders.of(this).get(machineViewModel.class);
-            viewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
-                @Override
-                public void onChanged(@Nullable PagedList<machine> machines) {
-                    if (machines != null) {
-                        thismachine = machines.get(Integer.parseInt(thisItemID));
-                        setupUIStart();
-                    }
-                }
-            });
+
+                    viewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
+                        @Override
+                        public void onChanged(@Nullable PagedList<machine> machines) {
+                            if (machines != null) {
+                                thismachine = machines.get(Integer.parseInt(thisItemID));
+                                setupUIStart();
+                            }
+                        }
+                    });
             fragment = new AddEffCalculationActivityFragment();
             fragment.setArguments(arguments);
             this.getSupportFragmentManager()

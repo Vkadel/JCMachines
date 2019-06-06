@@ -5,86 +5,77 @@
     <data>
 
     </data>
-<android.support.constraint.ConstraintLayout
-    android:background="@color/colorPrimary"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/eff_item_layout">
 
-    <TextView
-        android:id="@+id/machine_id"
-        style="@style/labels_eff_calc_item"
-        android:layout_width="@dimen/company_name_w"
-        android:layout_height="wrap_content"
-        android:text="machine_id"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/measurement_date"
-        app:layout_constraintEnd_toStartOf="@+id/eff"
-        app:layout_constraintStart_toEndOf="@+id/company_name"
-        app:layout_constraintTop_toTopOf="@+id/eff"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/measurement_date"
-        style="@style/labels_eff_calc_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="date"
-        app:layout_constraintBottom_toBottomOf="@+id/eff"
-        app:layout_constraintEnd_toEndOf="@+id/machine_id"
-        app:layout_constraintStart_toStartOf="@+id/machine_id" />
-
-    <TextView
-        android:textAlignment="center"
-        android:id="@+id/company_name"
-        style="@style/labels_eff_calc_item"
-        android:layout_width="@dimen/company_name_w"
-        android:layout_height="wrap_content"
-        android:text="CompanyID"
-        app:layout_constraintBottom_toBottomOf="@+id/measurement_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/machine_id" />
-    <TextView
-        android:id="@+id/eff"
-        android:layout_width="@dimen/round_w"
-        android:layout_height="@dimen/round_w"
-        android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/shape_round_for_eff"
-        android:text="100"
-        android:elevation="16dp"
-        android:paddingTop="19dp"
-        android:textAlignment="center"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.design.widget.FloatingActionButton
-
-        android:text="100"
-        android:id="@+id/fab_eff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="16dp"
-        app:backgroundTint="#FFC107"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/eff_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/div_thickness"
-        android:background="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:textColor="@color/colorWhite"
+            android:id="@+id/machine_id"
+            android:layout_width="@dimen/company_name_w"
+            android:layout_height="wrap_content"
+            android:text="machine_id"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/measurement_date"
+            app:layout_constraintEnd_toStartOf="@+id/eff"
+            app:layout_constraintHorizontal_bias="0.375"
+            app:layout_constraintStart_toEndOf="@+id/company_name"
+            app:layout_constraintTop_toTopOf="@+id/eff" />
+
+        <TextView
+            android:textColor="@color/colorWhite"
+            android:id="@+id/measurement_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text="date"
+            app:layout_constraintBottom_toBottomOf="@+id/eff"
+            app:layout_constraintEnd_toEndOf="@+id/machine_id"
+            app:layout_constraintStart_toStartOf="@+id/machine_id" />
+
+        <TextView
+            android:textColor="@color/colorWhite"
+            android:id="@+id/company_name"
+            android:layout_width="@dimen/company_name_w"
+            android:layout_height="wrap_content"
+            android:text="CompanyID"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/measurement_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/machine_id"
+            />
+
+        <TextView
+            android:id="@+id/eff"
+            android:layout_width="@dimen/round_w"
+            android:layout_height="@dimen/round_w"
+            android:layout_margin="@dimen/text_margin"
+            android:background="@drawable/shape_round_for_eff"
+            android:elevation="16dp"
+            android:paddingTop="16dp"
+            android:text="100"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/div_thickness"
+            android:background="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

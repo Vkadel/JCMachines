@@ -1,9 +1,10 @@
 package com.example.virginia.jcmachines.viewmodels;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.virginia.jcmachines.Data.FirebaseEffFormulaLive;
 import com.example.virginia.jcmachines.Data.effcalculation;
@@ -11,8 +12,6 @@ import com.example.virginia.jcmachines.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 public class efficiencyFormulaViewModel extends ViewModel {
     Context mContext;

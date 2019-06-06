@@ -1,8 +1,10 @@
 package com.example.virginia.jcmachines;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LargeDimensionsActivity extends AppCompatActivity {
 

@@ -1,9 +1,8 @@
 package com.example.virginia.jcmachines.Data;
 
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.support.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 import com.example.virginia.jcmachines.BR;
 
@@ -285,7 +284,7 @@ public class effcalculation extends BaseObservable {
     public void setEff(double eff) {
         if(this.eff!=eff){
             this.eff = eff;
-            notifyPropertyChanged(BR.eff);}
+            notifyPropertyChanged(BR.livedata);}
     }
 
     public void setH(double h) {

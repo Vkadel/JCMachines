@@ -1,28 +1,28 @@
 package com.example.virginia.jcmachines;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -30,6 +30,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.Data.spareParts;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -65,7 +67,7 @@ public class SparePartListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_sparepart_list);
-            this.machineViewModel =ViewModelProviders.of(this).get(machineViewModel.class);
+            this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             toolbar.setTitle(getTitle());
@@ -97,16 +99,17 @@ public class SparePartListActivity extends AppCompatActivity {
             if(savedInstanceState==null){
                 thisMachineId = getIntent().getStringExtra(ARG_ITEM_ID);
                 //this.isTwopane = this.getArguments().getBoolean(machineDetailFragment.ARG_IS_TWO_PANE);
-                machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
-                    @Override
-                    public void onChanged(@Nullable PagedList<machine> machines) {
-                        if(machines!=null){
-                            mMachines =machines;
-                            sparePartsList=mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();
-                            setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
-                        }
-                    }
-                });
+
+                        machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
+                            @Override
+                            public void onChanged(@Nullable PagedList<machine> machines) {
+                                if (machines != null) {
+                                    mMachines = machines;
+                                    sparePartsList = mMachines.get(Integer.valueOf(thisMachineId)).getSpareParts();
+                                    setupRecyclerViewWithSpateParts((RecyclerView) recyclerView);
+                                }
+                            }
+                        });
             }
             else{
                 mMachines = machineViewModel.getMachines().getValue();

@@ -1,23 +1,24 @@
 package com.example.virginia.jcmachines;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationListBinding;
 import com.example.virginia.jcmachines.databinding.EffcalculationListBinding;
-import com.example.virginia.jcmachines.databinding.EffcalculationListBindingW900dpImpl;
 import com.example.virginia.jcmachines.databinding.EffcalculationListItemBinding;
 import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
@@ -49,7 +50,6 @@ public class effcalculationListActivity extends AppCompatActivity {
     private Context mContext;
     private ArrayList<String> mItemsToDelete = new ArrayList<>();
     ActivityEffcalculationListBinding activivityBinding;
-    EffcalculationListBindingW900dpImpl newBinding;
 
 
     @Override
@@ -180,7 +180,7 @@ public class effcalculationListActivity extends AppCompatActivity {
         public void onClick(View v) {
             //make delete button visible
             mactivivityBinding = DataBindingUtil.findBinding((View) v.getParent().getParent());
-            mactivivityBinding.fab.show();
+           /* mactivivityBinding.fab.show();*/
         }
     }
 

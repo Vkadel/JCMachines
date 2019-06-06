@@ -1,17 +1,8 @@
 package com.example.virginia.jcmachines;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
+
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.InverseMethod;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +12,21 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.InverseMethod;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
+
 import com.example.virginia.jcmachines.Data.augers;
 import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.animations.appearAnim;
 import com.example.virginia.jcmachines.animations.fadeAnim;
-import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
-import com.example.virginia.jcmachines.databinding.EffcalculationListBindingW900dpImpl;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
 import com.example.virginia.jcmachines.utils.DoubleTruncate;
 import com.example.virginia.jcmachines.utils.MDateFormating;
@@ -36,10 +34,12 @@ import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.utils.SendMyEmail;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         //Setting up the listener
         mContext = getActivity();
         super.onViewCreated(view, savedInstanceState);
@@ -91,9 +91,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
         binding.setLifecycleOwner(this);
-        ActivityAddEffCalculationBinding activityBinding=DataBindingUtil.getBinding((View) container.getParent());
-        activityBinding.setLifecycleOwner(this);
-        activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
+        /*AddEffCalculationActivity activityBinding=DataBindingUtil.findBinding(container);*/
+        /*((T) activityBinding).setLifecycleOwner(this);*/
+        /*activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());*/
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
         binding.setCalculation(new Callbacks());

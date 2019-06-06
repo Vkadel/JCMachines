@@ -12,13 +12,11 @@
         android:layout_weight="8"
         android:orientation="horizontal">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            app:layout_constraintBottom_toBottomOf="@+id/machine_id"
-            app:layout_constraintTop_toBottomOf="@+id/machine_id">
+            android:layout_weight="8">
 
             <ImageView
                 android:id="@+id/spare_part_item_iv"
@@ -34,7 +32,6 @@
 
             <TextView
                 android:id="@+id/machine_id"
-                style="@style/DescriptionTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -54,7 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/machine_id" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <TextView

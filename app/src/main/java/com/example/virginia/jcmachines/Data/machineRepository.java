@@ -1,15 +1,14 @@
 package com.example.virginia.jcmachines.Data;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
 import android.os.AsyncTask;
-import android.util.Log;
+
+import androidx.lifecycle.LiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import com.example.virginia.jcmachines.R;
 import com.example.virginia.jcmachines.remote.RemoteEndpointUtil;
-import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -119,6 +118,9 @@ public class machineRepository {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+
+        public void execute(LiveData<PagedList<Object>> mArticles) {
         }
     }
 
