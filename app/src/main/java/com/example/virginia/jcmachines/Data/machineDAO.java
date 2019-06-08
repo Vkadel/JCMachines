@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface machineDAO {
     @Query("SELECT * FROM machine_table")
-    public abstract DataSource.Factory<Integer, machine> getAll();
+    DataSource.Factory<Integer, machine> getAll();
     //LiveData<List<machine>> getAll();
 
     @Query("SELECT * FROM machine_table WHERE id IN (:id)")

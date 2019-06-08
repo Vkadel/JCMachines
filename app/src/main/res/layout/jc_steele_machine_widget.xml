@@ -1,11 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/widget_dim"
     android:layout_height="@dimen/widget_dim"
     android:background="@drawable/shape"
     android:minHeight="@dimen/widget_dim"
-    android:resizeMode="horizontal|vertical"
-    >
+    android:resizeMode="horizontal|vertical">
 
 
     <ImageView

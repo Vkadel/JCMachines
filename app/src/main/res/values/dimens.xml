@@ -25,4 +25,5 @@
     <dimen name="auger_spinner_w">200dp</dimen>
     <dimen name="round_w">55dp</dimen>
     <dimen name="company_name_w">100dp</dimen>
+    <dimen name="tall_toolbar_height">100dp</dimen>
 </resources>

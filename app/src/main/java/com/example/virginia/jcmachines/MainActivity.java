@@ -2,14 +2,11 @@ package com.example.virginia.jcmachines;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 
 import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.databinding.ActivityMainBinding;
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this,layout.activity_main);
-        ((ViewDataBinding) binding).setLifecycleOwner(this);
+        binding.setLifecycleOwner(this);
         Timber.plant(new DebugTree());
 
         launchSignIn();
@@ -49,17 +46,14 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //Setting up database persistence
-        if (!firebaseIsSetUp) {
+        if (!firebaseIsSetUp&&mAuth.getUid()==null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             database.setPersistenceEnabled(true);
             firebaseIsSetUp = true;
+        }else{
+            goToListofMachines();
         }
-        binding.signInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchSignIn();
-            }
-        });
+
     }
 
     @Override
@@ -101,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Intent intent=new Intent(this,machineListActivity.class);
-                startActivity(intent);
+                goToListofMachines();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -122,11 +115,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser account) {
         if (account == null) {
             //Do something when user is null
-            ;
         } else {
             //Do someting when user is not null
         }
     }
 
-
+    private void goToListofMachines(){
+        Intent intent=new Intent(this,machineListActivity.class);
+        startActivity(intent);
+    }
 }

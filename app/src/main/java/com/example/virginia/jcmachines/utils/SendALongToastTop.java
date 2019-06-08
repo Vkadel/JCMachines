@@ -13,7 +13,7 @@ public class SendALongToastTop {
     public SendALongToastTop(Context context, String message)
     {
         toast=Toast.makeText(context,message,Toast.LENGTH_SHORT);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        TextView v = toast.getView().findViewById(android.R.id.message);
         v.setTextSize(context.getResources().getDimension(R.dimen.send_long_toast_top));
         v.setTextColor(context.getResources().getColor(R.color.colorPrimary,context.getTheme()));
         if( v != null) toast.setGravity(Gravity.TOP|Gravity.CENTER,0,0);}

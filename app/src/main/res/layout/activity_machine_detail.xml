@@ -60,7 +60,8 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Will hide this item until customer can identify what action to perform -->
-    <android.support.design.widget.FloatingActionButton
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

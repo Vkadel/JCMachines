@@ -68,11 +68,11 @@ public class SparePartListActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_sparepart_list);
             this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             toolbar.setTitle(getTitle());
             Timber.plant(new Timber.DebugTree());
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -238,9 +238,9 @@ public class SparePartListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.machine_id);
-                mContentView = (TextView) view.findViewById(R.id.eff);
-                SparePartImage=(ImageView)view.findViewById(R.id.spare_part_item_iv);
+                mIdView = view.findViewById(R.id.machine_id);
+                mContentView = view.findViewById(R.id.eff);
+                SparePartImage= view.findViewById(R.id.spare_part_item_iv);
             }
         }
     }
@@ -254,8 +254,8 @@ public class SparePartListActivity extends AppCompatActivity {
         int orgHeight = imageView.getHeight();
 
 
-        imageView.getLayoutParams().height=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
-        imageView.getLayoutParams().width=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
+        imageView.getLayoutParams().height=width- getResources().getInteger(R.integer.margin_take_out_for_list);
+        imageView.getLayoutParams().width=width- getResources().getInteger(R.integer.margin_take_out_for_list);
         return imageView;
     }
 }

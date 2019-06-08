@@ -92,12 +92,18 @@
     <string name="title_effcalculation_detail">effcalculation Detail</string>
 
     //Firebase ref
-    <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s%d/</string>
+    <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s/%d/</string>
+    <string name="firebase_ref_calculations_delete_one" translatable="false">effcalculations/%s/%s/active</string>
     <string name="firebase_ref_calculations_all_for_user" translatable="false">/effcalculations/</string>
-
+    <string name="eff_id_scheme_firebase" translatable="false">%s%d</string>
     //FirebaseKeys
-    <string name="firebase_key_user_under_effcalc" translatable="false">userid</string>
-    <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%d%s</string>
+    <string name="firebase_key_user_under_effcalc" translatable="false">/effcalculations/userid</string>
+    <string name="firebase_key_active_under_effcalc" translatable="false">active</string>
+    <string name="firebase_key_date_under_effcalc" translatable="false">date</string>
+    <string name="firebase_key_companyId_under_effcalc" translatable="false">compid</string>
+    <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%s%s</string>
     <string name="hour_zero_add">0%d</string>
-    <string name="list_of_calculations_eff_brick">Extrusion Efficiency</string>
+    <string name="list_of_calculations_eff_brick_Activity_title">Extrusion Efficiency for Brick</string>
+    <string name="please_add_more_eff_calc_brick">Check efficiency in your machines to see them here</string>
+
 </resources>

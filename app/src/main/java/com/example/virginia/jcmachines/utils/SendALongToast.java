@@ -10,7 +10,7 @@ public class SendALongToast {
     public SendALongToast(Context context, String message)
     {
         toast=Toast.makeText(context,message,Toast.LENGTH_SHORT);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        TextView v = toast.getView().findViewById(android.R.id.message);
         if( v != null) v.setGravity(Gravity.CENTER);
 
     }

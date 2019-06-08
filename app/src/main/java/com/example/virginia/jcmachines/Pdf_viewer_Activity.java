@@ -52,8 +52,8 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_pdf_viewer);
         pdfView=findViewById(R.id.pdfView);
         progressBar=findViewById(R.id.progressBar);
-        downloadFAB=(FloatingActionButton)findViewById(R.id.floatingActionButtonDownload);
-        TextView messageTV=(TextView)findViewById(R.id.message_tv);
+        downloadFAB= findViewById(R.id.floatingActionButtonDownload);
+        TextView messageTV= findViewById(R.id.message_tv);
         AsyncTask mAs = null;
         downloadFAB.hide();
 

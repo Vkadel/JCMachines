@@ -111,7 +111,7 @@ public class machineListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             this.mTwoPane = true;
         }
-        final machineAdapter machineAdapter=new machineAdapter(this,mTwoPane);;
+        final machineAdapter machineAdapter=new machineAdapter(this,mTwoPane);
         //Checked if application loaded data at least once before. This
         //will be used to prevent the blips when data loads more than once in
         //the recycler. Otherwise when preventing the blip the application
@@ -210,8 +210,8 @@ public class machineListActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int orgWidth = imageView.getWidth();
         int orgHeight = imageView.getHeight();
-        imageView.getLayoutParams().height=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
-        imageView.getLayoutParams().width=width-(int)getResources().getInteger(R.integer.margin_take_out_for_list);
+        imageView.getLayoutParams().height=width- getResources().getInteger(R.integer.margin_take_out_for_list);
+        imageView.getLayoutParams().width=width- getResources().getInteger(R.integer.margin_take_out_for_list);
         return imageView;
     }
     //Check for Internet Connection

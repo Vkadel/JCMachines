@@ -7,15 +7,15 @@ import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class FirebaseEffFormulaLive extends LiveData<DataSnapshot> {
-    private final Query mRef;
+public class FirebaseOneEffFormulaLive extends LiveData<DataSnapshot> {
+    private final DatabaseReference mRef;
     private final MyValueEventListener listener = new MyValueEventListener();
     private final String LOG_TAG = "FirebaseEffFormulaLive";
 
-    public FirebaseEffFormulaLive(Query ref) {
+    public FirebaseOneEffFormulaLive(DatabaseReference ref) {
         mRef = ref;
 
     }
@@ -24,7 +24,6 @@ public class FirebaseEffFormulaLive extends LiveData<DataSnapshot> {
     protected void onActive() {
         /* Log.d(LOG_TAG, "onActive");*/
         mRef.addValueEventListener(listener);
-        /*mRef.addChildEventListener(childListener);*/
         super.onActive();
     }
 
@@ -32,7 +31,6 @@ public class FirebaseEffFormulaLive extends LiveData<DataSnapshot> {
     protected void onInactive() {
         /*Log.d(LOG_TAG, "onInactive");*/
         mRef.removeEventListener(listener);
-       /* mRef.removeEventListener(childListener);*/
         super.onInactive();
     }
 

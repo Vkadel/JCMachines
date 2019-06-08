@@ -30,6 +30,8 @@ public class AddEffCalculationActivity extends AppCompatActivity {
     private String machineId;
     private View.OnClickListener listener;
     private Context mContext;
+    private String calculationid;
+    private String thisEffcalculationId;
 
 
     @Override
@@ -42,15 +44,14 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         setSupportActionBar(binding.calcEffToolbar);
         mContext=this;
 
-
-
         //Create and Attach the fragment
         Bundle arguments = new Bundle();
         thisItemID = this.getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID);
-        arguments.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
+        thisEffcalculationId=getIntent().getStringExtra(machineDetailFragment.EFF_ARG_ITEM_ID);
+        arguments.putString(machineDetailFragment.EFF_ARG_ITEM_ID, thisEffcalculationId);
+        arguments.putString(machineDetailFragment.ARG_ITEM_ID,thisItemID);
         if (savedInstanceState == null) {
             machineViewModel viewModel = ViewModelProviders.of(this).get(machineViewModel.class);
-
                     viewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                         @Override
                         public void onChanged(@Nullable PagedList<machine> machines) {
@@ -60,17 +61,19 @@ public class AddEffCalculationActivity extends AppCompatActivity {
                             }
                         }
                     });
-            fragment = new AddEffCalculationActivityFragment();
-            fragment.setArguments(arguments);
-            this.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.form_container, fragment, "tag")
-                    .commit();
+
 
         } else if (savedInstanceState.containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             thisItemID = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
+            thisEffcalculationId=savedInstanceState.getString(machineDetailFragment.EFF_ARG_ITEM_ID);
             setupUIStart();
         }
+        fragment = new AddEffCalculationActivityFragment();
+        fragment.setArguments(arguments);
+        this.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.form_container, fragment, "tag")
+                .commit();
 
     }
 
@@ -82,6 +85,7 @@ public class AddEffCalculationActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
+        outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,thisEffcalculationId);
         super.onSaveInstanceState(outState);
     }
 }

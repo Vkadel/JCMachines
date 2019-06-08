@@ -1,9 +1,11 @@
 package com.example.virginia.jcmachines;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationListBinding;
-import com.example.virginia.jcmachines.databinding.EffcalculationListBinding;
 import com.example.virginia.jcmachines.databinding.EffcalculationListItemBinding;
 import com.example.virginia.jcmachines.utils.MDateFormating;
+import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +51,9 @@ public class effcalculationListActivity extends AppCompatActivity {
     private efficiencyFormulaViewModel viewModel = new efficiencyFormulaViewModel();
     private View recyclerView;
     private List<effcalculation> mycalculations = new ArrayList<>();
+    private List<effcalculation> myNewcalculations = new ArrayList<>();
     private Context mContext;
-    private ArrayList<String> mItemsToDelete = new ArrayList<>();
+    private static ArrayList<String> mItemsToDelete = new ArrayList<>();
     ActivityEffcalculationListBinding activivityBinding;
 
 
@@ -58,9 +63,9 @@ public class effcalculationListActivity extends AppCompatActivity {
         activivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_effcalculation_list);
         activivityBinding.setLifecycleOwner(this);
         mContext = this;
+        activivityBinding.toolbar.setTitle(getResources().getString(R.string.list_of_calculations_eff_brick_Activity_title));
         setSupportActionBar(activivityBinding.toolbar);
-        activivityBinding.toolbar.setTitle(getResources().getString(R.string.list_of_calculations_eff_brick));
-        if (activivityBinding.framedLayoutInclude.effcalculationDetailContainer!= null) {
+        if (activivityBinding.framedLayoutInclude.effcalculationDetailContainer != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -70,7 +75,9 @@ public class effcalculationListActivity extends AppCompatActivity {
 
         //Get the list of items
         viewModel = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
-        viewModel.getMeffCalculationList(FirebaseAuth.getInstance().getUid(), mContext).observe(this, new myObserver());
+        String userid = FirebaseAuth.getInstance().getUid();
+        viewModel.getMeffCalculationListbyChildren(userid, mContext).observe(this, new myObserver());
+        activivityBinding.fab.setOnClickListener(new myImreadyTodeleteClick());
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -80,32 +87,11 @@ public class effcalculationListActivity extends AppCompatActivity {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
         private final effcalculationListActivity mParentActivity;
-
         private final List<effcalculation> mycalculations;
         private final boolean mTwoPane;
         private EffcalculationListItemBinding binding;
         ActivityEffcalculationListBinding mactivivityBinding;
-        EffcalculationListBinding meffcalculationListBinding;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(machineDetailFragment.EFF_ARG_ITEM_ID, view.getTag().toString());
-                    arguments.putBoolean(AddEffCalculationActivityFragment.IS_TWO_PANE, mTwoPane);
-                    AddEffCalculationActivityFragment fragment = new AddEffCalculationActivityFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.effcalculation_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, effcalculationDetailActivity.class);
-                    intent.putExtra(machineDetailFragment.EFF_ARG_ITEM_ID, view.getTag().toString());
-                    context.startActivity(intent);
-                }
-            }
-        };
+
 
         SimpleItemRecyclerViewAdapter(effcalculationListActivity parent,
                                       boolean twoPane, List<effcalculation> calc, ActivityEffcalculationListBinding activivityBinding) {
@@ -126,13 +112,14 @@ public class effcalculationListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (mycalculations.size() > 0 || mycalculations != null) {
-                binding.machineId.setText(mycalculations.get(position).getMid());
+                binding.machineId.setText(mycalculations.get(position).getMids());
                 binding.measurementDate.setText(new MDateFormating(mParentActivity).convertMillisTodate(mycalculations.get(position).getDate()));
                 binding.companyName.setText(mycalculations.get(position).getCompid());
                 binding.eff.setText(String.valueOf(mycalculations.get(position).getEff()));
-                binding.eff.setOnClickListener(new ItemDeleteListener(mactivivityBinding));
+                binding.eff.setOnClickListener(new ItemDeleteListener(mactivivityBinding, mycalculations, mycalculations.get(position).getCalcid(), mParentActivity));
+                binding.eff.getBackground().setTint(mParentActivity.getResources().getColor(R.color.colorWhite, mParentActivity.getTheme()));
                 binding.getRoot().setTag(String.valueOf(position));
-                binding.getRoot().setOnClickListener(mOnClickListener);
+                binding.getRoot().setOnClickListener(new mylistItemClick(mTwoPane, mycalculations.get(position), mParentActivity));
             }
         }
 
@@ -151,41 +138,109 @@ public class effcalculationListActivity extends AppCompatActivity {
     public class myObserver implements Observer<DataSnapshot> {
         @Override
         public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-            List<effcalculation> myList = new ArrayList<>();
-            dataSnapshot.getChildren().forEach(new Consumer<DataSnapshot>() {
-                @Override
-                public void accept(DataSnapshot dataSnapshot) {
-                    myList.add(dataSnapshot.getValue(effcalculation.class));
-                }
+            Log.e("Observing: ", dataSnapshot.getValue().toString());
+            effcalculation thisEff = dataSnapshot.getValue(com.example.virginia.jcmachines.Data.effcalculation.class);
+            myNewcalculations.removeIf(effcalculation -> {
+                Boolean remove = effcalculation.getCalcid() == thisEff.getCalcid();
+                return remove;
             });
-            mycalculations = myList;
-            if(mTwoPane){
+            Boolean isremove = viewModel.isRemove();
+            if (thisEff.getActive() == true && !isremove) {
+                myNewcalculations.add(thisEff);
+            }
+            mycalculations = myNewcalculations;
+            if (mTwoPane) {
                 assert activivityBinding.framedLayoutInclude.effcalculationListLarge != null;
-                setupRecyclerView((RecyclerView) activivityBinding.framedLayoutInclude.effcalculationListLarge);
-            }else{
-            assert activivityBinding.framedLayoutInclude.effcalculationList != null;
-            setupRecyclerView((RecyclerView) activivityBinding.framedLayoutInclude.effcalculationList);}
+                setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationListLarge);
+            } else {
+                assert activivityBinding.framedLayoutInclude.effcalculationList != null;
+                setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationList);
+            }
+            if (mycalculations == null || mycalculations.size() == 0) {
+                new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
+            }
         }
     }
 
     public static class ItemDeleteListener implements View.OnClickListener {
         ActivityEffcalculationListBinding mactivivityBinding;
+        List<effcalculation> mmycalculations;
+        String thiscalcculationId;
+        Activity myparent;
 
-        public ItemDeleteListener(ActivityEffcalculationListBinding activivityBinding) {
+        public ItemDeleteListener(ActivityEffcalculationListBinding activivityBinding, List<effcalculation> mycalculations, String itemID, Activity parent) {
             super();
             mactivivityBinding = activivityBinding;
+            mmycalculations = mycalculations;
+            thiscalcculationId = itemID;
+            myparent = parent;
         }
 
         @Override
         public void onClick(View v) {
-            //make delete button visible
-            mactivivityBinding = DataBindingUtil.findBinding((View) v.getParent().getParent());
-           /* mactivivityBinding.fab.show();*/
+            mItemsToDelete.add(thiscalcculationId);
+            if (mactivivityBinding.fab.getVisibility() == View.GONE) {
+                mactivivityBinding.fab.show();
+            }
+            v.getBackground().setTint(v.getResources().getColor(R.color.gray, myparent.getTheme()));
         }
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        //TODO: save any clicked items to delete that have not been deleted yet
         super.onSaveInstanceState(outState);
+    }
+
+    public static class mylistItemClick implements View.OnClickListener {
+        Boolean mTwoPane;
+        effcalculation item;
+        effcalculationListActivity mParentActivity;
+
+        public mylistItemClick(Boolean twoPane, effcalculation myitem, effcalculationListActivity parentActivity) {
+            mTwoPane = twoPane;
+            item = myitem;
+            mParentActivity = parentActivity;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mTwoPane) {
+                Bundle arguments = new Bundle();
+                arguments.putString(machineDetailFragment.EFF_ARG_ITEM_ID, v.getTag().toString());
+                arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getMid()));
+                arguments.putBoolean(AddEffCalculationActivityFragment.IS_TWO_PANE, mTwoPane);
+                AddEffCalculationActivityFragment fragment = new AddEffCalculationActivityFragment();
+                fragment.setArguments(arguments);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.effcalculation_detail_container, fragment)
+                        .commit();
+            } else {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, AddEffCalculationActivity.class);
+                intent.putExtra(machineDetailFragment.EFF_ARG_ITEM_ID, v.getTag().toString());
+                intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getMid()));
+                context.startActivity(intent);
+            }
+        }
+    }
+
+    public class myImreadyTodeleteClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            mItemsToDelete.forEach(new Consumer<String>() {
+                @Override
+                public void accept(String s) {
+                    String refString = getString(R.string.firebase_ref_calculations_delete_one, FirebaseAuth.getInstance().getUid(), s);
+                    DatabaseReference refDeleteOneItem = FirebaseDatabase.getInstance().getReference(refString);
+                    refDeleteOneItem.setValue(false);
+                }
+            });
+            v.setVisibility(View.GONE);
+            mItemsToDelete = new ArrayList<>();
+        }
     }
 }

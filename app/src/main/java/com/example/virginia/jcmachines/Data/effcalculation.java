@@ -3,16 +3,18 @@ package com.example.virginia.jcmachines.Data;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
-import com.example.virginia.jcmachines.BR;
 
 public class effcalculation extends BaseObservable {
     /**
      * Generates class for calculation of the efficiency
      *
+     * @param setCalcid this is the unic itemID for firebase
      * @param compid company Id.
      * @param userid Authenticated UserId.
-     * @param mid id for this Item
+     * @param mid id for the machine associated to this item
+     * @param mids id name for the machine associated to this item
      * @param imp whether this calculation is imperial
      * @param ms Motor speed
      * @param hasc whether this setup
@@ -38,7 +40,9 @@ public class effcalculation extends BaseObservable {
      */
     private String compid;
     private String userid;
-    private String mid;
+    private int mid;
+    private String mids;
+    private String calcid;
     private Boolean imp = true;
     private double ms;
     private boolean hasc;
@@ -55,10 +59,11 @@ public class effcalculation extends BaseObservable {
     private double n;
     private long date;
     private String dateS;
+    private Boolean isActive;
     double vd;
 
 
-    public effcalculation()  {
+    public effcalculation() {
 
     }
 
@@ -75,7 +80,7 @@ public class effcalculation extends BaseObservable {
         myeff.setL(0);
         myeff.setApptype("");
         myeff.setUserid("");
-        myeff.setMid("");
+        myeff.setMid(0);
         return myeff;
     }
 
@@ -132,24 +137,60 @@ public class effcalculation extends BaseObservable {
     public double calculateColumnSpeed() {
         //Calculate product section if ax not known
         double number = r / 100;
-        v = c * l * (1 - number);
+        setV(c * l * (1 - number));
         return v;
     }
 
     public double calculateProductSection() {
         double number = z / 100;
         //Calculate produ
-        ax = w * h * (1 - (number));
+        setAx(w * h * (1 - (number)));
         return ax;
     }
 
     private boolean checkIfEffCanBecalculated() {
-        if (ax != 0 && v != 0 && vd != 0 && n != 0) {
-            return true;
-        } else {
-            return false;
+        return ax != 0 && v != 0 && vd != 0 && n != 0;
+    }
+
+    private boolean checkIfColumnSpeedCanBecalculated() {
+        return l != 0 && c != 0 && r != 0;
+    }
+
+    private boolean checkIfProductSectionCanBeCalculated() {
+        return h != 0 && z != 0 && w != 0;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    @Bindable
+    public String getMids() {
+        return mids;
+    }
+
+
+    public void setMids(String mids) {
+        if (this.mids != mids) {
+            this.mids = mids;
         }
     }
+
+    @Bindable
+    public String getCalcid() {
+        return calcid;
+    }
+
+    public void setCalcid(String calcid) {
+        if (this.calcid != calcid) {
+            this.calcid = calcid;
+        }
+    }
+
 
     @Bindable
     public String getDateS() {
@@ -192,6 +233,7 @@ public class effcalculation extends BaseObservable {
         return eff;
     }
 
+    @Bindable
     public boolean isHasc() {
         return hasc;
     }
@@ -206,6 +248,7 @@ public class effcalculation extends BaseObservable {
         return ax;
     }
 
+    @Bindable
     public double getC() {
         return c;
     }
@@ -251,7 +294,7 @@ public class effcalculation extends BaseObservable {
     }
 
     @Bindable
-    public String getMid() {
+    public int getMid() {
         return mid;
     }
 
@@ -265,100 +308,119 @@ public class effcalculation extends BaseObservable {
     }
 
     public void setAx(double ax) {
-        if(this.ax!=ax){
-        this.ax = ax;
-        notifyPropertyChanged(BR.livedata);}
+        if (this.ax != ax) {
+            this.ax = ax;
+        }
 
-        if(checkIfEffCanBecalculated()){
+        if (checkIfEffCanBecalculated()) {
             setEff(calculateEf());
         }
 
     }
 
     public void setC(double c) {
-        if(this.c!=c){
+        if (this.c != c) {
             this.c = c;
-            notifyPropertyChanged(BR.livedata);}
+        }
+        if (checkIfColumnSpeedCanBecalculated()) {
+            calculateColumnSpeed();
+        }
     }
 
     public void setEff(double eff) {
-        if(this.eff!=eff){
+        if (this.eff != eff) {
             this.eff = eff;
-            notifyPropertyChanged(BR.livedata);}
+            notifyPropertyChanged(BR.eff);
+        }
     }
 
-    public void setH(double h) {
-        if(this.h!=h){
-            this.h = h;
-            notifyPropertyChanged(BR.livedata);}
-    }
+
 
     public void setHasc(boolean hasc) {
-        if(this.hasc!=hasc){
+        if (this.hasc != hasc) {
             this.hasc = hasc;
-            notifyPropertyChanged(BR.livedata);}
+        }
     }
 
     public void setL(double l) {
-        if(this.l!=l){
+        if (this.l != l) {
             this.l = l;
-            notifyPropertyChanged(BR.livedata);}
+            if (checkIfColumnSpeedCanBecalculated()) {
+                calculateColumnSpeed();
+            }
+        }
     }
 
-    public void setMid(String mid) {
-        if(this.mid!=mid){
+    public void setMid(Integer mid) {
+        if (this.mid != mid) {
             this.mid = mid;
-            notifyPropertyChanged(BR.livedata);}
+        }
     }
 
     public void setMs(double ms) {
-        if(this.ms!=ms){
+        if (this.ms != ms) {
             this.ms = ms;
-            notifyPropertyChanged(BR.livedata);}
+        }
     }
 
     public void setN(double n) {
-        if(this.n!=n){
+        if (this.n != n) {
             this.n = n;
-            notifyPropertyChanged(BR.livedata);}
-        if(checkIfEffCanBecalculated()){
+        }
+        if (checkIfEffCanBecalculated()) {
             setEff(calculateEf());
         }
     }
 
     public void setR(double r) {
-        if(this.r!=r){
+        if (this.r != r) {
             this.r = r;
-            notifyPropertyChanged(BR.livedata);}
+            if (checkIfColumnSpeedCanBecalculated()) {
+                calculateColumnSpeed();
+            }
+        }
     }
 
     public void setV(double v) {
-        if(this.v!=v){
+        if (this.v != v) {
             this.v = v;
-            notifyPropertyChanged(BR.livedata);}
-        if(checkIfEffCanBecalculated()){
+        }
+        if (checkIfEffCanBecalculated()) {
             setEff(calculateEf());
         }
 
     }
 
     public void setUserid(String userid) {
-        if(this.userid!=userid){
+        if (this.userid != userid) {
             this.userid = userid;
-            notifyPropertyChanged(BR.livedata);}
+        }
         this.userid = userid;
     }
 
     public void setW(double w) {
-        if(this.w!=w){
+        if (this.w != w) {
             this.w = w;
-            notifyPropertyChanged(BR.livedata);}
+        }
+        if(checkIfProductSectionCanBeCalculated()){
+            calculateProductSection();
+        }
     }
-
+    public void setH(double h) {
+        if (this.h != h) {
+            this.h = h;
+        }
+        if(checkIfProductSectionCanBeCalculated()){
+            calculateProductSection();
+        }
+    }
     public void setZ(double z) {
-        if(this.z!=z){
+        if (this.z != z) {
             this.z = z;
-            notifyPropertyChanged(BR.livedata);}
+        }
+        if(checkIfProductSectionCanBeCalculated()){
+            calculateProductSection();
+        }
     }
 
     @Bindable
@@ -367,10 +429,10 @@ public class effcalculation extends BaseObservable {
     }
 
     public void setVd(double vd) {
-        if(this.vd!=vd){
+        if (this.vd != vd) {
             this.vd = vd;
-            notifyPropertyChanged(BR.livedata);}
-        if(checkIfEffCanBecalculated()){
+        }
+        if (checkIfEffCanBecalculated()) {
             setEff(calculateEf());
         }
     }

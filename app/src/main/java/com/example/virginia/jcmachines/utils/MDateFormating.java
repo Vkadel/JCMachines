@@ -33,7 +33,7 @@ public class MDateFormating {
 
     public String convertMillisTodate(long dateLong) {
         String mAm_PM;
-        String hourString;
+        String minString;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dateLong);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -46,16 +46,14 @@ public class MDateFormating {
         }else{
             mAm_PM="pm";
         }
-        if(hour<10){
-            hourString=mContext.getString(R.string.hour_zero_add,hour);
+        if(min<10){
+            minString=mContext.getString(R.string.hour_zero_add,hour);
         }else{
-            hourString=String.valueOf(hour);
+            minString=String.valueOf(hour);
         }
-        if(hour==0){
-            hour=12;
-        }
+
         mdate = mContext.getResources()
-                .getString(R.string.date_for_calculation_format_nice, day, month, year, hour, min,mAm_PM);
+                .getString(R.string.date_for_calculation_format_nice, day, month, year, hour, minString,mAm_PM);
 
         return mdate;
     }

@@ -27,11 +27,12 @@ import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.animations.appearAnim;
 import com.example.virginia.jcmachines.animations.fadeAnim;
+import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
+import com.example.virginia.jcmachines.databinding.ActivityEffcalculationDetailBinding;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
 import com.example.virginia.jcmachines.utils.DoubleTruncate;
 import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.utils.SendALongToast;
-import com.example.virginia.jcmachines.utils.SendMyEmail;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,8 +54,10 @@ import java.util.function.Consumer;
  */
 public class AddEffCalculationActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     static FragmentAddEffCalculationBinding binding;
+    static ActivityAddEffCalculationBinding activityBinding;
+    static ActivityEffcalculationDetailBinding detailBinding;
     static final String EFF_CALC_ARG_EXIST = "eff_calc_arg";
-    static final String IS_TWO_PANE ="is_two_pane";
+    static final String IS_TWO_PANE = "is_two_pane";
     private static Context mContext;
     private static machineViewModel viewModel;
     private static machine thismachine;
@@ -65,6 +68,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private static effcalculation meffcalculation = new effcalculation();
     private final MyLiveEffCalculation meffcalculationLive = new MyLiveEffCalculation();
     private String machineId;
+    private String thisCalculationID;
     private ImageView machineImageImage;
     private efficiencyFormulaViewModel viewModeleffcal;
     private String calculationId;
@@ -91,20 +95,17 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
         binding.setLifecycleOwner(this);
-        /*AddEffCalculationActivity activityBinding=DataBindingUtil.findBinding(container);*/
-        /*((T) activityBinding).setLifecycleOwner(this);*/
-        /*activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());*/
+        //checking if the binding is used in the addCalculation Activity
+        activityBinding = DataBindingUtil.getBinding((View) container.getParent());
+        if (activityBinding != null) {
+            activityBinding.setLifecycleOwner(this);
+        }
+
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
         binding.setCalculation(new Callbacks());
         binding.setConverter(new Converter());
-        listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SendALongToast(getActivity(), "Will Send Email").show();
-                new SendMyEmail(meffcalculationLive.getValue(), getActivity());
-            }
-        };
+        activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
 
         //Get sent machine information
         if (getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {
@@ -114,28 +115,36 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             machineId = "0";
         }
 
-        //Connect to the loadAllcalcViewModel
-        if (getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID) && savedInstanceState == null) {
-            disableAllDataEntry();
-            viewModeleffList = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
-            viewModeleffList.getMeffCalculationList(FirebaseAuth.getInstance().getUid(), getActivity()).observe(this, new myObserver());
+        //Only load and connect to the Eff calculation model if an id is passed and is not null
+        if (getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID)!=null && savedInstanceState == null) {
+                disableAllDataEntry();
+                thisCalculationID=getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID);
+                viewModeleffList = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
+                viewModeleffList.getMeffCalculationList(FirebaseAuth.getInstance().getUid(), getActivity()).observe(this, new myObserver());
         }
 
         if (savedInstanceState == null) {
+            //SetUpFor the first time
+            meffcalculationLive.setValue(meffcalculation.clear());
             //Subscribe to the machine model
             viewModel = ViewModelProviders.of(this).get(machineViewModel.class);
             viewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                 @Override
                 public void onChanged(@Nullable PagedList<machine> machines) {
+                    //Get Machine number from sent if you do not have it
+                    if (machineId == null) {
+                        machineId = String.valueOf(meffcalculationLive.getValue().getMid());
+                    }
                     thismachine = machines.get(Integer.parseInt(machineId));
-                    initialUIsetup();
+                    initialUISetup();
+
                 }
             });
-            //Observe the Livedata Item
-            meffcalculation.setUserid(FirebaseAuth.getInstance().getUid());
-            //Set Initial value
-            if(meffcalculationLive.getValue()==null&&!getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)){
-            meffcalculationLive.setValue(meffcalculation);}
+
+            //Set Initial value if none is provided
+            if (meffcalculationLive.getValue() == null && !getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)) {
+                meffcalculationLive.setValue(meffcalculation);
+            }
 
         } else {
             machineId = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
@@ -143,10 +152,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 //getting the existing value
                 Gson json = new Gson();
                 meffcalculationLive.setValue(json.fromJson(savedInstanceState.getString(EFF_CALC_ARG_EXIST), effcalculation.class));
-                initialUIsetup();
+                initialUISetup();
             }
         }
-
         return view;
     }
 
@@ -183,7 +191,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.selectAugerSpinner.setSelection(selection);
     }
 
-    private void initialUIsetup() {
+    private void initialUISetup() {
         rePopViewsAfterConfigUpdate();
         if (!(meffcalculationLive.getValue().getL() != 0
                 || meffcalculationLive.getValue().getR() != 0
@@ -371,6 +379,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             }
             meffcalculation.setImp(isChecked);
             meffcalculationLive.setValue(meffcalculation);
+
         }
 
         public void knownProductSection(CompoundButton buttonView, boolean isChecked) {
@@ -389,23 +398,16 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 needToCalculateColumnSpeed();
             }
         }
+
     }
 
     public class MyLiveEffCalculation extends MutableLiveData<effcalculation> {
-
-        MyLiveEffCalculation calculation = this;
 
         @Nullable
         @Override
         public effcalculation getValue() {
             return super.getValue();
         }
-
-        @Override
-        public void setValue(effcalculation value) {
-            super.setValue(value);
-        }
-
     }
 
     public class myUpdateAndSendEmailListener implements View.OnClickListener {
@@ -415,18 +417,18 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             Snackbar.make(v, getResources().getString(R.string.will_save_your_calculation), Snackbar.LENGTH_LONG).show();
             //Get the information from the fragment
             long currentTimeinMillis = Calendar.getInstance().getTimeInMillis();
-
             String mydate = new MDateFormating(getActivity()).getMdate();
+            String itemRef = getResources().getString(R.string.firebase_ref_calculations_add_one, FirebaseAuth.getInstance().getUid(), currentTimeinMillis);
             meffcalculationLive.getValue().setUserid(FirebaseAuth.getInstance().getUid());
             meffcalculationLive.getValue().setDate(currentTimeinMillis);
             meffcalculationLive.getValue().setDateS(mydate);
-            meffcalculationLive.getValue().setMid(thismachine.getMachineFullName());
-            Gson json = new Gson();
-            String newItemID = meffcalculationLive.getValue().getUserid();
-
-            newItemID.trim();
-            newItemID.replace("", "").replace(":", "");
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.firebase_ref_calculations_add_one, newItemID, currentTimeinMillis));
+            meffcalculationLive.getValue().setActive(true);
+            meffcalculationLive.getValue().setMid(thismachine.getId());
+            meffcalculationLive.getValue().setMids(thismachine.getMachineFullName());
+            meffcalculationLive.getValue().setCalcid(String.valueOf(currentTimeinMillis));
+            itemRef.trim();
+            itemRef.replace("", "").replace(":", "");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(itemRef);
             ref.setValue(meffcalculationLive.getValue());
         }
     }
@@ -434,34 +436,40 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     public class myObserver implements Observer<DataSnapshot> {
         @Override
         public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-            binding.executePendingBindings();
-            List<effcalculation> myList = new ArrayList<>();
-            dataSnapshot.getChildren().forEach(new Consumer<DataSnapshot>() {
-                @Override
-                public void accept(DataSnapshot dataSnapshot) {
-                    myList.add(dataSnapshot.getValue(effcalculation.class));
-                }
-            });
-            effcalculation mycal = myList.get(Integer.parseInt(getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID)));
-            meffcalculationLive.setValue(mycal);
+            if (dataSnapshot.getValue() != null) {
+                binding.executePendingBindings();
+                List<effcalculation> myList = new ArrayList<>();
+                dataSnapshot.getChildren().forEach(new Consumer<DataSnapshot>() {
+                    @Override
+                    public void accept(DataSnapshot dataSnapshot) {
+                        myList.add(dataSnapshot.getValue(effcalculation.class));
+                    }
+                });
+                //if the calculation ID is provided to show an item in particular
+                effcalculation mycal = myList.get(Integer.parseInt(thisCalculationID));
+                meffcalculationLive.setValue(mycal);
+
+            } else {
+                //We don't have a list of calculations
+                new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
+            }
         }
     }
 
     public class Converter {
         @InverseMethod("stringToDouble")
         public String doubleToString(double value) {
-            // Converts long to String.
+            // Converts Double to String
             if (value == 0) {
                 return "";
             } else {
-                String myvalue = String.valueOf(new DoubleTruncate(value,mContext).getTruncatedNumber());
+                String myvalue = String.valueOf(new DoubleTruncate(value, mContext).getTruncatedNumber());
                 return myvalue;
             }
         }
 
         public double stringToDouble(String value) {
-            // Converts String to long..
-            // Converts long to String.
+            // Converts String to Double
             if (!value.isEmpty()) {
                 double number = Double.valueOf(value);
                 return number;

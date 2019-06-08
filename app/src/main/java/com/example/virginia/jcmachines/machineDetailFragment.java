@@ -426,11 +426,7 @@ public class machineDetailFragment extends Fragment {
             Log.e(TAG, "Trying to Create Array of Machine ids", new Throwable());
             e.printStackTrace();
         }
-        if (myMachinesArray.indexOf(thisMachineId) == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return myMachinesArray.indexOf(thisMachineId) != -1;
     }
     private void triggerWidgetUdate() {
         int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class));
