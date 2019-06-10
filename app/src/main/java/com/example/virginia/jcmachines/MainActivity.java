@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         Timber.plant(new DebugTree());
 
-        launchSignIn();
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         if (!firebaseIsSetUp&&mAuth.getUid()==null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             database.setPersistenceEnabled(true);
+            launchSignIn();
             firebaseIsSetUp = true;
         }else{
             goToListofMachines();
@@ -59,14 +59,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            updateUI(currentUser);
-        } else {
-         launchSignIn();
-        }
     }
 
     private void launchSignIn(){
@@ -88,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
@@ -106,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
     }
 
     private void logout(){

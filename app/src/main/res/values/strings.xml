@@ -88,8 +88,8 @@
     <string name="theoretical_volume_displacement">Theoretical Volume Displacement:</string>
     <string name="subject_efficiency_email">%s Sent you a calculation for Efficiency</string>
     <string name="type_of_machine">Type of machine:</string>
-    <string name="title_effcalculation_list">effcalculations</string>
-    <string name="title_effcalculation_detail">effcalculation Detail</string>
+    <string name="title_effcalculation_list">Efficiency calculation</string>
+    <string name="title_effcalculation_detail">Efficiency calculation Detail</string>
 
     //Firebase ref
     <string name="firebase_ref_calculations_add_one" translatable="false">effcalculations/%s/%d/</string>
