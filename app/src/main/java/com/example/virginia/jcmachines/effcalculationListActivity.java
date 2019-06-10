@@ -54,7 +54,9 @@ public class effcalculationListActivity extends AppCompatActivity {
     private List<effcalculation> myNewcalculations = new ArrayList<>();
     private Context mContext;
     private static ArrayList<String> mItemsToDelete = new ArrayList<>();
+    private static ArrayList<Integer> viewsClicked = new ArrayList<>();
     ActivityEffcalculationListBinding activivityBinding;
+    private static Boolean imDeleting = false;
 
 
     @Override
@@ -78,6 +80,25 @@ public class effcalculationListActivity extends AppCompatActivity {
         String userid = FirebaseAuth.getInstance().getUid();
         viewModel.getMeffCalculationListbyChildren(userid, mContext).observe(this, new myObserver());
         activivityBinding.fab.setOnClickListener(new myImreadyTodeleteClick());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //TODO: save any clicked items to delete that have not been deleted yet
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!imDeleting) {
+            super.onBackPressed();
+        } else {
+            imDeleting=false;
+            mItemsToDelete = new ArrayList<>();
+            activivityBinding.fab.hide();
+            redrawRecycler();
+        }
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -120,6 +141,11 @@ public class effcalculationListActivity extends AppCompatActivity {
                 binding.eff.getBackground().setTint(mParentActivity.getResources().getColor(R.color.colorWhite, mParentActivity.getTheme()));
                 binding.getRoot().setTag(String.valueOf(position));
                 binding.getRoot().setOnClickListener(new mylistItemClick(mTwoPane, mycalculations.get(position), mParentActivity));
+                //Check if this item is in que to delete
+                if(mItemsToDelete.contains(String.valueOf(mycalculations.get(position).getCalcid()))){
+                    binding.eff.getBackground().setTint(mParentActivity.getResources().getColor(R.color.gray, mParentActivity.getTheme()));
+                    mactivivityBinding.fab.show();
+                }
             }
         }
 
@@ -149,16 +175,20 @@ public class effcalculationListActivity extends AppCompatActivity {
                 myNewcalculations.add(thisEff);
             }
             mycalculations = myNewcalculations;
-            if (mTwoPane) {
-                assert activivityBinding.framedLayoutInclude.effcalculationListLarge != null;
-                setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationListLarge);
-            } else {
-                assert activivityBinding.framedLayoutInclude.effcalculationList != null;
-                setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationList);
-            }
+            redrawRecycler();
             if (mycalculations == null || mycalculations.size() == 0) {
                 new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
             }
+        }
+    }
+
+    private void redrawRecycler() {
+        if (mTwoPane) {
+            assert activivityBinding.framedLayoutInclude.effcalculationListLarge != null;
+            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationListLarge);
+        } else {
+            assert activivityBinding.framedLayoutInclude.effcalculationList != null;
+            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationList);
         }
     }
 
@@ -178,19 +208,23 @@ public class effcalculationListActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            mItemsToDelete.add(thiscalcculationId);
-            if (mactivivityBinding.fab.getVisibility() == View.GONE) {
-                mactivivityBinding.fab.show();
+            //Check if the item has been clicked before
+            if (mItemsToDelete.contains(thiscalcculationId)) {
+                v.getBackground().setTintList(null);
+                mItemsToDelete.remove(thiscalcculationId);
+                if(mItemsToDelete.isEmpty()&& mactivivityBinding.fab.getVisibility()==View.VISIBLE){
+                    mactivivityBinding.fab.hide();
+                    imDeleting=false;
+                }
+            } else {
+                imDeleting=true;
+                mItemsToDelete.add(thiscalcculationId);
+                v.getBackground().setTint(v.getResources().getColor(R.color.gray, myparent.getTheme()));
+                if (mactivivityBinding.fab.getVisibility() == View.INVISIBLE|| mactivivityBinding.fab.getVisibility()==View.GONE ) {
+                    mactivivityBinding.fab.show();
+                }
             }
-            v.getBackground().setTint(v.getResources().getColor(R.color.gray, myparent.getTheme()));
         }
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //TODO: save any clicked items to delete that have not been deleted yet
-        super.onSaveInstanceState(outState);
     }
 
     public static class mylistItemClick implements View.OnClickListener {
@@ -230,7 +264,6 @@ public class effcalculationListActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-
             mItemsToDelete.forEach(new Consumer<String>() {
                 @Override
                 public void accept(String s) {
