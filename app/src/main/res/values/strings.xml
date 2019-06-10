@@ -105,5 +105,8 @@
     <string name="hour_zero_add">0%d</string>
     <string name="list_of_calculations_eff_brick_Activity_title">Extrusion Efficiency for Brick</string>
     <string name="please_add_more_eff_calc_brick">Check efficiency in your machines to see them here</string>
+    <string name="title_pdf_viewer">Form Activity</string>
+    <string name="lubrication_chart_title">Lubrication Chart</string>
+    <string name="technical_sheet_title">Technical Sheet</string>
 
 </resources>

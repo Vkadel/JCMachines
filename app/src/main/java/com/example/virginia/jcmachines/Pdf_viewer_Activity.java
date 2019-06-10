@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.github.barteksc.pdfviewer.PDFView;
@@ -50,6 +51,10 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mActivity=this;
         setContentView(R.layout.activity_pdf_viewer);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setActivityTitle(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+        setSupportActionBar(toolbar);
         pdfView=findViewById(R.id.pdfView);
         progressBar=findViewById(R.id.progressBar);
         downloadFAB= findViewById(R.id.floatingActionButtonDownload);
@@ -98,6 +103,16 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
                 }
         }
         });
+    }
+
+    private void setActivityTitle(Toolbar toolbar) {
+        toolbar.setTitle(R.string.lubrication_chart_title);
+        if(getIntent().getStringExtra(ARG_DOCUMENT_ID).equals(ARG_DOCUMENT_TYPE_LUBRICATION_CHART)){
+            toolbar.setTitle(R.string.lubrication_chart_title);
+        }
+        if(getIntent().getStringExtra(ARG_DOCUMENT_ID).equals(ARG_DOCUMENT_TYPE_TECHNICAL_SHEET)){
+            toolbar.setTitle(R.string.technical_sheet_title);
+        }
     }
 
 

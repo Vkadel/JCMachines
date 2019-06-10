@@ -63,7 +63,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.virginia.jcmachines.machineListActivity" />
         </activity>
-        <activity android:name=".Pdf_viewer_Activity" />
+        <activity android:name=".Pdf_viewer_Activity"
+            android:label="@string/title_pdf_viewer"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".LargeDimensionsActivity" />
         <activity
             android:name=".SparePartListActivity"
