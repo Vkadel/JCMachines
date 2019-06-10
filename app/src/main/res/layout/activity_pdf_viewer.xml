@@ -31,15 +31,17 @@
         android:layout_centerVertical="true"
         android:foregroundGravity="center" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButtonDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/transparent"
         app:backgroundTintMode="screen"
+        android:layout_margin="@dimen/fab_margin"
         app:elevation="6dp"
-        app:srcCompat="@android:drawable/stat_sys_download"
-        style="@style/fabStyleBotton" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@android:drawable/stat_sys_download"  />
 
 
 </RelativeLayout>

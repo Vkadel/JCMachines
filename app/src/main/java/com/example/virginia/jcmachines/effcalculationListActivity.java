@@ -43,6 +43,10 @@ import java.util.function.Consumer;
  */
 public class effcalculationListActivity extends AppCompatActivity {
 
+    private static ArrayList<String> mItemsToDelete = new ArrayList<>();
+    private static ArrayList<Integer> viewsClicked = new ArrayList<>();
+    private static Boolean imDeleting = false;
+    ActivityEffcalculationListBinding activivityBinding;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -53,11 +57,6 @@ public class effcalculationListActivity extends AppCompatActivity {
     private List<effcalculation> mycalculations = new ArrayList<>();
     private List<effcalculation> myNewcalculations = new ArrayList<>();
     private Context mContext;
-    private static ArrayList<String> mItemsToDelete = new ArrayList<>();
-    private static ArrayList<Integer> viewsClicked = new ArrayList<>();
-    ActivityEffcalculationListBinding activivityBinding;
-    private static Boolean imDeleting = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +92,7 @@ public class effcalculationListActivity extends AppCompatActivity {
         if (!imDeleting) {
             super.onBackPressed();
         } else {
-            imDeleting=false;
+            imDeleting = false;
             mItemsToDelete = new ArrayList<>();
             activivityBinding.fab.hide();
             redrawRecycler();
@@ -105,13 +104,23 @@ public class effcalculationListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mTwoPane, mycalculations, activivityBinding));
     }
 
+    private void redrawRecycler() {
+        if (mTwoPane) {
+            assert activivityBinding.framedLayoutInclude.effcalculationListLarge != null;
+            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationListLarge);
+        } else {
+            assert activivityBinding.framedLayoutInclude.effcalculationList != null;
+            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationList);
+        }
+    }
+
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
         private final effcalculationListActivity mParentActivity;
         private final List<effcalculation> mycalculations;
         private final boolean mTwoPane;
-        private EffcalculationListItemBinding binding;
         ActivityEffcalculationListBinding mactivivityBinding;
+        private EffcalculationListItemBinding binding;
 
 
         SimpleItemRecyclerViewAdapter(effcalculationListActivity parent,
@@ -142,7 +151,7 @@ public class effcalculationListActivity extends AppCompatActivity {
                 binding.getRoot().setTag(String.valueOf(position));
                 binding.getRoot().setOnClickListener(new mylistItemClick(mTwoPane, mycalculations.get(position), mParentActivity));
                 //Check if this item is in que to delete
-                if(mItemsToDelete.contains(String.valueOf(mycalculations.get(position).getCalcid()))){
+                if (mItemsToDelete.contains(String.valueOf(mycalculations.get(position).getCalcid()))) {
                     binding.eff.getBackground().setTint(mParentActivity.getResources().getColor(R.color.gray, mParentActivity.getTheme()));
                     mactivivityBinding.fab.show();
                 }
@@ -158,37 +167,6 @@ public class effcalculationListActivity extends AppCompatActivity {
             ViewHolder(View view) {
                 super(view);
             }
-        }
-    }
-
-    public class myObserver implements Observer<DataSnapshot> {
-        @Override
-        public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-            Log.e("Observing: ", dataSnapshot.getValue().toString());
-            effcalculation thisEff = dataSnapshot.getValue(com.example.virginia.jcmachines.Data.effcalculation.class);
-            myNewcalculations.removeIf(effcalculation -> {
-                Boolean remove = effcalculation.getCalcid() == thisEff.getCalcid();
-                return remove;
-            });
-            Boolean isremove = viewModel.isRemove();
-            if (thisEff.getActive() == true && !isremove) {
-                myNewcalculations.add(thisEff);
-            }
-            mycalculations = myNewcalculations;
-            redrawRecycler();
-            if (mycalculations == null || mycalculations.size() == 0) {
-                new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
-            }
-        }
-    }
-
-    private void redrawRecycler() {
-        if (mTwoPane) {
-            assert activivityBinding.framedLayoutInclude.effcalculationListLarge != null;
-            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationListLarge);
-        } else {
-            assert activivityBinding.framedLayoutInclude.effcalculationList != null;
-            setupRecyclerView(activivityBinding.framedLayoutInclude.effcalculationList);
         }
     }
 
@@ -212,15 +190,15 @@ public class effcalculationListActivity extends AppCompatActivity {
             if (mItemsToDelete.contains(thiscalcculationId)) {
                 v.getBackground().setTintList(null);
                 mItemsToDelete.remove(thiscalcculationId);
-                if(mItemsToDelete.isEmpty()&& mactivivityBinding.fab.getVisibility()==View.VISIBLE){
+                if (mItemsToDelete.isEmpty() && mactivivityBinding.fab.getVisibility() == View.VISIBLE) {
                     mactivivityBinding.fab.hide();
-                    imDeleting=false;
+                    imDeleting = false;
                 }
             } else {
-                imDeleting=true;
+                imDeleting = true;
                 mItemsToDelete.add(thiscalcculationId);
                 v.getBackground().setTint(v.getResources().getColor(R.color.gray, myparent.getTheme()));
-                if (mactivivityBinding.fab.getVisibility() == View.INVISIBLE|| mactivivityBinding.fab.getVisibility()==View.GONE ) {
+                if (mactivivityBinding.fab.getVisibility() == View.INVISIBLE || mactivivityBinding.fab.getVisibility() == View.GONE) {
                     mactivivityBinding.fab.show();
                 }
             }
@@ -256,6 +234,27 @@ public class effcalculationListActivity extends AppCompatActivity {
                 intent.putExtra(machineDetailFragment.EFF_ARG_ITEM_ID, v.getTag().toString());
                 intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getMid()));
                 context.startActivity(intent);
+            }
+        }
+    }
+
+    public class myObserver implements Observer<DataSnapshot> {
+        @Override
+        public void onChanged(@Nullable DataSnapshot dataSnapshot) {
+            Log.e("Observing: ", dataSnapshot.getValue().toString());
+            effcalculation thisEff = dataSnapshot.getValue(com.example.virginia.jcmachines.Data.effcalculation.class);
+            myNewcalculations.removeIf(effcalculation -> {
+                Boolean remove = effcalculation.getCalcid() == thisEff.getCalcid();
+                return remove;
+            });
+            Boolean isremove = viewModel.isRemove();
+            if (thisEff.getActive() == true && !isremove) {
+                myNewcalculations.add(thisEff);
+            }
+            mycalculations = myNewcalculations;
+            redrawRecycler();
+            if (mycalculations == null || mycalculations.size() == 0) {
+                new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
             }
         }
     }
