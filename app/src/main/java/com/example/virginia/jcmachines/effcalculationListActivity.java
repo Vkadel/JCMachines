@@ -252,6 +252,7 @@ public class effcalculationListActivity extends AppCompatActivity {
                 myNewcalculations.add(thisEff);
             }
             mycalculations = myNewcalculations;
+
             redrawRecycler();
             if (mycalculations == null || mycalculations.size() == 0) {
                 new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();

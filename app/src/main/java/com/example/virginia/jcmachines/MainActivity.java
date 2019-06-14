@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             goToListofMachines();
         }
-
     }
 
     @Override

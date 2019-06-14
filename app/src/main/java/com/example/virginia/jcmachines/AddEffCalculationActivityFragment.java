@@ -31,6 +31,7 @@ import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBind
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationDetailBinding;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
 import com.example.virginia.jcmachines.utils.DoubleTruncate;
+import com.example.virginia.jcmachines.utils.DoubleTruncateZero;
 import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
@@ -463,7 +464,13 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             if (value == 0) {
                 return "";
             } else {
-                String myvalue = String.valueOf(new DoubleTruncate(value, mContext).getTruncatedNumber());
+                String myvalue="";
+                if(value>=99){
+                     myvalue = String.valueOf(new DoubleTruncateZero(value, mContext).getTruncatedNumber());
+                }else{
+                     myvalue = String.valueOf(new DoubleTruncate(value, mContext).getTruncatedNumber());
+                }
+
                 return myvalue;
             }
         }

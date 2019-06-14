@@ -41,6 +41,9 @@ public class MDateFormating {
         int year = calendar.get(Calendar.YEAR);
         int hour = calendar.get(Calendar.HOUR);
         int min = calendar.get(Calendar.MINUTE);
+        if(hour==0){
+            hour=12;
+        }
         if(calendar.get(Calendar.AM_PM)==0){
             mAm_PM="am";
         }else{

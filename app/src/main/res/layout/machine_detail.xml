@@ -32,8 +32,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/description" />
-
-
                 <ImageView
                     android:id="@+id/inline_dimensions_image"
                     android:layout_width="match_parent"

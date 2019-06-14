@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.databinding.ActivityMachineListBinding;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -76,11 +78,20 @@ public class machineListActivity extends AppCompatActivity {
     Boolean isSmall=true;
     Boolean isLandScape=false;
     Boolean isPortrait=false;
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(FirebaseAuth.getInstance().getCurrentUser()==null
+                ||FirebaseAuth.getInstance().getCurrentUser().getUid()==null){
+            //Go to loging page
+            String userId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+            new SendALongToast(this,getResources().getString(R.string.please_loging)).show();
+            Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
         binding= DataBindingUtil.setContentView(this,layout.activity_machine_list);
         binding.setLifecycleOwner(this);
         this.machineViewModel = ViewModelProviders.of(this).get(machineViewModel.class);
@@ -130,6 +141,7 @@ public class machineListActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable PagedList<machine> machines) {
                     if(machines!=null && machines.size()!=0){
+                        binding.progressBar.setVisibility(View.GONE);
                         Timber.d("Going to update recycler after data update/change");
                         mMachines =machines;
                         //Ensure the Recycler only updates once per load when the model sends an update

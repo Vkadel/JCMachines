@@ -42,7 +42,7 @@
     <string name="no_network">No network connect to your network and try again</string>
     <string name="calculate_efficiency">Calculate efficiency</string>
     <string name="title_activity_add_eff_calculation">AddEffCalculationActivity</string>
-    <string name="see_all_calculations">Go to Eff Calculations</string>
+    <string name="see_all_calculations">Go to Brick Eff Calculations</string>
     <string name="enter_company_name">Company Name: </string>
     <string name="imperial">Imperial unit: </string>
     <string name="metric"> Metric unit:</string>
@@ -108,5 +108,8 @@
     <string name="title_pdf_viewer">Form Activity</string>
     <string name="lubrication_chart_title">Lubrication Chart</string>
     <string name="technical_sheet_title">Technical Sheet</string>
+    <string name="please_loging">Please log in</string>
+    <string name="Extruder">Extruder</string>
+    <string name="extruder">extruder</string>
 
 </resources>

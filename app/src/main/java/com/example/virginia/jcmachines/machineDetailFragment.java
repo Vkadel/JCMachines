@@ -25,7 +25,6 @@ import androidx.paging.PagedList;
 
 import com.bumptech.glide.Glide;
 import com.example.virginia.jcmachines.Data.machine;
-import com.example.virginia.jcmachines.R.color;
 import com.example.virginia.jcmachines.R.id;
 import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.utils.SendALongToast;
@@ -134,7 +133,6 @@ public class machineDetailFragment extends Fragment {
             this.collapsingToolbarLayout = this.activity.findViewById(id.detail_CollapsingToolbarLayout);
             if(collapsingToolbarLayout !=null){
                 this.collapsingToolbarLayout.setTitle(this.thisMachine.getMachineFullName());
-                this.collapsingToolbarLayout.setExpandedTitleColor(this.getResources().getColor(color.colorAccent));
             }
             this.machineDetailAppBarBackgroundIV = this.activity.findViewById(id.app_bar_machine_image);
             if(machineDetailAppBarBackgroundIV!=null){
@@ -149,6 +147,12 @@ public class machineDetailFragment extends Fragment {
         final Button goToformula=rootView.findViewById(id.eff_calculation);
         Boolean isCurrentMachineWidget = IstheCurrentMachineaWidget();
 
+        if(thisMachine.getMachineFullName().contains(getString(R.string.Extruder))
+                ||thisMachine.getMachineFullName().contains(getString(R.string.extruder))){
+            goToformula.setVisibility(View.VISIBLE);
+        }else{
+            goToformula.setVisibility(View.INVISIBLE);
+        }
         if (isCurrentMachineWidget) {
             isThisAWidget.setText(context.getResources().getString(R.string.already_widget));
         }
