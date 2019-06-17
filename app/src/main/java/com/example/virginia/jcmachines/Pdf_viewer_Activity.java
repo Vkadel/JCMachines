@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.virginia.jcmachines.utils.DoWhenNetWorkIsActive;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -258,46 +259,6 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void setUpConnectivityCheck(){
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        NetworkRequest.Builder builder=new NetworkRequest.Builder()
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
-        NetworkRequest networkRequest=builder.build();
-        //Setting up networkcallback for system changes. In here the actions for when user is
-        //connected and disconnedted online are listed
-        ConnectivityManager.NetworkCallback mCallback=new ConnectivityManager.NetworkCallback(){
-            @Override
-            public void onAvailable(Network network) {
-                new SendALongToast(getApplicationContext(),getResources().getString(R.string.have_internet)).show();
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloadFAB.show();
-                    }
-                });
-                super.onAvailable(network);
-            }
-
-            @Override
-            public void onLost(Network network) {
-                new SendALongToast(getApplicationContext(),getResources().getString(R.string.lost_connection)).show();
-                Log.e(TAG, "onAvailable: "+"sent connectionlost toast");
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloadFAB.hide();
-                    }
-                });
-                super.onLost(network);
-            }
-        };
-        //Asking to be notified of connect/disconnects from internet
-        connectivityManager.registerNetworkCallback(networkRequest,mCallback);
-    }
-
-
 
     @Override
     protected void onDestroy() {
@@ -312,7 +273,21 @@ public class Pdf_viewer_Activity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        setUpConnectivityCheck();
+        Runnable doIfnetworkIsAvailable;
+        Runnable doIfnetWorkIsNOTAvailable;
+        doIfnetworkIsAvailable =new Runnable() {
+            @Override
+            public void run() {
+                downloadFAB.show();
+            }
+        };
+        doIfnetWorkIsNOTAvailable=new Runnable() {
+            @Override
+            public void run() {
+                downloadFAB.hide();
+            }
+        };
+        new DoWhenNetWorkIsActive(doIfnetworkIsAvailable,doIfnetWorkIsNOTAvailable,this,this);
         super.onStart();
     }
 }

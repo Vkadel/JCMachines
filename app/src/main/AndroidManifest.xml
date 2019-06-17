@@ -43,7 +43,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.virginia.jcmachines.machineDetailActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="@string/title_machine_list"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

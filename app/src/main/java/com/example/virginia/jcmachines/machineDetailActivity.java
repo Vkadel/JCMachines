@@ -89,7 +89,6 @@ Boolean cameFromWidget=false;
         }else{
             thisItemID=savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
         }
-
     }
 
     @Override

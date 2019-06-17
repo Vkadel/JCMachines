@@ -20,8 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.animations.appearAnimText;
 import com.example.virginia.jcmachines.animations.fadeAnimBar;
+import com.example.virginia.jcmachines.animations.fadeText;
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationListBinding;
 import com.example.virginia.jcmachines.databinding.EffcalculationListItemBinding;
+import com.example.virginia.jcmachines.utils.DoWhenNetWorkIsActive;
 import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
@@ -62,6 +64,7 @@ public class effcalculationListActivity extends AppCompatActivity {
     private List<effcalculation> mycalculations = new ArrayList<>();
     private List<effcalculation> myNewcalculations = new ArrayList<>();
     private Context mContext;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class effcalculationListActivity extends AppCompatActivity {
         activivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_effcalculation_list);
         activivityBinding.setLifecycleOwner(this);
         mContext = this;
+        mActivity=this;
+        CheckConnectivity();
         activivityBinding.toolbar.setTitle(getResources().getString(R.string.list_of_calculations_eff_brick_Activity_title));
         setSupportActionBar(activivityBinding.toolbar);
         if (activivityBinding.framedLayoutInclude.effcalculationDetailContainer != null) {
@@ -83,11 +88,11 @@ public class effcalculationListActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
         String userid = FirebaseAuth.getInstance().getUid();
         viewModel.getMeffCalculationListbyChildren(userid, mContext).observe(this, new myObserver());
-        activivityBinding.fab.setOnClickListener(new myImreadyTodeleteClick());
+        activivityBinding.fab.setOnClickListener(new ReadyToDeleteOnClickListener());
 
         //Get the have Childrenstate
         if(savedInstanceState!=null&&savedInstanceState.getBoolean(DONT_HAVE_CHILDREN_ARG)){
-            dontHaveChildrenUpdate();
+            dontHaveChildrenUpdateButHaveInternet();
         }
         //Check if User has calculations only once when activity loads, if they don't
         //save the fact and ensure you don't call it again
@@ -97,7 +102,7 @@ public class effcalculationListActivity extends AppCompatActivity {
                 public void onChanged(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() == null) {
                         new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
-                        dontHaveChildrenUpdate();
+                        dontHaveChildrenUpdateButHaveInternet();
                     }
                 }
             });
@@ -105,10 +110,16 @@ public class effcalculationListActivity extends AppCompatActivity {
 
     }
 
-    private void dontHaveChildrenUpdate() {
+    private void dontHaveChildrenUpdateButHaveInternet() {
         new fadeAnimBar( activivityBinding.progressBar,this).animate();
+        activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.please_go_to_machine_add_calculations);
         new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,this).animate();
         dontHaveChildren = true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -145,6 +156,42 @@ public class effcalculationListActivity extends AppCompatActivity {
         }
     }
 
+    private void CheckConnectivity() {
+        Runnable doIfnetworkIsAvailable;
+        Runnable doIfnetWorkIsNOTAvailable;
+        doIfnetworkIsAvailable = new Runnable() {
+            @Override
+            public void run() {
+                //Need to prevent the authentication event from launching twice
+                //after a network update
+                if (mycalculations.size()==0) {
+                    activivityBinding.addMoreCalculationsIntructionsTv.setVisibility(View.INVISIBLE);
+                    activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.please_go_to_machine_add_calculations);
+                }
+            }
+        };
+        doIfnetWorkIsNOTAvailable = new Runnable() {
+            @Override
+            public void run() {
+                if(mycalculations.size()==0){
+                    new SendALongToast(mActivity,getString(R.string.no_network)).show();
+                }
+                dontHaveInternetUIUpdate();
+            }
+        };
+        DoWhenNetWorkIsActive doWhenNetWorkIsActive=
+                new DoWhenNetWorkIsActive(doIfnetworkIsAvailable, doIfnetWorkIsNOTAvailable, this, this);
+            if(!doWhenNetWorkIsActive.FirstCheck()){
+            dontHaveInternetUIUpdate();
+        };
+        //Check if you do not have internet already;
+
+    }
+    public void dontHaveInternetUIUpdate(){
+        new fadeAnimBar(activivityBinding.progressBar,mContext).animate();
+        activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.no_network);
+        new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,mActivity).animate();
+    }
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
         private final effcalculationListActivity mParentActivity;
@@ -176,7 +223,7 @@ public class effcalculationListActivity extends AppCompatActivity {
                 binding.machineId.setText(mycalculations.get(position).getMids());
                 binding.measurementDate.setText(new MDateFormating(mParentActivity).convertMillisTodate(mycalculations.get(position).getDate()));
                 binding.companyName.setText(mycalculations.get(position).getCompid());
-                binding.eff.setText(String.valueOf(mycalculations.get(position).getEff()));
+                binding.eff.setText(String.valueOf((int)mycalculations.get(position).getEff()));
                 binding.eff.setOnClickListener(new ItemDeleteListener(mactivivityBinding, mycalculations, mycalculations.get(position).getCalcid(), mParentActivity));
                 binding.eff.getBackground().setTint(mParentActivity.getResources().getColor(R.color.colorWhite, mParentActivity.getTheme()));
                 binding.getRoot().setTag(String.valueOf(position));
@@ -276,7 +323,8 @@ public class effcalculationListActivity extends AppCompatActivity {
         @Override
         public void onChanged(@Nullable DataSnapshot dataSnapshot) {
             dontHaveChildren=false;
-            activivityBinding.progressBar.setVisibility(View.INVISIBLE);
+            new fadeAnimBar(activivityBinding.progressBar,mContext).animate();
+            new fadeText(activivityBinding.addMoreCalculationsIntructionsTv,mContext).animate();
             Timber.e(dataSnapshot.getValue().toString());
             effcalculation thisEff = dataSnapshot.getValue(com.example.virginia.jcmachines.Data.effcalculation.class);
             myNewcalculations.removeIf(effcalculation -> {
@@ -295,7 +343,7 @@ public class effcalculationListActivity extends AppCompatActivity {
         }
     }
 
-    public class myImreadyTodeleteClick implements View.OnClickListener {
+    public class ReadyToDeleteOnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {

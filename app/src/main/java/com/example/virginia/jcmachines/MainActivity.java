@@ -2,14 +2,21 @@ package com.example.virginia.jcmachines;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 
+import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.R.layout;
 import com.example.virginia.jcmachines.databinding.ActivityMainBinding;
+import com.example.virginia.jcmachines.utils.DoWhenNetWorkIsActive;
+import com.example.virginia.jcmachines.viewmodels.machineViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,26 +40,65 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     ActivityMainBinding binding;
+    private Boolean launchedAuth = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding= DataBindingUtil.setContentView(this,layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, layout.activity_main);
         binding.setLifecycleOwner(this);
         Timber.plant(new DebugTree());
+
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         //Setting up database persistence
-        if (!firebaseIsSetUp&&mAuth.getUid()==null) {
+        if (!firebaseIsSetUp && mAuth.getUid() == null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             database.setPersistenceEnabled(true);
-            launchSignIn();
+            //Check if user has internet Access
+            CheckConnectivity();
             firebaseIsSetUp = true;
-        }else{
-            goToListofMachines();
+        } else {
+            //Only go straight to list of machines if there are machines available in the internal database
+            machineViewModel machineViewModel= ViewModelProviders.of(this).get(machineViewModel.class);
+            machineViewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
+                @Override
+                public void onChanged(PagedList<machine> machines) {
+                    if(machines.size()!=0){
+                        goToListofMachines();
+                    }
+                    else{
+                        binding.userMessageTv.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         }
+    }
+
+    private void CheckConnectivity() {
+        Runnable doIfnetworkIsAvailable;
+        Runnable doIfnetWorkIsNOTAvailable;
+        doIfnetworkIsAvailable = new Runnable() {
+            @Override
+            public void run() {
+                //Need to prevent the authentication event from launching twice
+                //after a network update
+                if (!launchedAuth) {
+                    binding.userMessageTv.setVisibility(View.GONE);
+                    launchedAuth = true;
+                    launchSignIn();
+                }
+            }
+        };
+        doIfnetWorkIsNOTAvailable = new Runnable() {
+            @Override
+            public void run() {
+                binding.userMessageTv.setVisibility(View.VISIBLE);
+            }
+        };
+        new DoWhenNetWorkIsActive(doIfnetworkIsAvailable, doIfnetWorkIsNOTAvailable, this, this);
     }
 
     @Override
@@ -60,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void launchSignIn(){
+    private void launchSignIn() {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -99,20 +145,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void logout(){
+    private void logout() {
 
     }
 
-    private void updateUI(FirebaseUser account) {
-        if (account == null) {
-            //Do something when user is null
-        } else {
-            //Do someting when user is not null
-        }
-    }
-
-    private void goToListofMachines(){
-        Intent intent=new Intent(this,machineListActivity.class);
+    private void goToListofMachines() {
+        Intent intent = new Intent(this, machineListActivity.class);
         startActivity(intent);
     }
 }

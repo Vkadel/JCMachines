@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">300dp</dimen>
     <dimen name="item_width">300dp</dimen>
-    <dimen name="text_margin">15dp</dimen>
+    <dimen name="text_margin">12dp</dimen>
     <dimen name="dimensions_pic_height">300dp</dimen>
     <dimen name="text_size_detail_links">24sp</dimen>
     <dimen name="text_size_description_detail">32sp</dimen>
@@ -24,7 +24,7 @@
     <dimen name="div_thickness">1dp</dimen>
     <dimen name="send_long_toast_top">12sp</dimen>
     <dimen name="auger_spinner_w">200dp</dimen>
-    <dimen name="round_w">60dp</dimen>
+    <dimen name="round_w">50dp</dimen>
     <dimen name="company_name_w">100dp</dimen>
     <dimen name="tall_toolbar_height">100dp</dimen>
 </resources>

@@ -39,7 +39,7 @@
     <string name="already_widget">Remove from widgets</string>
     <string name="will_remove_thisWidget">Will remove this machine from widgets</string>
     <string name="loading">Loading</string>
-    <string name="no_network">No network connect to your network and try again</string>
+    <string name="no_network">No network connect to the internet and try again</string>
     <string name="calculate_efficiency">Calculate efficiency</string>
     <string name="title_activity_add_eff_calculation">AddEffCalculationActivity</string>
     <string name="see_all_calculations">Go to Brick Eff Calculations</string>
@@ -112,5 +112,7 @@
     <string name="Extruder">Extruder</string>
     <string name="extruder">extruder</string>
     <string name="please_go_to_machine_add_calculations">Go to your machine detail to add efficiency calculations</string>
+    <string name="please_connect_to_the_network">Please connect to the Internet</string>
+    <string name="please_connection_is_available_for_machines">No machines have been loaded connect to the internet</string>
 
 </resources>

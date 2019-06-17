@@ -57,7 +57,7 @@
             android:layout_margin="@dimen/text_margin"
             android:background="@drawable/shape_round_for_eff"
             android:elevation="16dp"
-            android:paddingTop="16dp"
+            android:paddingTop="15dp"
             android:shadowColor="@android:color/black"
             android:text="100"
             android:textAlignment="center"
