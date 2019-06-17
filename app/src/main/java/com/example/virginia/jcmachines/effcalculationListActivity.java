@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.virginia.jcmachines.Data.effcalculation;
+import com.example.virginia.jcmachines.animations.appearAnimText;
+import com.example.virginia.jcmachines.animations.fadeAnimBar;
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationListBinding;
 import com.example.virginia.jcmachines.databinding.EffcalculationListItemBinding;
 import com.example.virginia.jcmachines.utils.MDateFormating;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import timber.log.Timber;
+
 /**
  * An activity representing a list of effcalculations. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -42,16 +45,18 @@ import java.util.function.Consumer;
  * item details side-by-side using two vertical panes.
  */
 public class effcalculationListActivity extends AppCompatActivity {
-
+    private static String DONT_HAVE_CHILDREN_ARG = "dont_have_children";
     private static ArrayList<String> mItemsToDelete = new ArrayList<>();
     private static ArrayList<Integer> viewsClicked = new ArrayList<>();
     private static Boolean imDeleting = false;
+    private static boolean dontHaveChildren = true;
     ActivityEffcalculationListBinding activivityBinding;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+
     private efficiencyFormulaViewModel viewModel = new efficiencyFormulaViewModel();
     private View recyclerView;
     private List<effcalculation> mycalculations = new ArrayList<>();
@@ -79,11 +84,37 @@ public class effcalculationListActivity extends AppCompatActivity {
         String userid = FirebaseAuth.getInstance().getUid();
         viewModel.getMeffCalculationListbyChildren(userid, mContext).observe(this, new myObserver());
         activivityBinding.fab.setOnClickListener(new myImreadyTodeleteClick());
+
+        //Get the have Childrenstate
+        if(savedInstanceState!=null&&savedInstanceState.getBoolean(DONT_HAVE_CHILDREN_ARG)){
+            dontHaveChildrenUpdate();
+        }
+        //Check if User has calculations only once when activity loads, if they don't
+        //save the fact and ensure you don't call it again
+        if (savedInstanceState == null || dontHaveChildren) {
+            viewModel.getMeffCalculationList(userid, this).observe(this, new Observer<DataSnapshot>() {
+                @Override
+                public void onChanged(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() == null) {
+                        new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
+                        dontHaveChildrenUpdate();
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void dontHaveChildrenUpdate() {
+        new fadeAnimBar( activivityBinding.progressBar,this).animate();
+        new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,this).animate();
+        dontHaveChildren = true;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //TODO: save any clicked items to delete that have not been deleted yet
+        outState.putBoolean(DONT_HAVE_CHILDREN_ARG, dontHaveChildren);
         super.onSaveInstanceState(outState);
     }
 
@@ -193,6 +224,9 @@ public class effcalculationListActivity extends AppCompatActivity {
                 if (mItemsToDelete.isEmpty() && mactivivityBinding.fab.getVisibility() == View.VISIBLE) {
                     mactivivityBinding.fab.hide();
                     imDeleting = false;
+                    if(mmycalculations.size()==0){
+                      new appearAnimText(mactivivityBinding.addMoreCalculationsIntructionsTv,myparent).animate();
+                    }
                 }
             } else {
                 imDeleting = true;
@@ -241,22 +275,23 @@ public class effcalculationListActivity extends AppCompatActivity {
     public class myObserver implements Observer<DataSnapshot> {
         @Override
         public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-            Log.e("Observing: ", dataSnapshot.getValue().toString());
+            dontHaveChildren=false;
+            activivityBinding.progressBar.setVisibility(View.INVISIBLE);
+            Timber.e(dataSnapshot.getValue().toString());
             effcalculation thisEff = dataSnapshot.getValue(com.example.virginia.jcmachines.Data.effcalculation.class);
             myNewcalculations.removeIf(effcalculation -> {
-                Boolean remove = effcalculation.getCalcid() == thisEff.getCalcid();
-                return remove;
+                return (Boolean) effcalculation.getCalcid().equals(thisEff.getCalcid());
             });
-            Boolean isremove = viewModel.isRemove();
+            boolean isremove = viewModel.isRemove();
             if (thisEff.getActive() == true && !isremove) {
                 myNewcalculations.add(thisEff);
             }
             mycalculations = myNewcalculations;
-
-            redrawRecycler();
             if (mycalculations == null || mycalculations.size() == 0) {
                 new SendALongToast(mContext, getResources().getString(R.string.please_add_more_eff_calc_brick)).show();
+                new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,getBaseContext()).animate();
             }
+            redrawRecycler();
         }
     }
 

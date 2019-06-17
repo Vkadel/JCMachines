@@ -97,6 +97,7 @@ public class FirebaseEffFormulaLiveListChild extends LiveData<DataSnapshot> {
         public void onCancelled(DatabaseError databaseError) {
             Log.e(LOG_TAG, "Could not Perform Read from Firebase " + mRef, databaseError.toException());
         }
+
     }
 
 }

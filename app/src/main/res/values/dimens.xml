@@ -10,6 +10,7 @@
     <dimen name="text_size_detail_links">24sp</dimen>
     <dimen name="text_size_description_detail">32sp</dimen>
     <dimen name="machine_item_width">300dp</dimen>
+    <dimen name="progress_bar_margin_top">40dp</dimen>
 
     <!--
     Refer to App Widget Documentation for margin information

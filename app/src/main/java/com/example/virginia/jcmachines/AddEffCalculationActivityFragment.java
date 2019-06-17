@@ -25,8 +25,8 @@ import androidx.paging.PagedList;
 import com.example.virginia.jcmachines.Data.augers;
 import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
-import com.example.virginia.jcmachines.animations.appearAnim;
-import com.example.virginia.jcmachines.animations.fadeAnim;
+import com.example.virginia.jcmachines.animations.appearAnimLayout;
+import com.example.virginia.jcmachines.animations.fadeAnimLayout;
 import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
 import com.example.virginia.jcmachines.databinding.ActivityEffcalculationDetailBinding;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
@@ -281,9 +281,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private void needToCalculateColumnSpeed() {
         new SendALongToast(getActivity(), getString(R.string.need_to_calculate_column_speed)).show();
         binding.knowColumnSpeed.setText(getString(R.string.not_known));
-        new appearAnim(binding.cutLengthLayout, getActivity()).animate();
-        new appearAnim(binding.cutRateLayout, getActivity()).animate();
-        new appearAnim(binding.estimationWasteLayout, getActivity()).animate();
+        new appearAnimLayout(binding.cutLengthLayout, getActivity()).animate();
+        new appearAnimLayout(binding.cutRateLayout, getActivity()).animate();
+        new appearAnimLayout(binding.estimationWasteLayout, getActivity()).animate();
     }
 
     private void dontNeedtoCalculateColumnSpeed() {
@@ -293,17 +293,17 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.cutRateEt.setText("");
         binding.estimationWasteEt.setText("");
         binding.columnSpeedEt.setText("");
-        new fadeAnim(binding.cutLengthLayout, getActivity()).animate();
-        new fadeAnim(binding.cutRateLayout, getActivity()).animate();
-        new fadeAnim(binding.estimationWasteLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.cutLengthLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.cutRateLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.estimationWasteLayout, getActivity()).animate();
     }
 
     private void needProductSection() {
         new SendALongToast(getActivity(), getString(R.string.need_to_calculate_product_area)).show();
         binding.knownProductSection.setText(getString(R.string.not_known));
-        new appearAnim(binding.brickWidthLayout, getActivity()).animate();
-        new appearAnim(binding.brickHeightLayout, getActivity()).animate();
-        new appearAnim(binding.brickVoidPercentageLayout, getActivity()).animate();
+        new appearAnimLayout(binding.brickWidthLayout, getActivity()).animate();
+        new appearAnimLayout(binding.brickHeightLayout, getActivity()).animate();
+        new appearAnimLayout(binding.brickVoidPercentageLayout, getActivity()).animate();
 
     }
 
@@ -314,9 +314,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.brickWEt.setText("");
         binding.brickVoidPercentageEt.setText("");
         binding.axMaterialSection.setText("");
-        new fadeAnim(binding.brickWidthLayout, getActivity()).animate();
-        new fadeAnim(binding.brickHeightLayout, getActivity()).animate();
-        new fadeAnim(binding.brickVoidPercentageLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.brickWidthLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.brickHeightLayout, getActivity()).animate();
+        new fadeAnimLayout(binding.brickVoidPercentageLayout, getActivity()).animate();
     }
 
     @Override

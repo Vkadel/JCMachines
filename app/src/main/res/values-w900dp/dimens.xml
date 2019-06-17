@@ -10,4 +10,5 @@
     <dimen name="text_size_detail_links">24sp</dimen>
     <dimen name="text_size_description_detail">32sp</dimen>
     <dimen name="machine_item_width">450dp</dimen>
+
 </resources>

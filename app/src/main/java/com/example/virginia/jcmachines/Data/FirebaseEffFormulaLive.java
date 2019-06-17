@@ -22,17 +22,13 @@ public class FirebaseEffFormulaLive extends LiveData<DataSnapshot> {
 
     @Override
     protected void onActive() {
-        /* Log.d(LOG_TAG, "onActive");*/
         mRef.addValueEventListener(listener);
-        /*mRef.addChildEventListener(childListener);*/
         super.onActive();
     }
 
     @Override
     protected void onInactive() {
-        /*Log.d(LOG_TAG, "onInactive");*/
         mRef.removeEventListener(listener);
-       /* mRef.removeEventListener(childListener);*/
         super.onInactive();
     }
 
@@ -40,13 +36,7 @@ public class FirebaseEffFormulaLive extends LiveData<DataSnapshot> {
 
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            if (dataSnapshot.getValue() != null) {
-                Log.d(LOG_TAG, "onDataChange");
-                Log.d(LOG_TAG, "onDataChange this is the data: " + dataSnapshot.getValue().toString());
                 setValue(dataSnapshot);
-            } else {
-                Log.e(LOG_TAG, "DataSnapshot was null");
-            }
         }
 
         @Override

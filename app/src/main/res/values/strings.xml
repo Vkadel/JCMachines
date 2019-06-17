@@ -104,12 +104,13 @@
     <string name="date_for_calculation_format_nice">%d/%d/%d at %d:%s%s</string>
     <string name="hour_zero_add">0%d</string>
     <string name="list_of_calculations_eff_brick_Activity_title">Extrusion Efficiency for Brick</string>
-    <string name="please_add_more_eff_calc_brick">Check efficiency in your machines to see them here</string>
+    <string name="please_add_more_eff_calc_brick">Add efficiency calculations in your machines to see them here</string>
     <string name="title_pdf_viewer">Form Activity</string>
     <string name="lubrication_chart_title">Lubrication Chart</string>
     <string name="technical_sheet_title">Technical Sheet</string>
     <string name="please_loging">Please log in</string>
     <string name="Extruder">Extruder</string>
     <string name="extruder">extruder</string>
+    <string name="please_go_to_machine_add_calculations">Go to your machine detail to add efficiency calculations</string>
 
 </resources>
