@@ -107,6 +107,9 @@ public class effcalculationListActivity extends AppCompatActivity {
                 }
             });
         }
+        if(savedInstanceState!=null){
+            activivityBinding.progressBar.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -187,6 +190,7 @@ public class effcalculationListActivity extends AppCompatActivity {
         //Check if you do not have internet already;
 
     }
+
     public void dontHaveInternetUIUpdate(){
         new fadeAnimBar(activivityBinding.progressBar,mContext).animate();
         activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.no_network);

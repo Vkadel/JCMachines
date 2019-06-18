@@ -27,4 +27,6 @@
     <dimen name="round_w">50dp</dimen>
     <dimen name="company_name_w">100dp</dimen>
     <dimen name="tall_toolbar_height">100dp</dimen>
+    <dimen name="but_w">160dp</dimen>
+    <dimen name="but_h">75dp</dimen>
 </resources>

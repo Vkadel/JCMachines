@@ -36,6 +36,7 @@ import com.example.virginia.jcmachines.utils.MDateFormating;
 import com.example.virginia.jcmachines.utils.SendALongToast;
 import com.example.virginia.jcmachines.viewmodels.efficiencyFormulaViewModel;
 import com.example.virginia.jcmachines.viewmodels.machineViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -96,17 +97,15 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_eff_calculation, container, false);
         binding.setLifecycleOwner(this);
+
         //checking if the binding is used in the addCalculation Activity
-        activityBinding = DataBindingUtil.getBinding((View) container.getParent());
-        if (activityBinding != null) {
-            activityBinding.setLifecycleOwner(this);
-        }
+        FloatingActionButton fab=getActivity().findViewById(R.id.fab);
 
         View view = binding.getRoot();
         binding.setLivedata(meffcalculationLive);
         binding.setCalculation(new Callbacks());
         binding.setConverter(new Converter());
-        activityBinding.fab.setOnClickListener(new myUpdateAndSendEmailListener());
+        fab.setOnClickListener(new myUpdateAndSendEmailListener());
 
         //Get sent machine information
         if (getArguments().containsKey(machineDetailFragment.ARG_ITEM_ID)) {

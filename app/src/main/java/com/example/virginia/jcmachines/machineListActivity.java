@@ -188,6 +188,7 @@ public class machineListActivity extends AppCompatActivity {
                 }
             });}
         else{
+            binding.progressBar.setVisibility(View.INVISIBLE);
             mMachines = this.machineViewModel.getMachines().getValue();
             machineAdapter.submitList(mMachines);
             ((RecyclerView)recyclerView).setAdapter(machineAdapter);
