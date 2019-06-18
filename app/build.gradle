@@ -15,11 +15,11 @@ android {
             storePassword 'password'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.virginia.jcmachines"
         minSdkVersion 17
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,7 +41,7 @@ android {
             dimension 'version'
             minSdkVersion 26
             applicationId 'com.example.virginia.jcmachines'
-            targetSdkVersion 28
+            targetSdkVersion 29
             signingConfig signingConfigs.free
         }
     }
@@ -86,7 +86,8 @@ dependencies {
     //Because firebase has an old customtab reference 27 that its not compatible with appcompat
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha07'
-    }
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+}
 ext {
     roomVersion = '1.1.1'
     archLifecycleVersion = '1.1.1'

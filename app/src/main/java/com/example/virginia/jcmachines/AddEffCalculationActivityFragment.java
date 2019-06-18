@@ -83,10 +83,19 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         super();
     }
 
+
     @Override
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         //Setting up the listener
         mContext = getActivity();
+        if (savedInstanceState!=null&&savedInstanceState.containsKey(EFF_CALC_ARG_EXIST)) {
+            //getting the existing value
+            Gson json = new Gson();
+            effcalculation tran=json.fromJson(savedInstanceState.getString(EFF_CALC_ARG_EXIST), effcalculation.class);
+            meffcalculationLive.setValue(tran);
+            binding.setLivedata(meffcalculationLive);
+            initialUISetup();
+        }
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -151,7 +160,9 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             if (savedInstanceState.containsKey(EFF_CALC_ARG_EXIST)) {
                 //getting the existing value
                 Gson json = new Gson();
-                meffcalculationLive.setValue(json.fromJson(savedInstanceState.getString(EFF_CALC_ARG_EXIST), effcalculation.class));
+                effcalculation tran=json.fromJson(savedInstanceState.getString(EFF_CALC_ARG_EXIST), effcalculation.class);
+                meffcalculationLive.setValue(tran);
+                binding.setLivedata(meffcalculationLive);
                 initialUISetup();
             }
         }
@@ -174,7 +185,6 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.imperialMetricSwitch.setEnabled(false);
         binding.knowColumnSpeed.setEnabled(false);
         binding.knownProductSection.setEnabled(false);
-        //TODO: hide the FAB
     }
 
     private void rePopViewsAfterConfigUpdate() {
@@ -319,9 +329,8 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        clearAllInputs();
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

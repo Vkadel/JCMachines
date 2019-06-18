@@ -61,19 +61,20 @@ public class AddEffCalculationActivity extends AppCompatActivity {
                             }
                         }
                     });
-
+                    //Create the fragment only the first time
+            fragment = new AddEffCalculationActivityFragment();
+            fragment.setArguments(arguments);
+            this.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.form_container, fragment, "tag")
+                    .commit();
 
         } else if (savedInstanceState.containsKey(machineDetailFragment.ARG_ITEM_ID)) {
             thisItemID = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
             thisEffcalculationId=savedInstanceState.getString(machineDetailFragment.EFF_ARG_ITEM_ID);
             setupUIStart();
         }
-        fragment = new AddEffCalculationActivityFragment();
-        fragment.setArguments(arguments);
-        this.getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.form_container, fragment, "tag")
-                .commit();
+
 
     }
 
