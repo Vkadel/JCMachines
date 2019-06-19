@@ -77,6 +77,8 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
     private View.OnClickListener listener;
     private View.OnClickListener updateAndSendEmailListener;
     private Boolean isTwoPane;
+    private Boolean itemExist=false;
+    private String itemid;
 
 
     public AddEffCalculationActivityFragment() {
@@ -164,6 +166,11 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 meffcalculationLive.setValue(tran);
                 binding.setLivedata(meffcalculationLive);
                 initialUISetup();
+                //if Item already exist then need to disable all entry again
+                if(savedInstanceState.containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)){
+                    itemExist=true;
+                    disableAllDataEntry();
+                }
             }
         }
         return view;
@@ -185,6 +192,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         binding.imperialMetricSwitch.setEnabled(false);
         binding.knowColumnSpeed.setEnabled(false);
         binding.knownProductSection.setEnabled(false);
+        binding.selectAugerSpinner.setEnabled(false);
     }
 
     private void rePopViewsAfterConfigUpdate() {
@@ -338,6 +346,11 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         outState.putString(machineDetailFragment.ARG_ITEM_ID, machineId);
         Gson json = new Gson();
         outState.putString(EFF_CALC_ARG_EXIST, json.toJson(meffcalculationLive.getValue()));
+        if(getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)){
+        outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID));}
+        if(itemExist){
+            outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID));
+        }
         super.onSaveInstanceState(outState);
     }
 

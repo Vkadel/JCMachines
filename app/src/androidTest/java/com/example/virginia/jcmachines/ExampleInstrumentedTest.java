@@ -17,6 +17,8 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(JUnit4.class)
 public class ExampleInstrumentedTest {
+
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -24,4 +26,5 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.example.virginia.jcmachines", appContext.getPackageName());
     }
+
 }

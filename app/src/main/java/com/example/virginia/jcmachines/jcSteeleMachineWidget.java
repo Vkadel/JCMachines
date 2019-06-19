@@ -219,7 +219,7 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))),
-                    intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
             views.setOnClickPendingIntent(R.id.appWidget_machine_picture, pendingIntent);

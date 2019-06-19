@@ -70,6 +70,7 @@ public class AddEffCalculationActivity extends AppCompatActivity {
                     .commit();
 
         } else if (savedInstanceState.containsKey(machineDetailFragment.ARG_ITEM_ID)) {
+            binding.fab.hide();
             thisItemID = savedInstanceState.getString(machineDetailFragment.ARG_ITEM_ID);
             thisEffcalculationId=savedInstanceState.getString(machineDetailFragment.EFF_ARG_ITEM_ID);
             setupUIStart();

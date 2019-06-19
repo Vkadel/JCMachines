@@ -151,7 +151,7 @@ public class machineDetailFragment extends Fragment {
                 ||thisMachine.getMachineFullName().contains(getString(R.string.extruder))){
             goToformula.setVisibility(View.VISIBLE);
         }else{
-            goToformula.setVisibility(View.INVISIBLE);
+            goToformula.setVisibility(View.GONE);
         }
         if (isCurrentMachineWidget) {
             isThisAWidget.setText(context.getResources().getString(R.string.already_widget));
