@@ -47,6 +47,7 @@
             android:visibility="invisible" />
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/add_more_calculations_intructions_tv"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"

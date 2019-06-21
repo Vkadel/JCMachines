@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+       <!-- this is the color for the 3 dots menu-->
+        <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,10 +24,10 @@
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="LinkeTextInDetailStyle">
+    <style name="LinkeTextInDetailStyle" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:padding">8dp</item>
         <item name="android:textSize">@dimen/text_size_detail_links</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorLinked</item>
     </style>
 
     <style name="DescriptionTextStyle">

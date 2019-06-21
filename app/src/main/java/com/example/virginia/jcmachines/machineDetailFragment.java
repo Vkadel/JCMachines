@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -278,7 +279,7 @@ public class machineDetailFragment extends Fragment {
                 Gson prevMachineIDjson = new Gson();
                 Gson prevMachineNamejson = new Gson();
                 Gson prevMachineImageLinkjson = new Gson();
-                Gson prevMachineWidgetIdjson = new Gson();
+
                 ArrayList<String> machineWidgetPrefArrayID = new ArrayList<>();
                 ArrayList<String> machineWidgetPrefArrayName = new ArrayList<>();
                 ArrayList<String> machineWidgetPrefArrayImageLink = new ArrayList<>();
@@ -335,12 +336,16 @@ public class machineDetailFragment extends Fragment {
                 machineWidgetPrefArrayID.remove(position);
                 machineWidgetPrefArrayName.remove(position);
                 machineWidgetPrefArrayImageLink.remove(position);
-                machineWidgetPrefArrayWidgetId.remove(position);
                 editor.putString(getString(R.string.my_machine_to_widget_key), prevMachineIDjson.toJson(machineWidgetPrefArrayID));
                 editor.putString(getString(R.string.my_machine_name_for_widget_key), prevMachineNamejson.toJson(machineWidgetPrefArrayName));
                 editor.putString(getString(R.string.my_machine_pic_link_for_widget_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
                 editor.putString(getString(R.string.my_machine_widget_id_key), prevMachineImageLinkjson.toJson(machineWidgetPrefArrayImageLink));
                 editor.commit();
+                Context context = getContext();
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layout.jc_steele_machine_widget);
+                ComponentName thisWidget = new ComponentName(context, jcSteeleMachineWidget.class);
+                appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             }
         });
 

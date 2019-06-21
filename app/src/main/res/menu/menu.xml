@@ -1,7 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.virginia.jcmachines.AddEffCalculationActivity">
+    tools:context="com.example.virginia.jcmachines.AddEffCalculationActivity"
+    >
     <item
         android:id="@+id/go_to_calculations"
         android:orderInCategory="100"

@@ -3,6 +3,7 @@
     android:layout_height="@dimen/widget_dim"
     android:background="@drawable/shape"
     android:minHeight="@dimen/widget_dim"
+    android:layout_margin="@dimen/widget_margin"
     android:resizeMode="horizontal|vertical">
 
 

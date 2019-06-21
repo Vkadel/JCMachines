@@ -160,41 +160,46 @@ public class effcalculationListActivity extends AppCompatActivity {
     }
 
     private void CheckConnectivity() {
-        Runnable doIfnetworkIsAvailable;
-        Runnable doIfnetWorkIsNOTAvailable;
-        doIfnetworkIsAvailable = new Runnable() {
+        Runnable doIfnetworkIsAvailableRunnable;
+        Runnable doIfnetWorkIsNOTAvailableRunnable;
+        doIfnetworkIsAvailableRunnable = new Runnable() {
             @Override
             public void run() {
                 //Need to prevent the authentication event from launching twice
                 //after a network update
                 if (mycalculations.size()==0) {
-                    activivityBinding.addMoreCalculationsIntructionsTv.setVisibility(View.INVISIBLE);
+                    activivityBinding.addMoreCalculationsIntructionsTv.setVisibility(View.VISIBLE);
                     activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.please_go_to_machine_add_calculations);
                 }
+                else{
+                    activivityBinding.addMoreCalculationsIntructionsTv.setVisibility(View.INVISIBLE);
+                }
             }
+
         };
-        doIfnetWorkIsNOTAvailable = new Runnable() {
+        doIfnetWorkIsNOTAvailableRunnable = new Runnable() {
             @Override
             public void run() {
-                if(mycalculations.size()==0){
-                    new SendALongToast(mActivity,getString(R.string.no_network)).show();
-                }
                 dontHaveInternetUIUpdate();
             }
         };
         DoWhenNetWorkIsActive doWhenNetWorkIsActive=
-                new DoWhenNetWorkIsActive(doIfnetworkIsAvailable, doIfnetWorkIsNOTAvailable, this, this);
-            if(!doWhenNetWorkIsActive.FirstCheck()){
-            dontHaveInternetUIUpdate();
-        };
-        //Check if you do not have internet already;
+                new DoWhenNetWorkIsActive(doIfnetworkIsAvailableRunnable, doIfnetWorkIsNOTAvailableRunnable, this, this);
+
+        if(!doWhenNetWorkIsActive.FirstCheck()){ dontHaveInternetUIUpdate();}
 
     }
 
     public void dontHaveInternetUIUpdate(){
         new fadeAnimBar(activivityBinding.progressBar,mContext).animate();
-        activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.no_network);
-        new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,mActivity).animate();
+        //Send a toast if I have items
+        if(mycalculations.size()!=0){
+            new SendALongToast(this,getString(R.string.no_network)).show();
+        }else{
+            //Change the TextView If I dont have items
+            activivityBinding.addMoreCalculationsIntructionsTv.setText(R.string.no_network);
+            new appearAnimText(activivityBinding.addMoreCalculationsIntructionsTv,mActivity).animate();
+        }
     }
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#D50000</color>
     <color name="colorPrimaryDark">#660303</color>
     <color name="colorAccent">#000000</color>
+    <color name="colorLinked">#004AFA</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="transparent">#00FCFCFC</color>
     <color name="tap_but_color">#E0F7FA</color>

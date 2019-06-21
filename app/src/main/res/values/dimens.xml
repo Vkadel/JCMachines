@@ -21,6 +21,7 @@
     <dimen name="widget_dim_min_resize">130dp</dimen>
     <dimen name="widget_dim_min_h">100dp</dimen>
     <dimen name="widget_dim_min_w">140dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
     <dimen name="div_thickness">1dp</dimen>
     <dimen name="send_long_toast_top">12sp</dimen>
     <dimen name="auger_spinner_w">200dp</dimen>
@@ -29,4 +30,5 @@
     <dimen name="tall_toolbar_height">100dp</dimen>
     <dimen name="but_w">160dp</dimen>
     <dimen name="but_h">75dp</dimen>
+    <dimen name="linked_text_w">180dp</dimen>
 </resources>

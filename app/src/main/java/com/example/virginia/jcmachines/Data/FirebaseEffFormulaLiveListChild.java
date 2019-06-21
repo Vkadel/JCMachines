@@ -10,15 +10,15 @@ import androidx.lifecycle.LiveData;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.DatabaseReference;
 
 public class FirebaseEffFormulaLiveListChild extends LiveData<DataSnapshot> {
-    private final Query mRef;
+    private final DatabaseReference mRef;
     private final mychildEventListener listener = new mychildEventListener();
     private final String LOG_TAG = "FirebaseEffFormulaLive";
     private boolean remove=false;
 
-    public FirebaseEffFormulaLiveListChild(Query ref) {
+    public FirebaseEffFormulaLiveListChild(DatabaseReference ref) {
         mRef = ref;
 
     }

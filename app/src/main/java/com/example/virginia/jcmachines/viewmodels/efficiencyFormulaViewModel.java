@@ -56,8 +56,9 @@ public class efficiencyFormulaViewModel extends ViewModel {
         String mrefString="effcalculations/"+userID;
         Boolean isTrue=true;
         DatabaseReference mref= FirebaseDatabase.getInstance().getReference(mrefString);
-        Query myquery=mref.orderByChild("active").equalTo(isTrue);
-        childList=new FirebaseEffFormulaLiveListChild(myquery);
+        /*Query myquery=mref.orderByChild("active").equalTo(isTrue);*/
+        mref.orderByChild("active").equalTo(isTrue);
+        childList=new FirebaseEffFormulaLiveListChild(mref);
         return childList;
     }
     public LiveData<DataSnapshot> getMeffCalculationListbyChildrenRef(){

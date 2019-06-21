@@ -48,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, layout.activity_main);
         binding.setLifecycleOwner(this);
         Timber.plant(new DebugTree());
-
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
+        database.setPersistenceCacheSizeBytes(10000000);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         //Setting up database persistence
         if (!firebaseIsSetUp && mAuth.getUid() == null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.setPersistenceEnabled(true);
+
             //Check if user has internet Access
             CheckConnectivity();
             firebaseIsSetUp = true;

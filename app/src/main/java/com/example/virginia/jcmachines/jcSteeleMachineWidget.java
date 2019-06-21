@@ -7,12 +7,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -96,15 +94,11 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             int item = myList.indexOf(thisWidgetid);
             isOneItemUpdate = true;
             updateOneWidget(context, appWidgetIds[0], allIds,item);
-            if (allIds.length > 1 && !dontUpdate) {
-                //Trigger Update if there if this is not the onlywidget with all available widgets
-                onUpdate(context, appWidgetManager, allIds);
-                dontUpdate=true;
-            }
+
         }
 
         if (appWidgetIds.length > 1) {
-            for (int i = 0; i < appWidgetIds.length; i++) {
+            for (int i = 0; i < appWidgetIds.length; ++i) {
                 updateOneWidget(context, appWidgetIds[i], allIds,i);
             }
         }
@@ -182,7 +176,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         int pos=position;
 
 
-
         //Adjust position
         while (pos>machineWidgetPrefArrayID.size()){
             pos=pos-(allIds.length/machineWidgetPrefArrayID.size());
@@ -218,7 +211,8 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
             intent.putExtra(machineDetailFragment.ARG_ITEM_ID, machineWidgetPrefArrayID.get(Integer.valueOf(position)));
             intent.putExtra(machineDetailFragment.ARG_CAME_FROM_WIDGET, "true");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(machineWidgetPrefArrayID.get(Integer.valueOf(position))),
+            String itemid=machineWidgetPrefArrayID.get(Integer.valueOf(position));
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, Integer.parseInt(itemid),
             intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
@@ -311,33 +305,6 @@ public class jcSteeleMachineWidget extends AppWidgetProvider {
         Timber.d("Screen Size is: "+toastMsg);
     }
 
-    @Override
-    public void onDisabled(Context context) {
-        //To prevent widget configurations and state to be lost overnight
-        onUpdate(context, AppWidgetManager.getInstance(context),
-                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
-        super.onDisabled(context);
-    }
-
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        //To prevent widget configurations and state to be lost overnight
-        PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, jcSteeleMachineWidget.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-
-        onUpdate(context, AppWidgetManager.getInstance(context),
-                AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, jcSteeleMachineWidget.class)));
-
-    }
-
-    @Override
-    public IBinder peekService(Context myContext, Intent service) {
-        return super.peekService(myContext, service);
-    }
 }
 
 

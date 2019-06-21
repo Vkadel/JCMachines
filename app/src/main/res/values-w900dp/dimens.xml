@@ -6,9 +6,11 @@
     <dimen name="app_bar_height">350dp</dimen>
     <dimen name="item_width">450dp</dimen>
     <dimen name="dimensions_pic_height">300dp</dimen>
-    <dimen name="text_size_detail_links">24sp</dimen>
+    <dimen name="text_size_detail_links">30sp</dimen>
     <dimen name="text_size_description_detail">32sp</dimen>
     <dimen name="machine_item_width">450dp</dimen>
+    <dimen name="linked_text_w">0dp</dimen>
+
 
 
 </resources>

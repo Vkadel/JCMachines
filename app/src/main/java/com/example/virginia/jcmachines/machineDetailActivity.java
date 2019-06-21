@@ -3,16 +3,12 @@ package com.example.virginia.jcmachines;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.virginia.jcmachines.R.layout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import timber.log.Timber;
 
@@ -40,15 +36,6 @@ Boolean cameFromWidget=false;
             cameFromWidget=true;
             thisItemID=getIntent().getExtras().getString(machineDetailFragment.ARG_ITEM_ID);
         }
-
-        FloatingActionButton fab = this.findViewById(R.id.fab);
-        fab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // Show the Up button in the action bar.
         ActionBar actionBar = this.getSupportActionBar();

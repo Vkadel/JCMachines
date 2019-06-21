@@ -15,6 +15,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="?attr/actionBarSize"
             android:id="@+id/machine_detail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -22,6 +23,7 @@
             <TextView
                 android:id="@+id/description_TV"
                 style="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="@color/colorAccent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
@@ -45,31 +47,34 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Button"
                 android:id="@+id/data_sheet_tv"
-                android:layout_width="0dp"
+                style="@style/LinkeTextInDetailStyle"
+                android:layout_width="@dimen/but_w"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="8dp"
                 android:text="@string/data"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_TV" />
+                app:layout_constraintBottom_toBottomOf="@+id/lubrication_chart_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/lubrication_chart_tv" />
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Button"
                 android:id="@+id/lubrication_chart_tv"
-                android:layout_width="0dp"
+                style="@style/LinkeTextInDetailStyle"
+                android:layout_width="@dimen/but_w"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:text="@string/lubrication_chart"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textAlignment="textStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_TV" />
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Button"
+                style="@style/LinkeTextInDetailStyle"
                 android:id="@+id/spare_parts_tv"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/but_w"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
                 android:text="@string/spare_parts"

@@ -273,7 +273,7 @@ public class machineListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 machine item = (machine) view.getTag();
-                if (machineAdapter.this.mTwoPane && !isPortraitAndLarge(getApplicationContext())) {
+                if (machineAdapter.this.mTwoPane) {
                     Bundle arguments = new Bundle();
                     thisItemID=item.getId();
                     arguments.putString(machineDetailFragment.ARG_ITEM_ID, String.valueOf(thisItemID));
@@ -283,7 +283,7 @@ public class machineListActivity extends AppCompatActivity {
                     machineAdapter.this.mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(id.machine_detail_container, fragment)
                             .commit();
-                } else if(isPortraitAndLarge(getApplicationContext())||isSmall) {
+                } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, machineDetailActivity.class);
                     intent.putExtra(machineDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
