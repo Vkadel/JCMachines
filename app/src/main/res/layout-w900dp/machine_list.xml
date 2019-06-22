@@ -34,7 +34,7 @@
         tools:listitem="@layout/machine_list_item" />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <FrameLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/machine_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"

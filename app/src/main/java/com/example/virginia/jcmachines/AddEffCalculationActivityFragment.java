@@ -27,8 +27,6 @@ import com.example.virginia.jcmachines.Data.effcalculation;
 import com.example.virginia.jcmachines.Data.machine;
 import com.example.virginia.jcmachines.animations.appearAnimLayout;
 import com.example.virginia.jcmachines.animations.fadeAnimLayout;
-import com.example.virginia.jcmachines.databinding.ActivityAddEffCalculationBinding;
-import com.example.virginia.jcmachines.databinding.ActivityEffcalculationDetailBinding;
 import com.example.virginia.jcmachines.databinding.FragmentAddEffCalculationBinding;
 import com.example.virginia.jcmachines.utils.DoubleTruncate;
 import com.example.virginia.jcmachines.utils.DoubleTruncateZero;
@@ -55,30 +53,19 @@ import java.util.function.Consumer;
  * A placeholder fragment containing a simple view.
  */
 public class AddEffCalculationActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    static FragmentAddEffCalculationBinding binding;
-    static ActivityAddEffCalculationBinding activityBinding;
-    static ActivityEffcalculationDetailBinding detailBinding;
-    static final String EFF_CALC_ARG_EXIST = "eff_calc_arg";
+    private static FragmentAddEffCalculationBinding binding;
+    static final public String EFF_CALC_ARG_EXIST = "eff_calc_arg";
     static final String IS_TWO_PANE = "is_two_pane";
     private static Context mContext;
-    private static machineViewModel viewModel;
     private static machine thismachine;
-    private efficiencyFormulaViewModel viewModeleffList = new efficiencyFormulaViewModel();
     private PagedList<machine> mmachines;
-    ArrayList<String> augerList = new ArrayList<>();
-    ArrayList<String> augerValueList = new ArrayList<>();
+    private ArrayList<String> augerList = new ArrayList<>();
+    private ArrayList<String> augerValueList = new ArrayList<>();
     private static effcalculation meffcalculation = new effcalculation();
     private final MyLiveEffCalculation meffcalculationLive = new MyLiveEffCalculation();
     private String machineId;
     private String thisCalculationID;
-    private ImageView machineImageImage;
-    private efficiencyFormulaViewModel viewModeleffcal;
-    private String calculationId;
-    private View.OnClickListener listener;
-    private View.OnClickListener updateAndSendEmailListener;
-    private Boolean isTwoPane;
-    private Boolean itemExist=false;
-    private String itemid;
+
 
 
     public AddEffCalculationActivityFragment() {
@@ -130,7 +117,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         if (getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID)!=null && savedInstanceState == null) {
                 disableAllDataEntry();
                 thisCalculationID=getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID);
-                viewModeleffList = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
+            efficiencyFormulaViewModel viewModeleffList = ViewModelProviders.of(this).get(efficiencyFormulaViewModel.class);
                 viewModeleffList.getMeffCalculationList(FirebaseAuth.getInstance().getUid(), getActivity()).observe(this, new myObserver());
         }
 
@@ -138,7 +125,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
             //SetUpFor the first time
             meffcalculationLive.setValue(meffcalculation.clear());
             //Subscribe to the machine model
-            viewModel = ViewModelProviders.of(this).get(machineViewModel.class);
+            machineViewModel viewModel = ViewModelProviders.of(this).get(machineViewModel.class);
             viewModel.getMachines().observe(this, new Observer<PagedList<machine>>() {
                 @Override
                 public void onChanged(@Nullable PagedList<machine> machines) {
@@ -168,7 +155,7 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
                 initialUISetup();
                 //if Item already exist then need to disable all entry again
                 if(savedInstanceState.containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)){
-                    itemExist=true;
+                    thisCalculationID=savedInstanceState.getString(machineDetailFragment.EFF_ARG_ITEM_ID);
                     disableAllDataEntry();
                 }
             }
@@ -346,11 +333,8 @@ public class AddEffCalculationActivityFragment extends Fragment implements Adapt
         outState.putString(machineDetailFragment.ARG_ITEM_ID, machineId);
         Gson json = new Gson();
         outState.putString(EFF_CALC_ARG_EXIST, json.toJson(meffcalculationLive.getValue()));
-        if(getArguments().containsKey(machineDetailFragment.EFF_ARG_ITEM_ID)){
-        outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID));}
-        if(itemExist){
-            outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,getArguments().getString(machineDetailFragment.EFF_ARG_ITEM_ID));
-        }
+        if(thisCalculationID!=null){
+        outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,thisCalculationID);}
         super.onSaveInstanceState(outState);
     }
 

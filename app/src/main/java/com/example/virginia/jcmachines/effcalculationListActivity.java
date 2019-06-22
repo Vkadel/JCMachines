@@ -38,14 +38,7 @@ import java.util.function.Consumer;
 
 import timber.log.Timber;
 
-/**
- * An activity representing a list of effcalculations. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link effcalculationDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
+
 public class effcalculationListActivity extends AppCompatActivity {
     private static String DONT_HAVE_CHILDREN_ARG = "dont_have_children";
     private static ArrayList<String> mItemsToDelete = new ArrayList<>();

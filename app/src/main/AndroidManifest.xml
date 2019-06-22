@@ -26,15 +26,6 @@
             android:label="@string/title_effcalculation_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".effcalculationDetailActivity"
-            android:label="@string/title_effcalculation_detail"
-            android:parentActivityName=".effcalculationListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.virginia.jcmachines.effcalculationListActivity" />
-        </activity>
-        <activity
             android:name=".AddEffCalculationActivity"
             android:label="@string/title_activity_add_eff_calculation"
             android:parentActivityName=".machineDetailActivity"

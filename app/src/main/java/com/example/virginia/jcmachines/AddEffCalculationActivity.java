@@ -47,7 +47,10 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         //Create and Attach the fragment
         Bundle arguments = new Bundle();
         thisItemID = this.getIntent().getStringExtra(machineDetailFragment.ARG_ITEM_ID);
-        thisEffcalculationId=getIntent().getStringExtra(machineDetailFragment.EFF_ARG_ITEM_ID);
+
+        if(getIntent().getStringExtra(machineDetailFragment.EFF_ARG_ITEM_ID)!=null){
+            thisEffcalculationId=getIntent().getStringExtra(machineDetailFragment.EFF_ARG_ITEM_ID);
+        }
         arguments.putString(machineDetailFragment.EFF_ARG_ITEM_ID, thisEffcalculationId);
         arguments.putString(machineDetailFragment.ARG_ITEM_ID,thisItemID);
         if (savedInstanceState == null) {
@@ -83,11 +86,4 @@ public class AddEffCalculationActivity extends AppCompatActivity {
         Glide.with(this).load(thismachine.getLargeImageOne()).into(binding.appBarMachineImage);
     }
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(machineDetailFragment.ARG_ITEM_ID, thisItemID);
-        outState.putString(machineDetailFragment.EFF_ARG_ITEM_ID,thisEffcalculationId);
-        super.onSaveInstanceState(outState);
-    }
 }
