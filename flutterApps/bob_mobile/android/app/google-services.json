@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "212967210044",
+    "firebase_url": "https://bob-mobile-5e593.firebaseio.com",
+    "project_id": "bob-mobile-5e593",
+    "storage_bucket": "bob-mobile-5e593.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212967210044:android:2fb330a72d7f1d42095739",
+        "android_client_info": {
+          "package_name": "com.vkreated.bob_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212967210044-a16roas0ff5oc3hacl1gvrj26llgahhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vkreated.bob_mobile",
+            "certificate_hash": "63828c106c1452421539adf12df948e799485c67"
+          }
+        },
+        {
+          "client_id": "212967210044-unc9ttc87jlpgn3cv1auq65kvad6428u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeXt3wBCY-4ztBVP5JGXhFK5dHmkuOJNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212967210044-unc9ttc87jlpgn3cv1auq65kvad6428u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
