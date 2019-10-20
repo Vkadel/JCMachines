@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:bob_mobile/auth.dart';
+import 'package:flutter/material.dart';
 
 class Provider extends InheritedWidget {
   final BaseAuth auth;
+
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return true;
