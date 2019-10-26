@@ -11,6 +11,10 @@ part 'user.g.dart';
 ///
 /// flutter pub run build_runner watch
 ///
+///     of for when files already exists
+///
+/// flutter pub run build_runner build --delete-conflicting-outputs
+///
 /// Consuming json_serializable models.
 ///   Map userMap = jsonDecode(jsonString);
 ///   var user = User.fromJson(userMap);
@@ -26,15 +30,17 @@ class User {
     this.status,
     this.points,
     this.personality,
+    this.role,
   );
 
-  String name;
+  String name = 'Add a Name';
   String email;
   String id;
   int status; //0:offline 1: online
   int points;
-  int role; //0:Knight 1:Mage 2: Archer
-  int personality; //0: not classified 1: extroverts 2:introvertives
+  int role; //0:Undertermined 1:Knight 2:Mage 3: Archer
+  Map<dynamic, dynamic>
+      personality; //Will store all values of personality calculated
   String school_id;
   String team_id;
   List<int> answers;

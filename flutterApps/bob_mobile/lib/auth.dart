@@ -10,6 +10,7 @@ abstract class BaseAuth {
   Future<String> signOut();
   Future<String> singInWithGoogle();
   Future<void> passwordReset(String email);
+  FirebaseUser getLastUserLoged();
 }
 
 class Auth implements BaseAuth {
@@ -68,5 +69,10 @@ class Auth implements BaseAuth {
   @override
   Future<void> passwordReset(String email) async {
     return (await _firebaseAuth.sendPasswordResetEmail(email: email));
+  }
+
+  @override
+  FirebaseUser getLastUserLoged() {
+    return _user;
   }
 }
